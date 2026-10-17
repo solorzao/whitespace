@@ -51,6 +51,17 @@ function checkResult(r: AnalysisResult) {
     ),
     "concepts use the concept categories, carry their gap types and cite ids in docs",
   );
+  check(
+    r.signals.length === r.conceptCategories.length &&
+      r.signals.every((s, i) => s.category === r.conceptCategories[i].category && s.lines.length >= 2),
+    "every concept category has its signal lines",
+  );
+  const named = new Set([...r.businesses, ...r.competitors].map((b) => b.id));
+  check(
+    r.summaries.every((s) => named.has(s.businessId) && s.evidence.length > 0 && s.evidence.every((id) => known.has(id))),
+    `every summary is for a business or competitor and cites reviews in docs (${r.summaries.length} summaries)`,
+  );
+  if (noClaude) check(r.summaries.length === 0, "no summaries without tags");
   // generateConcepts always writes 3; with fewer than 3 gaps, they may share a category.
   if (!noClaude) check(r.concepts.length === (chosen.size > 0 ? CONCEPT_COUNT : 0), `${r.concepts.length} concepts`);
 }
@@ -77,6 +88,7 @@ function print(r: AnalysisResult, seconds: number) {
         `${n.rated} rated, average ${n.avgRating ?? "none"}. Mismatches: ${mismatches}`,
     );
     facts.forEach((f) => console.log(`    - ${f}`));
+    r.signals.find((s) => s.category === category)?.lines.forEach((line) => console.log(`    > ${line}`));
     const p = r.profiles.find((x) => x.category === category);
     if (!p) {
       console.log("    No success profile");
@@ -92,6 +104,16 @@ function print(r: AnalysisResult, seconds: number) {
     console.log(`    Rationale: ${c.rationale}`);
     console.log(`    Evidence:  ${c.evidence.join(", ")}`);
     console.log(`    Risk:      ${c.risk}`);
+  }
+
+  if (r.summaries.length) {
+    const names = new Map([...r.businesses, ...r.competitors].map((b) => [b.id, `${b.name} (${b.category})`]));
+    console.log(`\n  Popup lines for ${r.summaries.length} businesses, the first 6:`);
+    for (const s of r.summaries.slice(0, 6)) {
+      console.log(`    ${names.get(s.businessId)}, ${s.reviewCount} reviews`);
+      if (s.knownFor) console.log(`      Known for: ${s.knownFor}`);
+      if (s.complaints) console.log(`      Complaints: ${s.complaints}`);
+    }
   }
 
   if (r.errors.length) {
