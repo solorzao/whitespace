@@ -68,7 +68,7 @@ src/lib/ingest/
   index.ts               collectArea(): snap or run all adapters, then merge
 scripts/
   check-area.ts          Runs collectArea for a demo area or a lat,lng and prints a summary
-  ingest-demo.ts         Runs collectArea live on both demo areas and writes data/demo/<slug>.json
+  ingest-demo.ts         Runs collectArea and collectCompetitors live on both demo areas and writes data/demo/
 data/demo/               The saved demo results, committed to the repo
 ```
 
@@ -95,7 +95,7 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 ### Google Places (New)
 
 - Nearby Search: 20 results within 800 m, with `includedTypes` set to the Google types that map to our categories, `rankPreference: POPULARITY` and `languageCode: en`. Field mask: `id, displayName, types, primaryType, location, rating, userRatingCount, businessStatus, googleMapsUri, priceLevel, regularOpeningHours`.
-- Place Details with `reviews, delivery, dineIn, takeout, reservable` for the top 8 by rating count. That's about 9 billed calls per live area. Rating is already in the Nearby Search mask and reviews already in Place Details, so the added fields should keep each call in its current billing tier. Confirm on the pricing page.
+- Place Details with `reviews, delivery, dineIn, takeout, reservable` for the top 8 by rating count. That's about 9 billed calls per live area. Rating is already in the Nearby Search mask and reviews already in Place Details, so the added fields keep each call in its current billing tier: Nearby Search Enterprise and Place Details Enterprise + Atmosphere. Confirmed on Google's docs on 2026-10-17.
 - Output: businesses with ratings, review counts, open or closed status, price level, hours and service options (the `Business` fields in the [analysis plan](ANALYSIS_PLAN.md#contract-changes)), plus `places:<id>` records and `review:<id>:<n>` records.
 - When an OSM business and a Places business have matching names and are less than 50 m apart, merge them into one business, so the map doesn't show duplicate dots. Counts still come from OSM.
 
@@ -108,9 +108,11 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 ### Competitors (Google Places, 2 km)
 
 - `collectCompetitors(category, lat, lng, radiusM)`, for one concept category. `/api/analyze` calls it for up to 5 categories after scoring the gaps, so it isn't part of `collectArea`.
-- One Nearby Search within 2 km: `includedTypes` set to that category's Google types, 20 results, `rankPreference: POPULARITY`, the circle search's fields, plus `reviews, delivery, dineIn, takeout, reservable`.
-- If the Nearby Search field mask doesn't accept `places.reviews`, call Place Details for the 10 most-reviewed instead.
-- Output: businesses and their `places:` and `review:` records. It needs no saved files of its own, because a demo pin returns the saved `/api/analyze` response, which already includes them.
+- One Nearby Search within 2 km: `includedPrimaryTypes` set to that category's Google types, 20 results, `rankPreference: POPULARITY`, the circle search's fields, plus `reviews, delivery, dineIn, takeout, reservable`. That's one Nearby Search Enterprise + Atmosphere call, about $0.04.
+- Primary types, not `includedTypes`: `includedTypes` also matches places that only list the type. In Santa Monica it filled hardware's 20 results with furniture stores tagged `home_improvement_store`.
+- Nearby Search accepts `places.reviews`, so no Place Details calls are needed. Each competitor comes with up to 5 reviews, about 60–100 per category.
+- Output: an `AdapterResult` with the businesses, plus their `places:` records (which give the distance from the pin) and their `review:` records. It never throws. `competitorsNotOnMap(businesses, competitors)` keeps the ones that aren't already in the circle's businesses, for `AnalyzeResponse.competitors`.
+- Saved data: `ingest-demo.ts` saves the competitors for all 20 categories in `data/demo/<slug>-competitors.json`, 20 calls per area. Near a demo center, `collectCompetitors` returns the saved data, so the analysis can be built and tested on the demo areas without live calls, before the full `/api/analyze` response is saved.
 
 ### collectArea
 
@@ -128,7 +130,7 @@ Post in the team chat when each PR is up.
 | 2 | Overpass, Census, `collectArea`, `check-area.ts` | The counts and demographics for both demo areas look right when checked by hand, and Oliver can call `collectArea` from `/api/analyze`. |
 | 3 | Places, reviews, merging duplicate businesses | Each demo area has ratings and reviews. |
 | 4 | Wikipedia, `ingest-demo.ts`, `data/demo/*.json` | Both saved demo files are committed, and a pin near a demo center loads instantly. |
-| 5 | Extra Places fields and the competitor search | Businesses have price level, hours and service options, and `collectCompetitors` returns 2 km businesses with reviews. |
+| 5 | Extra Places fields, the competitor search and `PLACES_LIVE` | Businesses have price level, hours and service options, `collectCompetitors` returns 2 km businesses with reviews, and the deployed app makes no billed Places calls. |
 
 ## Timing
 
@@ -144,6 +146,7 @@ Post in the team chat when each PR is up.
 ## Risks
 
 - **Overpass rate limits.** The saved demo files cover the stage demo, and the mirror covers live pins.
-- **Places cost.** About 9 billed calls per live area, plus up to 5 competitor searches. Saved demo areas cost nothing.
+- **Places cost.** About 9 billed calls per live area, plus up to 5 competitor searches. Saved demo areas cost nothing. Live Places calls are off unless `PLACES_LIVE=1`, which stays unset on Vercel, so the deployed app is never billed. Away from the demo areas it skips ratings, reviews and competitors, and `errors` says why. `ingest-demo.ts` turns live calls on for itself.
+- **Sparse Google fields.** Price level is set for about 27% of competitors, mostly food. Service options are set for about half, and almost none outside food. Rules built on these fields, such as "none at price level 1", only work for food categories.
 - **Places terms.** Google limits how long Places content can be stored. Saved demo files are fine for a hackathon, but refresh them rather than keeping them long term.
 - **Tract center points.** Using tracts whose center point is in the circle is an approximation. A large tract at the edge can count fully or not at all.

@@ -10,8 +10,8 @@ export function demoFilePath(area: DemoArea): string {
   return path.join(DEMO_DIR, `${area.slug}.json`);
 }
 
-export function categoryReviewsFilePath(area: DemoArea): string {
-  return path.join(DEMO_DIR, `${area.slug}-category-reviews.json`);
+export function competitorsFilePath(area: DemoArea): string {
+  return path.join(DEMO_DIR, `${area.slug}-competitors.json`);
 }
 
 // null when the file doesn't exist yet.

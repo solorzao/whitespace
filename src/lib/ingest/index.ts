@@ -11,19 +11,15 @@ import type { AdapterResult } from "./result";
 import { demoFilePath, readSaved } from "./saved";
 
 export { AREA_RADIUS_M, DEMO_AREAS, findDemoArea } from "./demo-areas";
-export { DEMO_DIR, categoryReviewsFilePath, demoFilePath } from "./saved";
+export { DEMO_DIR, competitorsFilePath, demoFilePath } from "./saved";
 export {
-  CATEGORY_REVIEWS_TOOL,
-  addCategoryReviews,
-  collectCategoryReviews,
-  fetchCategoryReviews,
-  getCategoryReviews,
-  runCategoryReviewsTool,
-  summarize as summarizeCategoryReviews,
-  type CategoryReviews,
-  type Competitor,
-  type SavedCategoryReviews,
-} from "./category-reviews";
+  COMPETITOR_RADIUS_M,
+  collectCompetitors,
+  competitorsNotOnMap,
+  fetchCompetitors,
+  type CompetitorsData,
+  type SavedCompetitors,
+} from "./competitors";
 
 // Thrown when there's no business data at all. /api/analyze should answer 503.
 export class AreaUnavailableError extends Error {

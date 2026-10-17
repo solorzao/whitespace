@@ -47,7 +47,15 @@ export type Business = {
   // Every SourceDoc id for this business, when OSM and Places listings were merged into one dot:
   // ["osm:node/1", "places:ChIJ..."]. Reviews of it are "review:<place id>:<n>".
   docIds?: string[];
+  // From Google Places, so set only for businesses Places returned (ANALYSIS_PLAN.md contract proposal).
+  reviewCount?: number;
+  priceLevel?: 0 | 1 | 2 | 3 | 4; // free to very expensive
+  hours?: string[]; // Google's weekday descriptions
+  closesAt?: number; // latest weekday closing time in hours: 21.5 = 9:30 pm, 25 = 1 am
+  services?: BusinessServices; // only for the most-rated places in the circle and the 2 km competitors
 };
+
+export type BusinessServices = { delivery?: boolean; dineIn?: boolean; takeout?: boolean; reservable?: boolean };
 
 export type Gap = {
   category: CategoryId;
@@ -82,7 +90,6 @@ export type AskRequest = {
   question: string;
   docs: SourceDoc[];
   history?: ChatTurn[];
-  center?: LatLng; // the pin, so the answer can fetch reviews for a category the docs don't cover
 };
 
 export type Citation = { id: string; title: string; url: string };
@@ -90,7 +97,6 @@ export type Citation = { id: string; title: string; url: string };
 export type AskResponse = {
   answer: string;
   citations: Citation[];
-  docs?: SourceDoc[]; // fetched while answering; the client adds them to the docs it sends next time
 };
 
 // What collectArea() returns. /api/analyze adds gaps and concepts to this.
