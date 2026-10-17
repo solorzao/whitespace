@@ -6,7 +6,7 @@
 // Both modes first run the tag parsing and profile checks against canned data, then print the profile
 // the way the concept card shows it.
 
-import { buildProfile, type ProfileFinding, type SuccessProfile } from "../src/lib/analysis/profile";
+import { buildProfile, describeFinding, type ProfileFinding, type SuccessProfile } from "../src/lib/analysis/profile";
 import {
   buildRequest,
   readTags,
@@ -166,19 +166,6 @@ function difference(f: ProfileFinding): number {
   return f.kind === "praise" ? top - low : f.kind === "complaint" ? low - top : Math.abs(top - low);
 }
 
-// The card's wording: "Top-rated: drop-off service praised in 8 of 12 reviews. Others: hours complained about in 6 of 9."
-function cardLine(f: ProfileFinding): string {
-  if (f.kind === "praise") {
-    return `Top-rated: ${f.label} praised in ${f.top.count} of ${f.top.of} reviews (others: ${f.low.count} of ${f.low.of}).`;
-  }
-  if (f.kind === "complaint") {
-    return `Others: ${f.label} complained about in ${f.low.count} of ${f.low.of} reviews (top-rated: ${f.top.count} of ${f.top.of}).`;
-  }
-  const topLeads = f.top.count / f.top.of >= f.low.count / f.low.of;
-  return topLeads
-    ? `Top-rated: ${f.top.count} of ${f.top.of} ${f.label} (others: ${f.low.count} of ${f.low.of}).`
-    : `Others: ${f.low.count} of ${f.low.of} ${f.label} (top-rated: ${f.top.count} of ${f.top.of}).`;
-}
 
 function printProfile(profile: SuccessProfile | null) {
   if (!profile) {
@@ -190,7 +177,7 @@ function printProfile(profile: SuccessProfile | null) {
       ` (${profile.businessIds.length} compared, ${profile.reviewCount} reviews):`,
   );
   profile.findings.forEach((f, i) => {
-    console.log(`  ${i < 2 ? "*" : " "} ${cardLine(f)}`);
+    console.log(`  ${i < 2 ? "*" : " "} ${describeFinding(f)}`);
     console.log(`      ${f.kind}, evidence: ${f.evidence.join(", ")}`);
   });
   console.log("  (* = the 2 the card shows)\n");

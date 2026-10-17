@@ -184,6 +184,20 @@ function attributeFinding(
   };
 }
 
+// A finding in the card's words: "Top-rated: drop-off service praised in 8 of 12 reviews (others: 1 of 9)."
+export function describeFinding(f: ProfileFinding): string {
+  if (f.kind === "praise") {
+    return `Top-rated: ${f.label} praised in ${f.top.count} of ${f.top.of} reviews (others: ${f.low.count} of ${f.low.of}).`;
+  }
+  if (f.kind === "complaint") {
+    return `Others: ${f.label} complained about in ${f.low.count} of ${f.low.of} reviews (top-rated: ${f.top.count} of ${f.top.of}).`;
+  }
+  const topLeads = f.top.count / f.top.of >= f.low.count / f.low.of;
+  return topLeads
+    ? `Top-rated: ${f.top.count} of ${f.top.of} ${f.label} (others: ${f.low.count} of ${f.low.of}).`
+    : `Others: ${f.low.count} of ${f.low.of} ${f.label} (top-rated: ${f.top.count} of ${f.top.of}).`;
+}
+
 // "review:<place id>:<n>" -> "places:<place id>", the convention in src/lib/types.ts.
 function competitorIdOf(reviewId: string): string | null {
   const match = /^review:(.+):\d+$/.exec(reviewId);
