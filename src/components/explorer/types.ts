@@ -1,5 +1,11 @@
 import type { AnalysisResult } from "@/lib/analysis";
-import type { AnalyzeResponse, AreaData, AskResponse } from "@/lib/types";
+import type { GapType } from "@/lib/analysis/candidates";
+import type {
+  AnalyzeResponse,
+  AreaData,
+  AskResponse,
+  Concept,
+} from "@/lib/types";
 
 export type MapPoint = {
   lat: number;
@@ -20,11 +26,19 @@ export type AreaResult = AreaData & {
   demoArea?: string;
   mock?: boolean;
 };
-export type Analysis = AnalyzeResponse &
-  Partial<
+// The extra AnalysisResult fields are optional, so reports saved before they existed still open.
+export type Analysis = Omit<AnalyzeResponse, "concepts"> & {
+  concepts: (Concept & { gapType?: GapType })[];
+} & Partial<
     Pick<
       AnalysisResult,
-      "competitors" | "profiles" | "errors" | "from" | "demoArea"
+      | "competitors"
+      | "profiles"
+      | "signals"
+      | "summaries"
+      | "errors"
+      | "from"
+      | "demoArea"
     >
   > & { mock?: boolean };
 export type Conversation = { question: string; response: AskResponse };

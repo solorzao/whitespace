@@ -42,6 +42,17 @@ test("neighborhood evidence, map filters, real API analysis and cited follow-up 
   await expect(
     page.getByText("Test mode is enabled.", { exact: false }),
   ).toBeVisible();
+  const card = page.locator(".opportunity-card").first();
+  await expect(card.locator(".gap-type")).toHaveText("Poorly served");
+  await expect(card.locator(".card-signals li").first()).toContainText(
+    "Based on 2 census tracts",
+  );
+  const summary = page.locator(".business-list .review-summary").first();
+  await expect(summary).toContainText("Known for:");
+  await expect(summary.getByRole("link").first()).toHaveAttribute(
+    "href",
+    /^https:\/\//,
+  );
   await page
     .getByRole("navigation", { name: "Report sections" })
     .getByRole("button", { name: "Ask a question", exact: true })

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import type { BusinessSummary } from "@/lib/analysis/summaries";
 import type { AskResponse, SourceDoc } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/ingest/categories";
 import type { CategoryId } from "@/lib/types";
-import { safeURL } from "./data";
+import { GAP_LABELS, safeURL } from "./data";
 import type { Report } from "./types";
 
 const categoryName = (id: string) =>
@@ -66,6 +67,47 @@ function Evidence({ ids, docs }: { ids: string[]; docs: SourceDoc[] }) {
   );
 }
 
+function ReviewSummary({
+  summary,
+  docs,
+}: {
+  summary: BusinessSummary;
+  docs: SourceDoc[];
+}) {
+  const reviews = summary.evidence.flatMap(
+    (id) => docs.find((doc) => doc.id === id) ?? [],
+  );
+  return (
+    <div className="review-summary">
+      {summary.knownFor && (
+        <p>
+          <strong>Known for:</strong> {summary.knownFor}
+        </p>
+      )}
+      {summary.complaints && (
+        <p>
+          <strong>Complaints:</strong> {summary.complaints}
+        </p>
+      )}
+      {!!reviews.length && (
+        <div className="review-links">
+          {reviews.map((doc, i) => (
+            <a
+              key={doc.id}
+              href={safeURL(doc.url)}
+              target="_blank"
+              rel="noreferrer"
+              title={doc.title}
+            >
+              Review {i + 1} ↗
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function ResearchReport({
   report,
   asking,
@@ -91,9 +133,15 @@ export function ResearchReport({
       .toLowerCase()
       .includes(sourceQuery.toLowerCase()),
   );
-  const businesses = analysis.businesses.filter(
-    (b) => businessCategory === "all" || b.category === businessCategory,
+  const summaries = new Map(
+    (analysis.summaries ?? []).map((summary) => [summary.businessId, summary]),
   );
+  // Businesses with review summaries first; the sort is stable, so the rest keep their order.
+  const businesses = analysis.businesses
+    .filter(
+      (b) => businessCategory === "all" || b.category === businessCategory,
+    )
+    .sort((a, b) => Number(summaries.has(b.id)) - Number(summaries.has(a.id)));
   return (
     <>
       <header className="report-heading">
@@ -169,8 +217,20 @@ export function ResearchReport({
           analysis.concepts.map((concept) => (
             <article key={concept.title} className="opportunity-card">
               <span className="eyebrow">{categoryName(concept.category)}</span>
+              {concept.gapType && (
+                <span className="gap-type">{GAP_LABELS[concept.gapType]}</span>
+              )}
               <h3>{concept.title}</h3>
               <p>{concept.rationale}</p>
+              {(analysis.signals ?? [])
+                .filter((signal) => signal.category === concept.category)
+                .map((signal) => (
+                  <ul key={signal.category} className="card-signals">
+                    {signal.lines.map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                ))}
               <Evidence ids={concept.evidence} docs={docs} />
               <p className="risk">
                 <strong>What to test</strong> {concept.risk}
@@ -294,6 +354,12 @@ export function ResearchReport({
                       ? ` · ${business.status.replaceAll("_", " ")}`
                       : ""}
                   </span>
+                  {summaries.has(business.id) && (
+                    <ReviewSummary
+                      summary={summaries.get(business.id)!}
+                      docs={docs}
+                    />
+                  )}
                 </div>
                 <button
                   onClick={() =>
