@@ -76,6 +76,7 @@ export type Business = {
   // ...the existing fields
   reviewCount?: number;
   priceLevel?: 0 | 1 | 2 | 3 | 4; // free to very expensive
+  priceRange?: { min: number; max: number | null }; // US dollars per person; max null = open-ended ("$100+")
   hours?: string[]; // Google's weekday descriptions
   closesAt?: number; // latest weekday closing time in hours: 21.5 = 9:30 pm, 25 = 1 am
   services?: { delivery?: boolean; dineIn?: boolean; takeout?: boolean; reservable?: boolean };

@@ -17,7 +17,7 @@ const MAX_RESULTS = 20; // the most Nearby Search returns
 const REVIEWED_PLACES = 8;
 const MERGE_DISTANCE_M = 50;
 
-// Billing: rating, userRatingCount, priceLevel and regularOpeningHours put Nearby Search on the
+// Billing: rating, userRatingCount, priceLevel, priceRange and regularOpeningHours put Nearby Search on the
 // Enterprise SKU. reviews and the service options are Enterprise + Atmosphere, on Nearby Search
 // or Place Details alike. Checked against Google's docs on 2026-10-17.
 const PLACE_FIELDS = [
@@ -31,12 +31,14 @@ const PLACE_FIELDS = [
   "businessStatus",
   "googleMapsUri",
   "priceLevel",
+  "priceRange",
   "regularOpeningHours",
 ];
 export const SERVICE_FIELDS = ["delivery", "dineIn", "takeout", "reservable"] as const;
 export const ATMOSPHERE_FIELDS = ["reviews", ...SERVICE_FIELDS];
 
 type Weekday = { day: number; hour: number; minute: number };
+type Money = { currencyCode?: string; units?: string; nanos?: number };
 
 export type Place = {
   id: string;
@@ -49,6 +51,7 @@ export type Place = {
   businessStatus?: "OPERATIONAL" | "CLOSED_TEMPORARILY" | "CLOSED_PERMANENTLY";
   googleMapsUri?: string;
   priceLevel?: string;
+  priceRange?: { startPrice?: Money; endPrice?: Money };
   regularOpeningHours?: { weekdayDescriptions?: string[]; periods?: { open: Weekday; close?: Weekday }[] };
   reviews?: Review[];
   delivery?: boolean;
@@ -172,6 +175,16 @@ export function closesAt(periods: { open: Weekday; close?: Weekday }[] | undefin
   return Math.round(Math.max(...closes) * 100) / 100;
 }
 
+const dollars = (m: Money | undefined): number | null =>
+  m && (m.currencyCode ?? "USD") === "USD" ? Number(m.units ?? 0) + (m.nanos ?? 0) / 1e9 : null;
+
+// Google's per-person price range in US dollars. No end price means open-ended, such as "$100+".
+export function priceRange(range: Place["priceRange"]): Business["priceRange"] {
+  const min = dollars(range?.startPrice);
+  if (min === null) return undefined;
+  return { min, max: dollars(range?.endPrice) };
+}
+
 export type Parsed = { business: Business; ratingCount: number; reviews: Review[] };
 
 export function parsePlace(place: Place): Parsed | null {
@@ -191,6 +204,7 @@ export function parsePlace(place: Place): Parsed | null {
       url: place.googleMapsUri ?? `https://www.google.com/maps/place/?q=place_id:${place.id}`,
       reviewCount: place.userRatingCount,
       priceLevel: place.priceLevel ? PRICE_LEVEL[place.priceLevel] : undefined,
+      priceRange: priceRange(place.priceRange),
       hours: hours?.weekdayDescriptions,
       closesAt: closesAt(hours?.periods),
       services: services(place),
@@ -213,6 +227,10 @@ export function placeDoc({ business: b, ratingCount }: Parsed, note?: string): S
   if (b.rating !== undefined) parts.push(`Rated ${b.rating} out of 5 from ${ratingCount.toLocaleString("en-US")} ratings.`);
   if (b.status) parts.push(`Status: ${STATUS_TEXT[b.status]}.`);
   if (b.priceLevel !== undefined) parts.push(`Price level: ${PRICE_TEXT[b.priceLevel]}.`);
+  if (b.priceRange) {
+    const { min, max } = b.priceRange;
+    parts.push(`Price per person: $${min}${max === null ? "+" : `–${max}`}.`);
+  }
   if (b.closesAt !== undefined) {
     parts.push(b.closesAt >= 24 && b.hours?.some((h) => /open 24 hours/i.test(h))
       ? "Open 24 hours."
@@ -314,7 +332,7 @@ export function namesMatch(a: string, b: string): boolean {
 }
 
 // The fields a merged business takes from Places.
-const PLACES_ONLY = ["rating", "status", "reviewCount", "priceLevel", "hours", "closesAt", "services"] as const;
+const PLACES_ONLY = ["rating", "status", "reviewCount", "priceLevel", "priceRange", "hours", "closesAt", "services"] as const;
 
 // The existing business (OSM or Places) that a Places business duplicates: the same Places id, or the
 // nearest OSM business with a matching name within 50 m that hasn't been merged with Places yet.
