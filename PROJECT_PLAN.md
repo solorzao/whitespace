@@ -81,6 +81,28 @@ POST /api/ask { question, docs, history? }
 
 `businesses[].id` is a `SourceDoc` ID, so cards and citations can highlight the matching dots.
 
+## Demonstration data
+
+Each location is a circle with a 1.5 km radius.
+
+| Location | Center (lat, lng) |
+| --- | --- |
+| Santa Monica (Pier and Third Street Promenade) | 34.0115, -118.4960 |
+| New York (Lower Manhattan) | 40.7075, -74.0113 |
+| Tokyo (Shibuya) | 35.6595, 139.7005 |
+
+| Source | Use | Locations |
+| --- | --- | --- |
+| Wikipedia GeoSearch | Main text for the AI answers. | All |
+| Google Places | Ratings and reviews. Reviews are requested in English. | All |
+| OpenStreetMap (Overpass) | Pins for named places in the main categories. | All |
+| US Census (ACS 5-year, tract level) | Demographics: population, income, age, renters, households with children, households with no vehicle, rent. | Santa Monica and New York |
+| Japan census (e-Stat) | Demographics for Tokyo. Add only if time allows. | Tokyo |
+
+Census data is for areas, not points. Each tract has one record at its center point, and each location has one summary record. The front end must decide how to show these records.
+
+Required keys: Google Places API key with billing, Census API key.
+
 ## Team
 
 | Owner | Work | Result |
@@ -128,7 +150,7 @@ Next.js on Vercel for both the front end and the API routes, as one deployment. 
 
 | Decision | Default if nobody objects |
 | --- | --- |
-| Demo neighborhoods | Pick three in the first 15 minutes. They must be in the US. |
+| Demo neighborhoods | Decided. See [Demonstration data](#demonstration-data). |
 | Claude model | `claude-opus-5-5`. Switch to `claude-sonnet-5-5` if the analysis is too slow for the demo. |
 | API keys | Who provides the Google Places key and the Anthropic key: TBD. |
 | Deployment owner | TBD. |
