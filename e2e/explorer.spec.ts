@@ -304,9 +304,11 @@ test("a suggestion opens its saved thread at once, without analyzing or asking",
   await page
     .getByRole("button", { name: "Search questions and places", exact: true })
     .click();
-  await expect(page.getByRole("option")).toHaveCount(
-    SUGGESTIONS.length + DEMO_AREAS.length,
-  );
+  await expect(
+    page
+      .getByRole("listbox", { name: "Questions and places" })
+      .getByRole("option"),
+  ).toHaveCount(SUGGESTIONS.length + DEMO_AREAS.length);
   await page
     .getByRole("option", { name: suggestion.question, exact: false })
     .click();
