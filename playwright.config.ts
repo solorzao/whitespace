@@ -22,5 +22,7 @@ export default defineConfig({
       : `npm run dev -- -p ${port}`,
     url: `${baseURL}/api/health`,
     reuseExistingServer: !process.env.CI,
+    // Serve sample data so tests never call Claude or the data sources.
+    env: { WHITESPACE_MOCK: "1" },
   },
 });
