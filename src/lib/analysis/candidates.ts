@@ -4,6 +4,7 @@
 // GapType and the types below are local until the team adds them to src/lib/types.ts.
 
 import type { AreaData, Business, CategoryId, Gap } from "../types";
+import { distanceM } from "../ingest/geo";
 import { MIN_EXPECTED_COUNT } from "./gap-score";
 
 export const CONCEPT_COUNT = 3;
@@ -13,7 +14,9 @@ export type GapType = "unserved" | "poorly_served" | "mismatched";
 // A category that matches more than one type takes the first in this order.
 export const GAP_TYPES: GapType[] = ["unserved", "poorly_served", "mismatched"];
 
-// unserved: the circle has at most half its benchmark.
+// unserved: the circle has at most half its benchmark, counted in OpenStreetMap (like the benchmark)
+// and, when the competitor search ran, on Google Maps too. OSM misses businesses: Lower Manhattan's
+// circle has no childcare in OSM, but Google lists 7 there.
 const UNSERVED_MIN_SHORTFALL = 0.5;
 // poorly_served: at least 4 rated competitors within 2 km, averaging below 4.0.
 const MIN_RATED = 4;
@@ -42,6 +45,7 @@ export type GapNumbers = {
   count: number; // OpenStreetMap businesses in the circle, as in the gap table
   expected: number; // what the circle would have at the benchmark: benchmark per 1,000 × residents / 1,000
   shortfall: number; // 1 - count / expected; negative when the circle has more than expected
+  placesInCircle: number | null; // open Places businesses within the circle's radius; null when the search failed
   competitors: number; // Places businesses within 2 km; 0 when the search failed
   rated: number; // competitors with a rating
   avgRating: number | null;
@@ -77,7 +81,7 @@ export function pickConceptCategories(
   const candidates = [...new Set([...topGaps, ...poorlyRated])];
 
   const typed = candidates.flatMap((gap) => {
-    const numbers = gapNumbers(gap, area.categoryCounts[gap.category] ?? 0, population, competitors[gap.category]);
+    const numbers = gapNumbers(gap, area, population, competitors[gap.category]);
     const gapType = typeOf(numbers);
     return gapType ? [{ ...gap, gapType, numbers, facts: describeNumbers(gap.category, gapType, numbers, population) }] : [];
   });
@@ -95,7 +99,8 @@ export function pickConceptCategories(
 }
 
 export function typeOf(n: GapNumbers): GapType | null {
-  if (n.shortfall >= UNSERVED_MIN_SHORTFALL && n.expected >= MIN_EXPECTED_COUNT) return "unserved";
+  const fewOnGoogle = n.placesInCircle === null || n.placesInCircle <= n.expected * (1 - UNSERVED_MIN_SHORTFALL);
+  if (n.shortfall >= UNSERVED_MIN_SHORTFALL && n.expected >= MIN_EXPECTED_COUNT && fewOnGoogle) return "unserved";
   if (isPoorlyRated({ rated: n.rated, avgRating: n.avgRating })) return "poorly_served";
   if (n.mismatches.length > 0) return "mismatched";
   return null;
@@ -111,15 +116,25 @@ function ratings(businesses: Business[]): { rated: number; avgRating: number | n
   return { rated: values.length, avgRating: round(values.reduce((a, b) => a + b, 0) / values.length, 2) };
 }
 
-function gapNumbers(gap: Gap, count: number, population: number, competitors: Business[] = []): GapNumbers {
+function gapNumbers(
+  gap: Gap,
+  area: Pick<AreaData, "center" | "radiusM" | "categoryCounts">,
+  population: number,
+  competitors?: Business[],
+): GapNumbers {
+  const count = area.categoryCounts[gap.category] ?? 0;
   const expected = (gap.benchmarkPer1k * population) / 1000;
+  const isOpen = (b: Business) => b.status === undefined || b.status === "open";
   return {
     count,
     expected: round(expected, 1),
     shortfall: round(1 - count / expected, 2),
-    competitors: competitors.length,
-    ...ratings(competitors),
-    mismatches: mismatches(gap.category, competitors),
+    placesInCircle: competitors
+      ? competitors.filter((b) => isOpen(b) && distanceM(area.center, b) <= area.radiusM).length
+      : null,
+    competitors: competitors?.length ?? 0,
+    ...ratings(competitors ?? []),
+    mismatches: mismatches(gap.category, competitors ?? []),
   };
 }
 
@@ -180,7 +195,7 @@ export function describeNumbers(category: CategoryId, gapType: GapType, n: GapNu
   const plural = noun(category, 2);
   const lines: Record<GapType, string[]> = {
     unserved: [
-      `${n.count} ${noun(category, n.count)} in the circle, against about ${n.expected} expected at the benchmark rate for its ${population.toLocaleString("en-US")} residents`,
+      `${n.count} ${noun(category, n.count)} mapped in the circle${n.placesInCircle === null ? "" : ` and ${n.placesInCircle} on Google Maps`}, against about ${n.expected} expected at the benchmark rate for its ${population.toLocaleString("en-US")} residents`,
     ],
     poorly_served:
       n.avgRating === null

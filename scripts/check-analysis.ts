@@ -84,7 +84,7 @@ function print(r: AnalysisResult, seconds: number) {
     console.log(`\n  ${CATEGORY_LABELS[category]}: ${gapType}, score ${score}`);
     const mismatches = n.mismatches.map((m) => `${m.check} (of ${m.of})`).join(", ") || "none";
     console.log(
-      `    Circle: ${n.count}, expected ${n.expected}, shortfall ${n.shortfall}. Within 2 km: ${n.competitors}, ` +
+      `    Circle: ${n.count} in OSM, ${n.placesInCircle ?? "?"} on Google, expected ${n.expected}, shortfall ${n.shortfall}. Within 2 km: ${n.competitors}, ` +
         `${n.rated} rated, average ${n.avgRating ?? "none"}. Mismatches: ${mismatches}`,
     );
     facts.forEach((f) => console.log(`    - ${f}`));
