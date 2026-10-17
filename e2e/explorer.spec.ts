@@ -314,13 +314,13 @@ test("a suggestion opens its saved thread at once, without analyzing or asking",
   await expect(
     report.getByRole("heading", { name: suggestion.place.name, exact: true }),
   ).toBeVisible();
-  await expect(report.locator(".chat-question")).toHaveText([
+  await expect(report.locator(".report-question")).toHaveText(
     suggestion.question,
-  ]);
-  await expect(report.locator(".cited-answer a").first()).toHaveAttribute(
-    "href",
-    /^https:\/\//,
   );
+  // The saved answer is the thread's summary.
+  await expect(
+    report.locator("#report-conversation .cited-answer a").first(),
+  ).toHaveAttribute("href", /^https:\/\//);
   expect(calls).toEqual([]);
 
   // Typing filters the suggestions, and opening one again reopens the same thread.
@@ -334,9 +334,9 @@ test("a suggestion opens its saved thread at once, without analyzing or asking",
   await page
     .getByRole("option", { name: suggestion.question, exact: false })
     .click();
-  await expect(report.locator(".chat-question")).toHaveText([
+  await expect(report.locator(".report-question")).toHaveText(
     suggestion.question,
-  ]);
+  );
   await page
     .getByRole("button", { name: "Back to globe", exact: false })
     .click();
