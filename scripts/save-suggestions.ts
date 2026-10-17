@@ -20,6 +20,7 @@ import { AREA_RADIUS_M } from "../src/lib/ingest/demo-areas";
 import { fetchOverpass } from "../src/lib/ingest/overpass";
 import { readSaved } from "../src/lib/ingest/saved";
 import { SUGGESTIONS, type SuggestionPlace } from "../src/lib/suggestions";
+import type { AskResponse } from "../src/lib/types";
 import {
   ANSWERS_FILE,
   CAVEAT,
@@ -102,6 +103,15 @@ async function placeAnalysis(place: SuggestionPlace, live: boolean, allowErrors:
   return r;
 }
 
+const ATTEMPTS = 3;
+
+// Why an answer can't be shown as finished research, or null.
+function answerProblem(response: AskResponse): string | null {
+  const caveat = CAVEAT.exec(response.answer);
+  if (caveat) return `the answer says "${caveat[0]}"`;
+  return response.citations.length === 0 ? "no citations" : null;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const live = args.includes("--live");
@@ -130,26 +140,34 @@ async function main() {
     }
     for (const s of chosen.filter((s) => s.place.slug === place.slug)) {
       const current = answers[s.id];
-      if (!reanswer && current?.question === s.question) {
+      // A saved answer is kept unless its question changed or it no longer passes the checks.
+      if (!reanswer && current?.question === s.question && !answerProblem(current.response)) {
         console.log(`\n  [${s.id}] saved already`);
         continue;
       }
-      try {
-        const response = await answerQuestion({ question: s.question, docs: analysis.docs });
-        console.log(`\n  [${s.id}] ${s.question}\n  ${response.answer.replace(/\n/g, "\n  ")}`);
-        console.log(`  ${response.citations.length} citations`);
-        const caveat = CAVEAT.exec(response.answer);
-        if (caveat || response.citations.length === 0) {
-          ok = false;
-          console.error(`  [${s.id}] not saved: ${caveat ? `the answer says "${caveat[0]}"` : "no citations"}. Reword the question.`);
-          continue;
+      let saved = false;
+      // Answers vary, and the docs are cached after the first call, so a retry is cheap.
+      for (let attempt = 1; attempt <= ATTEMPTS && !saved; attempt++) {
+        try {
+          const response = await answerQuestion({ question: s.question, docs: analysis.docs });
+          console.log(`\n  [${s.id}] ${s.question}\n  ${response.answer.replace(/\n/g, "\n  ")}`);
+          console.log(`  ${response.citations.length} citations`);
+          const problem = answerProblem(response);
+          if (problem) {
+            console.error(`  [${s.id}] attempt ${attempt} not saved: ${problem}`);
+            continue;
+          }
+          answers[s.id] = { question: s.question, response, createdAt: new Date().toISOString() };
+          // Saved after every answer, so a failure later in the run keeps what's done.
+          await writeFile(ANSWERS_FILE, `${JSON.stringify(answers, null, 2)}\n`);
+          saved = true;
+        } catch (error) {
+          console.error(`  [${s.id}] attempt ${attempt} failed: ${error instanceof Error ? error.message : error}`);
         }
-        answers[s.id] = { question: s.question, response, createdAt: new Date().toISOString() };
-        // Saved after every answer, so a failure later in the run keeps what's done.
-        await writeFile(ANSWERS_FILE, `${JSON.stringify(answers, null, 2)}\n`);
-      } catch (error) {
+      }
+      if (!saved) {
         ok = false;
-        console.error(`  [${s.id}] failed: ${error instanceof Error ? error.message : error}`);
+        console.error(`  [${s.id}] not saved after ${ATTEMPTS} attempts. Reword the question.`);
       }
     }
   }

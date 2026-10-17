@@ -21,9 +21,10 @@ export type SavedAnswer = { question: string; response: AskResponse; createdAt: 
 export type SavedAnswers = Record<string, SavedAnswer>;
 
 // A saved thread is shown as finished research, so its answer and cards never talk about the evidence
-// behind them (missing data, documents, sources). save-suggestions.ts won't save an answer that does.
+// behind them (missing data, documents, sources, what was listed or found). save-suggestions.ts won't
+// save an answer that does.
 export const CAVEAT =
-  /\b(documents?|data|dataset|sources?|samples?|not enough|no information|unavailable|don't (?:cover|show|include))\b/i;
+  /\b(documents?|data|dataset|sources?|samples?|not enough|no information|unavailable|don't (?:cover|show|include)|listings?|listed|collected|I can see|I found)\b/i;
 
 export function isDemoPlace(place: SuggestionPlace): boolean {
   return DEMO_AREAS.some((a) => a.slug === place.slug);

@@ -65,7 +65,7 @@ export const SUGGESTIONS: Suggestion[] = [
   },
   {
     id: "lower-manhattan-late-laundromat",
-    question: "Is there room for a laundromat open past 9 pm in the Financial District?",
+    question: "Would a late-night laundromat with wash-and-fold do well in the Financial District?",
     place: LOWER_MANHATTAN,
   },
   {
@@ -96,8 +96,8 @@ export const SUGGESTIONS: Suggestion[] = [
   },
   { id: "bed-stuy-daycare", question: "Would a daycare do well in Bed-Stuy?", place: BED_STUY },
   {
-    id: "mission-restaurant-prices",
-    question: "How pricey are restaurants in the Mission, and is there room for a cheaper option?",
+    id: "mission-affordable-restaurant",
+    question: "Is there room for an affordable sit-down restaurant in the Mission?",
     place: MISSION,
   },
   {
@@ -118,8 +118,8 @@ export const SUGGESTIONS: Suggestion[] = [
     place: MONTROSE,
   },
   {
-    id: "little-havana-missing",
-    question: "What everyday businesses is Little Havana missing?",
+    id: "little-havana-late-night-food",
+    question: "Would a late-night food spot with delivery do well in Little Havana?",
     place: LITTLE_HAVANA,
   },
   {

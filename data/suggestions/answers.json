@@ -1,0 +1,902 @@
+{
+  "santa-monica-late-pharmacy": {
+    "question": "Would a late-night pharmacy do well near the Third Street Promenade?",
+    "response": {
+      "answer": "I'd test a late-night pharmacy here, but I'd position it around reliability and phone service rather than hours alone. Local pharmacy reviews repeatedly complain about slow phones, long pickup waits and stock-outs, and the praise goes to staff who answer calls and fill prescriptions quickly. [1] [2] [3]\n\nLate-hour coverage looks thin. The nearby CVS and Walgreens within 800 m close around 11 pm, and many independent pharmacies close around 5 to 6 pm, so an evening or Sunday option has room. [4] [5] [6]\n\nDemand looks plausible: the area has many late-night food options, a heavy tourist footfall from the Promenade, and a notable share of renters in nearby tracts (about 88%), who often lack a regular pharmacy relationship. [7] [8]\n\nI'd test with a late-evening and Sunday schedule, a phone line answered by a person, same-day delivery and a strong refill-reminder service. Track weekly prescription volume and walk-in traffic from 8 to 11 pm before committing to a full lease.",
+      "citations": [
+        {
+          "id": "review:ChIJefEiBc2kwoARJbdGfzE-OJ8:1",
+          "title": "Review of Tri Tech RX",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25acVYzSm5SMU13ZG1oSlJtTnNiMngyTldoNU4yYxAB!2m1!1s0x80c2a4cd0522f179:0x9f383e317f46b725"
+        },
+        {
+          "id": "review:ChIJ3YzMkCu7woAR73Y59MCxvZM:0",
+          "title": "Review of Walgreens",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2s5WWJuWkRla0p4VnpjeWNWOVdZMVZxVDI1SVRtYxAB!2m1!1s0x80c2bb2b90cc8cdd:0x93bdb1c0f43976ef"
+        },
+        {
+          "id": "review:ChIJcQiKliu7woAR60KPMM7NNCs:0",
+          "title": "Review of Walgreens Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21sV1RESmFORzFxYldkRWFGRkVVbnBuVFVnNGFGRRAB!2m1!1s0x80c2bb2b968a0871:0x2b34cdce308f42eb"
+        },
+        {
+          "id": "places:ChIJFVe8veqlwoARDcgEUlu3pT0",
+          "title": "CVS",
+          "url": "https://maps.google.com/?cid=4442158210316814349&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJDx03LzilwoARzz2Jgpr2Vag",
+          "title": "CVS Pharmacy",
+          "url": "https://maps.google.com/?cid=12129872314867727823&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJ2RSXwDm7woARI8Up4gnZYgo",
+          "title": "Ralphs Pharmacy",
+          "url": "https://maps.google.com/?cid=748399124569244963&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "census:06037701502",
+          "title": "Census Tract 7015.02; Los Angeles County; California",
+          "url": "https://data.census.gov/profile?g=1400000US06037701502"
+        },
+        {
+          "id": "wikipedia:1881053",
+          "title": "Third Street Promenade",
+          "url": "https://en.wikipedia.org/wiki/Third_Street_Promenade"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:56:00.115Z"
+  },
+  "santa-monica-fast-food-complaints": {
+    "question": "What do reviewers complain about at the fast food places around Santa Monica Place?",
+    "response": {
+      "answer": "The closest fast food spots, within the 800 m circle, mostly draw complaints about order accuracy, slow or unreliable service and cold food. Those themes repeat across the chains, so a faster, more accurate option could stand out.\n\n- Jack in the Box, right at the pin, gets complaints about wrong items (mayo instead of lettuce), an underfilled order, a manager who struggled with refunds, and restroom access [1] [2] [3].\n- Wendy's, about 100 m away, has missing orders, cold fries, and frequent shortages of basic menu items [4] [5].\n- Chipotle, about 750 m away, is criticized for slow lines, cold food and missing ingredients [6] [7].\n- Raising Cane's, about 600 m away, is praised, and its only recurring complaint is parking [8].\n\nI'd test an accuracy-focused counter concept against these pain points before assuming demand.",
+      "citations": [
+        {
+          "id": "review:ChIJmUX7DdCkwoARqp7BZOKu3cI:2",
+          "title": "Review of Jack in the Box",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21aSlNVUkxTMlZoTW5OTFF6UmxabkpNWVRaTlgzYxAB!2m1!1s0x80c2a4d00dfb4599:0xc2ddaee264c19eaa"
+        },
+        {
+          "id": "review:ChIJmUX7DdCkwoARqp7BZOKu3cI:3",
+          "title": "Review of Jack in the Box",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21Kc2Ixa3lXRU5xUmxOQ01ISk5iV2RPTW13NVpVRRAB!2m1!1s0x80c2a4d00dfb4599:0xc2ddaee264c19eaa"
+        },
+        {
+          "id": "review:ChIJmUX7DdCkwoARqp7BZOKu3cI:4",
+          "title": "Review of Jack in the Box",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tGNVVIQmZhV1ZQTFU1bWJHdHdiRFpGUjNJek5sRRAB!2m1!1s0x80c2a4d00dfb4599:0xc2ddaee264c19eaa"
+        },
+        {
+          "id": "review:ChIJyzxzoM6kwoARqJtMfx_ueiI:0",
+          "title": "Review of Wendy's",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xWNFUweHpNSG96V0ZkT1VURlBWa1ZPZVZRelVIYxAB!2m1!1s0x80c2a4cea0733ccb:0x227aee1f7f4c9ba8"
+        },
+        {
+          "id": "review:ChIJyzxzoM6kwoARqJtMfx_ueiI:2",
+          "title": "Review of Wendy's",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tsaloyNUtTVE0zUkROZlN6UlBSREZwYjBGNlRIYxAB!2m1!1s0x80c2a4cea0733ccb:0x227aee1f7f4c9ba8"
+        },
+        {
+          "id": "review:ChIJx6beksWkwoARsqTOKOfqKko:2",
+          "title": "Review of Chipotle Mexican Grill",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2s1RVEwRXpjMjlJWDNSbWNFWnBRMmQyUWxoQ1VuYxAB!2m1!1s0x80c2a4c592dea6c7:0x4a2aeae728cea4b2"
+        },
+        {
+          "id": "review:ChIJx6beksWkwoARsqTOKOfqKko:4",
+          "title": "Review of Chipotle Mexican Grill",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2kxbVNtSnBOVWRvU21wVk9IY3pObmd3WHpCdmMzYxAB!2m1!1s0x80c2a4c592dea6c7:0x4a2aeae728cea4b2"
+        },
+        {
+          "id": "review:ChIJdUQbhamlwoARGIGbBWnNOiM:4",
+          "title": "Review of Raising Cane's Chicken Fingers",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25KVUxWUnhTbXR2Y0c5eFZsQmtNRkpFZUdOT00yYxAB!2m1!1s0x80c2a5a9851b4475:0x233acd69059b8118"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:56:12.165Z"
+  },
+  "lower-manhattan-late-laundromat": {
+    "question": "Would a late-night laundromat with wash-and-fold do well in the Financial District?",
+    "response": {
+      "answer": "Yes, I'd test it, and I'd position it as a late-evening, drop-off-friendly wash-and-fold with a café-style waiting area rather than a plain laundromat. The strongest signal is that the closest laundry options within the 800 m circle mostly close early: Ann Cleaners and Greenwich-area competitors shut around 6 pm, and the Alba and Murray-type cleaners close at 6 to 9 pm [1] [2]. Meanwhile, the nearby 109 Madison Laundromat, a Fluff & Fold operation, is praised for open-almost-every-day service and quick turnaround [3], which suggests demand for convenient wash-and-fold exists downtown.\n\nThe residential base is the key uncertainty. Tract 15.02 shows 84% renters, 89% of households without a vehicle and a median income of about $204k [4], and tract 13 is even more renter-heavy at 85% with 92% car-free households [5]. That profile fits a customer who wants pickup and drop-off rather than hauling bags. Reviews of Laundry & Latte elsewhere praise exactly this combination of coffee and laundry [6], though that shop is outside the circle.\n\nCompetitor complaints point to differentiation: multiple reviews cite damaged items, hidden surcharges and missed pickups at downtown cleaners [7] [8]. I'd lead with transparent per-pound pricing, a ticket you can track, and clear item-care promises.\n\nNext step: run a two-week pilot of evening pickup and drop-off orders, and measure how many customers choose it over a 6 pm closing cleaner. Assuming that demand holds, add a coffee bar and self-service machines later.",
+      "citations": [
+        {
+          "id": "places:ChIJ3wUcgSJawokRBVVzWrV5kaM",
+          "title": "Alba Dry Cleaners & Tailoring",
+          "url": "https://maps.google.com/?cid=11786335519618848005&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJK0JOFSJbwokRnDxxnk4n6HQ",
+          "title": "Ann Cleaners",
+          "url": "https://maps.google.com/?cid=8424026321615666332&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJ36K61vRbwokRgrEBQG-7zmk:0",
+          "title": "Review of 109 MADISON LAUNDROMAT",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tsZlRHRjZjV1pvV1RWTWQzSldiM2xYUTNkS2RVRRAB!2m1!1s0x89c25bf4d6baa2df:0x69cebb6f4001b182"
+        },
+        {
+          "id": "census:36061001502",
+          "title": "Census Tract 15.02; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061001502"
+        },
+        {
+          "id": "census:36061001300",
+          "title": "Census Tract 13; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061001300"
+        },
+        {
+          "id": "review:ChIJjVSpNi5bwokRaOCrbmR7Xrw:1",
+          "title": "Review of Laundry & Latte",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT20xMFJFOWFUalZXTVZKelFrZzJhbVp3VFRaU2QxRRAB!2m1!1s0x89c25b2e36a9548d:0xbc5e7b646eabe068"
+        },
+        {
+          "id": "review:ChIJUYELj-hZwokRdBnLg2coJ74:0",
+          "title": "Review of Fabrics Professional Dry Cleaners",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2sxSGJHSlpSVzkzT1c5UWEwZzVjbkphZURoTWRYYxAB!2m1!1s0x89c259e88f0b8151:0xbe27286783cb1974"
+        },
+        {
+          "id": "review:ChIJl-kkgSBawokRWCWlF998sGY:1",
+          "title": "Review of White On White Cleaners",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tSYU9GRjNTVzlmZFhwV1VVZE1kUzFVU1daaGMyYxAB!2m1!1s0x89c25a208124e997:0x66b07cdf17a52558"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:08:16.251Z"
+  },
+  "lower-manhattan-pharmacy-reviews": {
+    "question": "What do reviews say about the pharmacies around Wall Street?",
+    "response": {
+      "answer": "Reviews point to a clear split: the pharmacies that earn praise are the ones where a named pharmacist or staff member is personally responsive, while the chain locations draw complaints about phone wait times, locked merchandise and unhelpful staff. Among the standouts, Xpress Lane Pharmacy (4.8 stars) is praised for empathetic staff and reachable phones, Downtown Pharmacy (4.4) for delivery and personal care, and Tribeca Apothecary (4.4) for fast, well-packaged delivery [1] [2] [3]. Repeated complaints about Duane Reade and Walgreens locations focus on hold times, prescriptions not being ready and pricing disputes, though some reviewers single out specific pharmacists as excellent [4] [5].\n\nFor positioning, this suggests that a local pharmacy promising a direct line to the pharmacist, reliable phone answering and home delivery could win loyalty from frustrated chain customers. I'd test that by checking how many nearby residents are in the high-rent, low-car tracts, where delivery matters most [6].",
+      "citations": [
+        {
+          "id": "places:ChIJ3-ASaxhawokRgHbMQT5q70c",
+          "title": "Xpress Lane Pharmacy",
+          "url": "https://maps.google.com/?cid=5183478511751165568&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJz383mCJawokRUoZ_t0ZUvwA",
+          "title": "Downtown Pharmacy",
+          "url": "https://maps.google.com/?cid=53854383254767186&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJ70Hkox9awokRaYxHU34q6eY",
+          "title": "Tribeca Apothecary",
+          "url": "https://maps.google.com/?cid=16638877020348451945&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJ8w_904tZwokRXHkB3RTpUec:1",
+          "title": "Review of Duane Reade",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xGU1pUQkJSMEpWWnpOS2VEVnZhWGRNU21sYU5WRRAB!2m1!1s0x89c2598bd3fd0ff3:0xe751e914dd01795c"
+        },
+        {
+          "id": "review:ChIJ3Rk71ItZwokR98PZonbuCUA:0",
+          "title": "Review of Duane Reade",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21GSk1HVkNaV05YVW05MmNYbHFhRkZxU2pGTmNGRRAB!2m1!1s0x89c2598bd43b19dd:0x4009ee76a2d9c3f7"
+        },
+        {
+          "id": "census:36061001300",
+          "title": "Census Tract 13; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061001300"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:56:43.807Z"
+  },
+  "lower-manhattan-convenience": {
+    "question": "What could a new convenience store near Wall Street do better than the ones there now?",
+    "response": {
+      "answer": "The clearest opening is a convenience store that is clean, reliably stocked and consistently staffed, because that's where nearby stores draw the most complaints. Several 7-Eleven reviews describe dirty coffee areas and broken machines [1][2]. Another says a store advertised 24-hour hours but locked its doors at night [3]. Shoppers also report locked-up merchandise that makes simple purchases slow [4].\n\nBy contrast, NYC Convenience earns praise for being clean, well lit, well stocked and open late [5][6]. That suggests a neighborhood opening could compete by pairing that model with:\n\n- Open shelves and a dependable fresh coffee and grab-and-go lunch program.\n- Transparent pricing and no surprise charges, since price and checkout complaints recur.\n- Hours you actually keep, especially early mornings for commuters.\n\nThis is a hypothesis to test, not a proven gap. I'd validate it with a few weeks of observation at the busiest nearby stores during the morning and lunch rushes.",
+      "citations": [
+        {
+          "id": "review:ChIJUQGBZ19bwokRH_JfkAZ1IwM:1",
+          "title": "Review of 7-Eleven",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xaV09FOHRNemxGYW05cloyOUhjR0pMV0hnMVFtYxAB!2m1!1s0x89c25b5f67810151:0x3237506905ff21f"
+        },
+        {
+          "id": "review:ChIJLaA0MR9awokRxXHG0iaEZv8:4",
+          "title": "Review of 7-Eleven",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xGSmFHTm9OVUYzV1hRdFZWUk5UM0l0UVZrNVlVRRAB!2m1!1s0x89c25a1f3134a02d:0xff668426d2c671c5"
+        },
+        {
+          "id": "review:ChIJLaA0MR9awokRxXHG0iaEZv8:3",
+          "title": "Review of 7-Eleven",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21oYVpVaHVaM2R1Wm1VemVHOTFOM1p4V1Vvd00xRRAB!2m1!1s0x89c25a1f3134a02d:0xff668426d2c671c5"
+        },
+        {
+          "id": "review:ChIJeyCNjRNawokRT5n3aR9COUA:2",
+          "title": "Review of Duane Reade",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25obGNFRnNiR3RUTlV4RU5tOXdibVEyVlZKRGRuYxAB!2m1!1s0x89c25a138d8d207b:0x4039421f69f7994f"
+        },
+        {
+          "id": "review:ChIJ_1Cm_1tbwokRWe5fDcctKbI:0",
+          "title": "Review of NYC convenience",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xoTlNtSjZSVFZ1WVhSM2QyVk1XV3hPVkhvMk0xRRAB!2m1!1s0x89c25b5bffa650ff:0xb2292dc70d5fee59"
+        },
+        {
+          "id": "review:ChIJ_1Cm_1tbwokRWe5fDcctKbI:2",
+          "title": "Review of NYC convenience",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT204dFNIQnRSRTFXTURsa1VtRjVXbmhUVFZFME9XYxAB!2m1!1s0x89c25b5bffa650ff:0xb2292dc70d5fee59"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:56:53.077Z"
+  },
+  "lower-manhattan-residents": {
+    "question": "Who lives in the Financial District, and how do they get around?",
+    "response": {
+      "answer": "The residents here look like a dense, young, renter-heavy population with very little car use, so the strongest demand signals point to walkable, convenience-oriented services rather than car-dependent retail. The most striking tract is 36061001300 (population 5,062, median age 31.5, 85.4% renters, 92.3% of households without a vehicle, and median income of $171,923) [1]. Tract 15.02 looks similar in tenure and car use (84.1% renters, 89.3% no vehicle, median age 28.5) [2]. Tract 21 is more family-oriented, with 33% of households having children under 18 and 72.7% without a vehicle [3].\n\nGetting around is mostly on foot and by transit. Wall Street station on the 4 and 5 lines and Broad Street station on the J and Z lines are both in the core [4][5]. Walkable convenience demand is visible in the dense cluster of coffee shops, grab-and-go food and pharmacies, and in laundry reviews that praise pickup and drop-off over self-service [6][7].\n\nI'd test a wash-and-fold pickup service, with delivery to nearby towers, for the renter-heavy tracts. I'd also validate it by checking how many of the local laundries offer drop-off and whether residents will pay for it.",
+      "citations": [
+        {
+          "id": "census:36061001300",
+          "title": "Census Tract 13; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061001300"
+        },
+        {
+          "id": "census:36061001502",
+          "title": "Census Tract 15.02; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061001502"
+        },
+        {
+          "id": "census:36061002100",
+          "title": "Census Tract 21; New York County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36061002100"
+        },
+        {
+          "id": "wikipedia:729331",
+          "title": "Wall Street station (IRT Lexington Avenue Line)",
+          "url": "https://en.wikipedia.org/wiki/Wall_Street_station_(IRT_Lexington_Avenue_Line)"
+        },
+        {
+          "id": "wikipedia:2407839",
+          "title": "Broad Street station (BMT Nassau Street Line)",
+          "url": "https://en.wikipedia.org/wiki/Broad_Street_station_(BMT_Nassau_Street_Line)"
+        },
+        {
+          "id": "review:ChIJjVSpNi5bwokRaOCrbmR7Xrw:2",
+          "title": "Review of Laundry & Latte",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2todE5taEVUV2xSVEdwRU1sOXBaakExWkROWVVuYxAB!2m1!1s0x89c25b2e36a9548d:0xbc5e7b646eabe068"
+        },
+        {
+          "id": "review:ChIJM4uiPIhZwokRmVvPzgrj0zg:0",
+          "title": "Review of Jie Li Laundromat Inc",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25OUlV6VndkR1ZMVmt0b01rMVBjM1kzWW1sd2VIYxAB!2m1!1s0x89c259883ca28b33:0x38d3e30acecf5b99"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:56:57.529Z"
+  },
+  "logan-square-gym": {
+    "question": "Is there room for a gym in Logan Square?",
+    "response": {
+      "answer": "Yes, there looks like room, but the best opening is a differentiated, community-driven concept rather than another generic box gym. Within the 800 m circle, the fitness supply is thin: the only places inside that radius are Yodega Yoga Studio and Paramount Chicago [1][2], while the larger gyms, Planet Fitness, McCormick YMCA, Orangetheory and Logan Square Gym, sit 860 m to 1.6 km away [3][4][5][6].\n\nThe demand signals favor a strength-and-coaching model. Reviews praise small-group coaching, inclusive or queer-friendly spaces and personal attention, and the nearby Above The Bar and Fuerza were rated very highly for exactly that [7][8]. Reviews of Planet Fitness and Chicago Strength also complain about dirty showers and lockers and crowded locker areas [9][10], which suggests cleanliness and privacy are an opening.\n\nThe area also has a high renter share (tracts run about 58% to 77% renters) and a young median age around 32 to 34 [11][12], which suggests a strong market for flexible memberships or class packs. I'd test demand first with a pop-up bootcamp or a pre-sale of founding memberships before committing to a lease.",
+      "citations": [
+        {
+          "id": "places:ChIJ40UMLvbND4gROQDA3pe9hFo",
+          "title": "Yodega Yoga Studio",
+          "url": "https://maps.google.com/?cid=6522546620314157113&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJOz7xoufSD4gRABkStUgg7G8",
+          "title": "Paramount Chicago",
+          "url": "https://maps.google.com/?cid=8064856529361312000&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJzQCF_IHSD4gR4PHZ800kres",
+          "title": "Planet Fitness",
+          "url": "https://maps.google.com/?cid=16982269687106236896&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJuUjZBz_ND4gR8I9pz3CkWtU",
+          "title": "McCormick YMCA",
+          "url": "https://maps.google.com/?cid=15373781082405703664&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJn04DM5zSD4gR9JmVeQDMKKI",
+          "title": "Orangetheory Fitness",
+          "url": "https://maps.google.com/?cid=11684813535624665588&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJC_BhscXND4gRR0PeIQgDRls",
+          "title": "Logan Square Gym",
+          "url": "https://maps.google.com/?cid=6576947639284024135&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJT4SoBrrTD4gR4T28ufiAJQM:1",
+          "title": "Review of Above The Bar",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xVMk0weDZaM0UwYlVJeU1rSkphMW93TFRWak5tYxAB!2m1!1s0x880fd3ba06a8844f:0x32580f8b9bc3de1"
+        },
+        {
+          "id": "review:ChIJReCAJFLND4gRF3Cjp2gyZKo:2",
+          "title": "Review of Fuerza Strength & Conditioning",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xaUE5WOTRkazlzV1dGVlpGWmZObGhaWjFWR0xXYxAB!2m1!1s0x880fcd522480e045:0xaa643268a7a37017"
+        },
+        {
+          "id": "review:ChIJzQCF_IHSD4gR4PHZ800kres:0",
+          "title": "Review of Planet Fitness",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25FelVFZEdjbWQ2ZUdKTWIzSlVOVk5QVVZsdGJGRRAB!2m1!1s0x880fd281fc8500cd:0xebad244df3d9f1e0"
+        },
+        {
+          "id": "review:ChIJn1ztH5nSD4gR1WeOldGy3a4:2",
+          "title": "Review of Chicago Strength Logan Square",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sChdDSUhNMG9nS0VLVGxfc2IzcVA3ZWhBRRAB!2m1!1s0x880fd2991fed5c9f:0xaeddb2d1958e67d5"
+        },
+        {
+          "id": "census:17031220500",
+          "title": "Census Tract 2205; Cook County; Illinois",
+          "url": "https://data.census.gov/profile?g=1400000US17031220500"
+        },
+        {
+          "id": "census:17031221000",
+          "title": "Census Tract 2210; Cook County; Illinois",
+          "url": "https://data.census.gov/profile?g=1400000US17031221000"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:58:03.902Z"
+  },
+  "logan-square-loved": {
+    "question": "Which Logan Square businesses do reviewers love, and what do they have in common?",
+    "response": {
+      "answer": "The strongest reviewer enthusiasm clusters around sit-down places that pair excellent food with attentive, named servers and a distinct vibe. Longman & Eagle (4.6 from 3,006 ratings) gets praise for its duck fat biscuits, smashburger and warm gastropub feel, and The Whale (4.7 from 5,053) for its service, cinematic atmosphere and specialty cocktails [1] [2]. Federales Tacos & Tequila (4.8 from 3,432) earns the same pattern: reviewers name servers and the door staff, and praise the lively patio [3]. Lula Cafe (4.7) and Paulie Gee's (4.5) are loved for creative brunch or pizza, and reviewers mention staff warmth in both [4] [5].\n\nWhat they share: a memorable named server, food that feels made with care, and an atmosphere that makes people want to return with friends. Fitness and yoga studios follow the same logic, with praise for coaches who know members by name and a welcoming community. Price matters less than those experiences, since many loved spots are moderate or expensive.\n\nThis suggests that a new venture here should compete on hospitality and a distinct identity rather than on price or menu novelty alone. I'd test that with a small pop-up or a soft opening focused on staff rituals.",
+      "citations": [
+        {
+          "id": "places:ChIJz29MdHrND4gR5pq83uUZbVo",
+          "title": "Longman & Eagle",
+          "url": "https://maps.google.com/?cid=6515892710950083302&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJDZNgCZHND4gRP3VyXXbfYhY",
+          "title": "The Whale",
+          "url": "https://maps.google.com/?cid=1613097316018976063&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJqaFv3AfND4gRQ-HoXKy_yfA",
+          "title": "Federales Tacos & Tequila - Logan Square, Chicago",
+          "url": "https://maps.google.com/?cid=17350609786435592515&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJ-7r5qHrND4gRgmIpiTEL5Nk",
+          "title": "Lula Cafe",
+          "url": "https://maps.google.com/?cid=15700686508302885506&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJPV-ST2PND4gRgsap15LwzEE",
+          "title": "Paulie Gee's Logan Square",
+          "url": "https://maps.google.com/?cid=4741429021188408962&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T22:58:09.214Z"
+  },
+  "bed-stuy-pharmacies": {
+    "question": "Does Bed-Stuy have enough pharmacies for everyone who lives here?",
+    "response": {
+      "answer": "Probably not for everyone, at least not in service quality. The 800 m circle holds only one pharmacy, Gates & Garvey Pharmacy at 230 m, plus the nearby Daily Dose, Fine Care and Complete Care pharmacies that sit just outside it [1]. Across the wider area there are about two dozen pharmacies, but the Walgreens locations get repeated complaints about phone holds of 30 minutes or more and prescription delays [2][3]. Independent pharmacies such as Complete Care and MG Pharmacy earn strong praise for quick fills [4][5].\n\nThe demand side is large. Renters make up most households in several tracts, for example 93.6% in tract 249 and 94.4% in tract 281 [6][7], and Tract 281 has 29.4% of households with children under 18 [7]. Many households have no vehicle, which makes walking to a pharmacy the norm [8].\n\nI'd test a pharmacy with a fast, reliable phone and refill line, extended hours and delivery, positioned as the reliable alternative to Walgreens. Validate by calling the existing pharmacies at peak times to measure hold times, and by checking whether the 800 m area has enough pharmacy demand to support a new location.",
+      "citations": [
+        {
+          "id": "places:ChIJOc15HotbwokRfyNsGpNHH3E",
+          "title": "Gates & Garvey Pharmacy",
+          "url": "https://maps.google.com/?cid=8151312547692946303&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJVxGYhZpbwokReE53gGY9p2g:4",
+          "title": "Review of Walgreens Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21SWE9EZFplVTFWWVhWTU16SkxTMnBJVkdabmJIYxAB!2m1!1s0x89c25b9a85981157:0x68a73d6680774e78"
+        },
+        {
+          "id": "review:ChIJ50cZvNZbwokRQ5VoJhB0LGo:2",
+          "title": "Review of Walgreens Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25NeGJXSlRlVVY2YUZGR1NHWkdjME5WUlhCYWJsRRAB!2m1!1s0x89c25bd6bc1947e7:0x6a2c741026689543"
+        },
+        {
+          "id": "review:ChIJMQyN4chbwokR2umBxhykMtU:2",
+          "title": "Review of Complete Care Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2pkRGJqRk9SMmhMT1RObmNsSlZURXRXTldseVdsRRAB!2m1!1s0x89c25bc8e18d0c31:0xd532a41cc681e9da"
+        },
+        {
+          "id": "review:ChIJW9EGMQhcwokRFW3Zx2vPDWc:0",
+          "title": "Review of MG Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21wTGFucDVkakpQYTFkRVpYQnlNRWxKZW13emRFRRAB!2m1!1s0x89c25c083106d15b:0x670dcf6bc7d96d15"
+        },
+        {
+          "id": "census:36047024900",
+          "title": "Census Tract 249; Kings County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36047024900"
+        },
+        {
+          "id": "census:36047028100",
+          "title": "Census Tract 281; Kings County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36047028100"
+        },
+        {
+          "id": "census:36047026100",
+          "title": "Census Tract 261; Kings County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36047026100"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:06:36.344Z"
+  },
+  "bed-stuy-daycare": {
+    "question": "Would a daycare do well in Bed-Stuy?",
+    "response": {
+      "answer": "Yes, a daycare looks promising, with the strongest demand in the tracts where families with young children are concentrated. Tracts 273 (34.6% of households with children under 18) and 293 (33%) lead, followed by 269 (30.8%). Tract 273 also has a median household income of $122,093, which suggests it can support private tuition [1]. Tract 293 is much lower-income ($36,833), so I'd test whether it could support subsidized or lower-cost slots [2].\n\nNearby businesses show no childcare operators, which points to a gap worth verifying. I'd prioritize three steps: confirm which tract the pin falls in, survey local parents on price, hours and schedule needs (many renters commute, given the high share of car-free households), and check NYC licensing requirements and local tuition benchmarks before committing to a site.",
+      "citations": [
+        {
+          "id": "census:36047027300",
+          "title": "Census Tract 273; Kings County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36047027300"
+        },
+        {
+          "id": "census:36047029300",
+          "title": "Census Tract 293; Kings County; New York",
+          "url": "https://data.census.gov/profile?g=1400000US36047029300"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:06:46.128Z"
+  },
+  "mission-opportunity": {
+    "question": "What's the biggest business opportunity in the Mission District?",
+    "response": {
+      "answer": "The strongest opening I see is a neighborhood laundry and wash-and-fold service, paired with pickup and delivery, aimed at the renter households near the 800 m core. Census tract 208.02 shows 85.4% renter-occupied homes and 69.4% of households with no vehicle, and tract 201.02 shows 53.5% car-free households, which points to a lot of people who must carry laundry on foot or transit. The area has only a handful of laundry options (Planet Clean Laundry, Wash 'N Dry Laundry, Fiesta Laundromat, J's Laundry, Fortune Cleaners, Toss N Turn, El Arroyo) [1][2][3][4][5][6][7], and the self-service ones give no pickup. I'd test a pickup-and-drop model with a simple sign-up for a few weekly bags and see whether households convert.\n\nA secondary idea is a practical, multilingual neighborhood service: many reviews across the pharmacies and banks describe long waits, understaffing and confusing insurance or account steps [8][9]. Assuming that demand holds, a clear, appointment-based service could differentiate against the crowded chain counters.",
+      "citations": [
+        {
+          "id": "osm:node/4261678887",
+          "title": "Planet Clean Laundry",
+          "url": "https://www.openstreetmap.org/node/4261678887"
+        },
+        {
+          "id": "osm:node/13725567699",
+          "title": "Wash 'N Dry Laundry",
+          "url": "https://www.openstreetmap.org/node/13725567699"
+        },
+        {
+          "id": "osm:node/11666861269",
+          "title": "Fiesta Laundromat",
+          "url": "https://www.openstreetmap.org/node/11666861269"
+        },
+        {
+          "id": "osm:node/10650517661",
+          "title": "J’s Laundry",
+          "url": "https://www.openstreetmap.org/node/10650517661"
+        },
+        {
+          "id": "osm:node/6171965064",
+          "title": "Fortune Cleaners",
+          "url": "https://www.openstreetmap.org/node/6171965064"
+        },
+        {
+          "id": "osm:node/4186461906",
+          "title": "Toss N Turn",
+          "url": "https://www.openstreetmap.org/node/4186461906"
+        },
+        {
+          "id": "osm:node/4173615992",
+          "title": "El Arroyo",
+          "url": "https://www.openstreetmap.org/node/4173615992"
+        },
+        {
+          "id": "review:ChIJl7b8NBt-j4ARx1_FPb0tqrE:3",
+          "title": "Review of Walgreens Pharmacy",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2pnM1RFUkdNMDVLZGtKM1FYQlNiWGRrZFVoNGFuYxAB!2m1!1s0x808f7e1b34fcb697:0xb1aa2dbd3dc55fc7"
+        },
+        {
+          "id": "review:ChIJ9a3hyi9-j4ARyZ371-xAxTU:1",
+          "title": "Review of Wells Fargo Bank",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21aMVNtSTVOVmRKU1V4NFdGWnZNalJwU1dkSmQyYxAB!2m1!1s0x808f7e2fcae1adf5:0x35c540ecd7fb9dc9"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:07:10.605Z"
+  },
+  "alberta-laundromat": {
+    "question": "Would a laundromat do well in the Alberta Arts District?",
+    "response": {
+      "answer": "Yes, I'd lean toward a laundromat here, especially one that offers drop-off or wash-and-fold. The closest known laundry options, Walnut Park Cleaners & Coin Laundry [1] and Abraham's Fabric Clinic [2], sit beyond the 800 m core, so a shop on Alberta would be closer to walkers. The nearby tract 33.01 has 48.8% renters and 20.7% of households without a vehicle [3], which suggests many residents would walk to a laundromat rather than drive. Assuming many of those renters lack in-unit machines, pickup service could be a strong draw. The Walnut Park review praising a clean, well-kept facility [4] shows demand for quality, while a complaint about high per-shirt pricing [5] suggests keeping prices transparent. I'd test demand with a pop-up pickup service or a pre-launch sign-up list before committing to a full lease.",
+      "citations": [
+        {
+          "id": "places:ChIJo_DEDBunlVQRjMAZb0-3eoU",
+          "title": "Walnut Park Cleaners & Coin Laundry",
+          "url": "https://maps.google.com/?cid=9618201505997373580&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJAQoRUxanlVQRxGzVTrM9gyw",
+          "title": "Abraham's Fabric Clinic",
+          "url": "https://maps.google.com/?cid=3207475199948975300&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "census:41051003301",
+          "title": "Census Tract 33.01; Multnomah County; Oregon",
+          "url": "https://data.census.gov/profile?g=1400000US41051003301"
+        },
+        {
+          "id": "review:ChIJo_DEDBunlVQRjMAZb0-3eoU:0",
+          "title": "Review of Walnut Park Cleaners & Coin Laundry",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21RMWJEUnhNRGx5VUhKc1UxRjVaemhCV1hkMFkwRRAB!2m1!1s0x5495a71b0cc4f0a3:0x857ab74f6f19c08c"
+        },
+        {
+          "id": "review:ChIJo_DEDBunlVQRjMAZb0-3eoU:3",
+          "title": "Review of Walnut Park Cleaners & Coin Laundry",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25Bd1RVcHNjMnhhUjJjdFRrMUpTM2haUWtWalZYYxAB!2m1!1s0x5495a71b0cc4f0a3:0x857ab74f6f19c08c"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:07:29.928Z"
+  },
+  "alberta-family-cafe": {
+    "question": "Would a family-friendly café do well in the Alberta Arts District?",
+    "response": {
+      "answer": "Yes, I'd test a family-friendly café here, with a focus on afternoon hours and a kid-friendly, dog-friendly patio. The area has the households for it: 28.9% of households in tract 41051003200 have children under 18 [1], and tract 41051003301 is 48.8% renters [2]. Tin Shed Garden Cafe shows strong demand for relaxed family brunch, with 3,368 ratings at 4.6 [3], and reviewers highlight its dog-friendly patio [4].\n\nMost nearby cafés close early. Proud Mary closes at 4 pm [5], and Ben and Esther's closes at 3 pm [6]. I'd prioritize:\n\n- Serving until early evening, with a menu that works for kids\n- Generous portions, since a reviewer wished Pine State's portions were bigger for the price [7]\n- Easy seating for groups with strollers and dogs\n\nTest this with a weekend pop-up before committing to a lease.",
+      "citations": [
+        {
+          "id": "census:41051003200",
+          "title": "Census Tract 32; Multnomah County; Oregon",
+          "url": "https://data.census.gov/profile?g=1400000US41051003200"
+        },
+        {
+          "id": "census:41051003301",
+          "title": "Census Tract 33.01; Multnomah County; Oregon",
+          "url": "https://data.census.gov/profile?g=1400000US41051003301"
+        },
+        {
+          "id": "places:ChIJm3XIOh-nlVQRS_D47L1wsB4",
+          "title": "Tin Shed Garden Cafe",
+          "url": "https://maps.google.com/?cid=2211391378065780811&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJm3XIOh-nlVQRS_D47L1wsB4:0",
+          "title": "Review of Tin Shed Garden Cafe",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2w5V2RTMXdSbU5vVjJ4ak1XRlpPVU5qTUZKc1kzYxAB!2m1!1s0x5495a71f3ac8759b:0x1eb070bdecf8f04b"
+        },
+        {
+          "id": "places:ChIJC4lfHCCnlVQRcplEgf2qbfA",
+          "title": "Proud Mary Cafe",
+          "url": "https://maps.google.com/?cid=17324691347336370546&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "osm:way/410924638",
+          "title": "Ben and Esther's Vegan Delicatessen",
+          "url": "https://www.openstreetmap.org/way/410924638"
+        },
+        {
+          "id": "review:ChIJjQXl-d-mlVQRd9Pd-TdkxBY:0",
+          "title": "Review of Alberta Pine State Biscuits",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21kTmJVaGhOMXBJYlVwbVJFTnpMV296VjNoS1dYYxAB!2m1!1s0x5495a6dff9e5058d:0x16c46437f9ddd377"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:02:08.756Z"
+  },
+  "montrose-grocery": {
+    "question": "Could a neighborhood grocery store make it in Montrose?",
+    "response": {
+      "answer": "Yes, I think a neighborhood grocery could work in Montrose, especially as a fresh-focused store with prepared food rather than a full-line supermarket. The closest full grocers are 1.3 to 2.0 km away, including H-E-B [1] and Whole Foods [2], while the nearest shops inside the 800 m circle are convenience stores like Circle K [3] and Hollywood Food Store [4]. Demand looks strong: several tracts are heavily renting, and tract 4107.04 has 23.7% of households without a vehicle [5], which favors walkable shopping. Diwaan8, a halal grocer about 1.3 km away, draws praise for prepared meals and takeout [6], suggesting shoppers will support a specialty angle. Reviews of Whole Foods and H-E-B also mention out-of-stock sandwich items and limited custom cuts [7] [8], which points to an opening for reliable fresh counters. I'd test this with a small prepared-food and produce pilot before committing to a full store.",
+      "citations": [
+        {
+          "id": "places:ChIJ98gZwprAQIYRDvLBWXqiMWI",
+          "title": "H-E-B",
+          "url": "https://maps.google.com/?cid=7075615135951352334&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJV3QKGabAQIYRCs-Qq2B_pD8",
+          "title": "Whole Foods Market",
+          "url": "https://maps.google.com/?cid=4585930373741989642&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJNfSVoGG_QIYRB0AcK4PGJeM",
+          "title": "Circle K",
+          "url": "https://maps.google.com/?cid=16367706687414222855&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJI0l9XWC_QIYRWK1fbwQgf0c",
+          "title": "Hollywood Food Store",
+          "url": "https://maps.google.com/?cid=5151871702155636056&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "census:48201410704",
+          "title": "Census Tract 4107.04; Harris County; Texas",
+          "url": "https://data.census.gov/profile?g=1400000US48201410704"
+        },
+        {
+          "id": "places:ChIJeSq67BS_QIYR6pZPf_LHQtE",
+          "title": "Diwaan8 Groceries Indo-Pak Halal Meat",
+          "url": "https://maps.google.com/?cid=15078834346721777386&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJV3QKGabAQIYRCs-Qq2B_pD8:4",
+          "title": "Review of Whole Foods Market",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tsSFpITkJNMFZ6YzNkcE4weDNSRzlrU2tadlkxRRAB!2m1!1s0x8640c0a6190a7457:0x3fa47f60ab90cf0a"
+        },
+        {
+          "id": "review:ChIJ98gZwprAQIYRDvLBWXqiMWI:1",
+          "title": "Review of H-E-B",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT21kWldYRlBRMUZWYWs1eWMwTldTMlJtZFRSVFEzYxAB!2m1!1s0x8640c09ac219c8f7:0x6231a27a59c1f20e"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:02:45.764Z"
+  },
+  "montrose-bakery-deli": {
+    "question": "Is there room for a bakery or deli in Montrose?",
+    "response": {
+      "answer": "Yes, I'd test a bakery-deli hybrid, with fresh bread and made-to-order sandwiches as the core and pastries for breakfast. The strongest signal is that the nearby options are either a diner-style deli, a donut shop, or a supermarket sandwich bar that often runs out of ingredients [1][2][3]. Fresh-bread and sandwich praise appears in the area too [4].\n\n- Demand: Tract 4107.03 has a $93,250 median income, 61% renters and 11.9% of households without a vehicle, and tract 4107.04 has 23.7% without a vehicle. That favors walk-in, grab-and-go traffic [5][6].\n- Competition: the core has many cafés, but I see no dedicated bakery or deli within 800 m [7][8].\n- Positioning: pitch \"fresh bread, built-to-order sandwiches, pastries before 11 am,\" and avoid competing on price with fast food.\n- Test: run weekday pop-ups or pre-orders with a short menu, then track sell-outs and repeat orders before committing to a permanent lease.",
+      "citations": [
+        {
+          "id": "osm:way/428095801",
+          "title": "Katz's",
+          "url": "https://www.openstreetmap.org/way/428095801"
+        },
+        {
+          "id": "osm:way/428095827",
+          "title": "Voodoo Doughnut",
+          "url": "https://www.openstreetmap.org/way/428095827"
+        },
+        {
+          "id": "review:ChIJV3QKGabAQIYRCs-Qq2B_pD8:4",
+          "title": "Review of Whole Foods Market",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tsSFpITkJNMFZ6YzNkcE4weDNSRzlrU2tadlkxRRAB!2m1!1s0x8640c0a6190a7457:0x3fa47f60ab90cf0a"
+        },
+        {
+          "id": "review:ChIJ3RBHCWG_QIYRXqlqTIyTIf4:4",
+          "title": "Review of Aladdin Mediterranean cuisine",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25acFRsOXJVVXBoVldOMVEzSnRjamxGTWw5a1IyYxAB!2m1!1s0x8640bf61094710dd:0xfe21938c4c6aa95e"
+        },
+        {
+          "id": "census:48201410703",
+          "title": "Census Tract 4107.03; Harris County; Texas",
+          "url": "https://data.census.gov/profile?g=1400000US48201410703"
+        },
+        {
+          "id": "census:48201410704",
+          "title": "Census Tract 4107.04; Harris County; Texas",
+          "url": "https://data.census.gov/profile?g=1400000US48201410704"
+        },
+        {
+          "id": "places:ChIJ-SKYT2C_QIYRY_5IDAJOEwM",
+          "title": "Niko Niko's",
+          "url": "https://maps.google.com/?cid=221606577374297699&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "osm:way/1096451360",
+          "title": "Starbucks",
+          "url": "https://www.openstreetmap.org/way/1096451360"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:07:37.762Z"
+  },
+  "little-havana-pricing": {
+    "question": "How should a new business in Little Havana set its prices?",
+    "response": {
+      "answer": "Price for a clearly defined value, not against the crowded middle. The strongest local signal is that the neighborhood's best-reviewed food spots cluster in the budget and mid tiers: El Rey de las Fritas (4.5 stars from 3,520 ratings, $10–20 per person) and Skinny Louie (4.9 from 7,343, $10–20) both win on value and quality rather than premium pricing [1] [2]. Reviewers repeatedly praise \"extremely affordable\" and \"prices are great\" [3] [4].\n\nBecause the nearby census tracts show low median incomes (about $23,000 to $40,000) and 90%+ renter households [5] [6], I'd anchor core items at the $10–20 band and reserve higher prices for one or two signature items or events. Sala'o and Old's Havana sit at $20–60 and draw strong reviews, so a moderate tier can work for weekend nights and live music, but treat that as a test.\n\nReviews also suggest that price-value complaints come from overcharging and sloppy orders rather than price level alone [7] [8]. Publish a clear menu, avoid surprise add-ons, and test a value bundle against à la carte pricing in your first three months.",
+      "citations": [
+        {
+          "id": "places:ChIJuYnp5vu22YgRqjNB5POHQPg",
+          "title": "El Rey De Las Fritas",
+          "url": "https://maps.google.com/?cid=17888447201491891114&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJnzB6oPi32YgRNNmDNezouZY",
+          "title": "Skinny Louie",
+          "url": "https://maps.google.com/?cid=10860968077588420916&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJuYnp5vu22YgRqjNB5POHQPg:3",
+          "title": "Review of El Rey De Las Fritas",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT204eE1EVk1lbk4zYVdKUFpFMW9OVGwxYURkTFNGRRAB!2m1!1s0x88d9b6fbe6e989b9:0xf84087f3e44133aa"
+        },
+        {
+          "id": "review:ChIJuYnp5vu22YgRqjNB5POHQPg:1",
+          "title": "Review of El Rey De Las Fritas",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2w5elNFeFNVbEoyU2xCNU4zTkxZbTB0ZUVsNFVIYxAB!2m1!1s0x88d9b6fbe6e989b9:0xf84087f3e44133aa"
+        },
+        {
+          "id": "census:12086005409",
+          "title": "Census Tract 54.09; Miami-Dade County; Florida",
+          "url": "https://data.census.gov/profile?g=1400000US12086005409"
+        },
+        {
+          "id": "census:12086005303",
+          "title": "Census Tract 53.03; Miami-Dade County; Florida",
+          "url": "https://data.census.gov/profile?g=1400000US12086005303"
+        },
+        {
+          "id": "review:ChIJI00d5uy22YgRfaZ_8_8aG44:1",
+          "title": "Review of McDonald's",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tVd01EVlFhMmhoTnpoc1dVRmFkV1p0Wkdack5IYxAB!2m1!1s0x88d9b6ece61d4d23:0x8e1b1afff37fa67d"
+        },
+        {
+          "id": "review:ChIJMbEQiAG32YgRvt6dHsZ1QTo:4",
+          "title": "Review of Taco Bell / KFC",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2s4dE1EZHFVelJyYmtseFVXOXlNSGRXY25kaWVGRRAB!2m1!1s0x88d9b7018810b131:0x3a4175c61e9ddebe"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:03:59.253Z"
+  },
+  "santa-monica-residents": {
+    "question": "Who lives in downtown Santa Monica, and what does that mean for a new business?",
+    "response": {
+      "answer": "Downtown Santa Monica looks like a high-income, renter-heavy, childless professional area, with a smaller tract to the south that skews younger and less car-dependent. Tract 7015.02 has a median household income of $122,117, a median age of 43.8, 88.5% renter-occupied homes, and only 6.3% of households with children [1]. Tract 7017.02 has a median income of $80,508, a median age of 36, 88.1% renters, and 20.6% of households with no vehicle [2]. Both have high rents, around $2,090 to $2,256 a month.\n\nThe main implication is that the core market is affluent, time-poor and dining or shopping close to home, so convenience, quality and premium-but-quick offerings should win. I'd prioritize a premium, walkable concept such as a high-quality grab-and-go, healthy breakfast or coffee-plus-service format. The younger, car-free tract suggests a second opportunity: delivery-friendly or pickup services that don't require a car. Given the many renters with no children, family-oriented services are probably weaker here.\n\nThe reviews back up the convenience theme. Shoppers complain about parking, long waits and limited seating at several fast-food and café spots [3]. This suggests a test of a well-run quick-service concept with seating and fast throughput. Validate this by observing lunch-hour queues and asking nearby residents what they'd pay for convenience.",
+      "citations": [
+        {
+          "id": "census:06037701502",
+          "title": "Census Tract 7015.02; Los Angeles County; California",
+          "url": "https://data.census.gov/profile?g=1400000US06037701502"
+        },
+        {
+          "id": "census:06037701702",
+          "title": "Census Tract 7017.02; Los Angeles County; California",
+          "url": "https://data.census.gov/profile?g=1400000US06037701702"
+        },
+        {
+          "id": "review:ChIJI1BRjCm7woAR2ye9gtYJ7K8:3",
+          "title": "Review of Chick-fil-A",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2pRMVowMUhXVXRxT0hGWlNVMUtiR1JKZFVaclFsRRAB!2m1!1s0x80c2bb298c515023:0xafec09d682bd27db"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:05:57.917Z"
+  },
+  "santa-monica-best-restaurants": {
+    "question": "Which restaurants near the Promenade have the strongest reviews, and why?",
+    "response": {
+      "answer": "The strongest-reviewed restaurants near the Promenade are UOVO (4.6 from 1,946 ratings), Bay Cities Italian Deli & Bakery (4.5 from 2,930), Bodega Wine Bar (4.5 from 834) and 1212 Santa Monica (4.5 from 3,509), with Élephante (4.2 from 3,419) close behind [1][2][3][4][5].\n\nThe reviews explain why. UOVO reviewers praise handmade pasta, the open kitchen and attentive service, with a 16% service charge that some find fine [6][7]. Bay Cities earns repeated praise for its Godmother sandwich and its deli-market range [8][9], though reviewers mention long lines and parking. 1212 Santa Monica's reviews single out bartenders and servers for warm, attentive service [10]. Élephante's reviewers highlight the ocean-view terrace, brunch and late-night kitchen [11].\n\nA plausible pattern is that the top spots win on attentive, personal service plus a distinctive signature item rather than on price. Since Élephante is one of the more expensive options (about $50–100 per person), I'd test whether service-led, mid-priced concepts can capture similar loyalty in the area.",
+      "citations": [
+        {
+          "id": "places:ChIJUTUaYMWkwoARkhJYrIBg6BQ",
+          "title": "UOVO Santa Monica",
+          "url": "https://maps.google.com/?cid=1506560181118964370&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJVyASdc2kwoARat3uRCRLee8",
+          "title": "Bay Cities Italian Deli & Bakery",
+          "url": "https://maps.google.com/?cid=17255906066394176874&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJFzoSp82kwoARbw9rwj7CCZI",
+          "title": "Bodega Wine Bar",
+          "url": "https://maps.google.com/?cid=10523155579133431663&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJq7OSk8WkwoARIhDrvzps_Cs",
+          "title": "1212 Santa Monica",
+          "url": "https://maps.google.com/?cid=3169527237345742882&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJ0YbI98-kwoARR9xzsPQ28cE",
+          "title": "Élephante",
+          "url": "https://maps.google.com/?cid=13975011543267662919&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJUTUaYMWkwoARkhJYrIBg6BQ:1",
+          "title": "Review of UOVO Santa Monica",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2s5dWRFSjNaVTVUY0ZkU09XNUxkR0l5VUdwcFFsRRAB!2m1!1s0x80c2a4c5601a3551:0x14e86080ac581292"
+        },
+        {
+          "id": "review:ChIJUTUaYMWkwoARkhJYrIBg6BQ:2",
+          "title": "Review of UOVO Santa Monica",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2pORFRsWkVUMFpIVDBsak4wczRXRFJxYTFkMmJXYxAB!2m1!1s0x80c2a4c5601a3551:0x14e86080ac581292"
+        },
+        {
+          "id": "review:ChIJVyASdc2kwoARat3uRCRLee8:1",
+          "title": "Review of Bay Cities Italian Deli & Bakery",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tkNWNVeHJOWGRUU0V4WVdWOURVSEp3ZEZaMGVrRRAB!2m1!1s0x80c2a4cd75122057:0xef794b2444eedd6a"
+        },
+        {
+          "id": "review:ChIJVyASdc2kwoARat3uRCRLee8:3",
+          "title": "Review of Bay Cities Italian Deli & Bakery",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2pWc2VVOVpRbGswVGpCYVVFazRORkJrU0ZSalkzYxAB!2m1!1s0x80c2a4cd75122057:0xef794b2444eedd6a"
+        },
+        {
+          "id": "review:ChIJq7OSk8WkwoARIhDrvzps_Cs:3",
+          "title": "Review of 1212 Santa Monica",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2prNGREVmtXbkZuZDBSbE1scFdUM2hMUTJOM04zYxAB!2m1!1s0x80c2a4c59392b3ab:0x2bfc6c3abfeb1022"
+        },
+        {
+          "id": "review:ChIJ0YbI98-kwoARR9xzsPQ28cE:4",
+          "title": "Review of Élephante",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25ONmJURlVlRTF4YUc0NFNFRjJUa0pZV2twNlUwRRAB!2m1!1s0x80c2a4cff7c886d1:0xc1f136f4b073dc47"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:06:02.548Z"
+  },
+  "little-havana-late-night-food": {
+    "question": "Would a late-night food spot with delivery do well in Little Havana?",
+    "response": {
+      "answer": "Yes, I'd test it, and I'd position it around late-night, delivery-friendly food rather than trying to beat the established Cuban sit-down spots. Within the 800 m circle, late hours are already well served: Yambo is open 24/7 [1], McDonald's runs 24 hours [2], and Skinny Louie, El Pub and Sala'o stay open past midnight [3][4][5]. The gap is less about hours and more about quality late at night: reviews of the 24-hour McDonald's describe slow, inconsistent service after midnight [6], and Taco Bell's delivery orders draw complaints about accuracy [7].\n\nI'd prioritize a tight menu with reliable accuracy and a strong delivery setup, such as Cuban-style sandwiches or empanadas, which local reviews praise [8][9]. Trappin Empanadas already runs to 2 to 3:30 am [10], so validate demand with a pop-up or delivery-only soft launch before committing to a lease.",
+      "citations": [
+        {
+          "id": "places:ChIJ0_ohauW22YgR9wHs7OdmP9Q",
+          "title": "Yambo",
+          "url": "https://maps.google.com/?cid=15294056005871862263&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJgXTo2_C22YgR4BOpVkpljB0",
+          "title": "McDonald's",
+          "url": "https://maps.google.com/?cid=2129188093795308512&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJnzB6oPi32YgRNNmDNezouZY",
+          "title": "Skinny Louie",
+          "url": "https://maps.google.com/?cid=10860968077588420916&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJQ0jur_C22YgR3mIs-tQL-ZM",
+          "title": "El Pub Restaurant",
+          "url": "https://maps.google.com/?cid=10662566602134545118&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJVQ9LYL-32YgRV9kFDwePb4g",
+          "title": "Sala'o Cuban Restaurant & Bar - Live music",
+          "url": "https://maps.google.com/?cid=9831233772052666711&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "review:ChIJI00d5uy22YgRfaZ_8_8aG44:4",
+          "title": "Review of McDonald's",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2w5dGNXVm1jbVpKTTI4eWRsa3dOVEZWV20xaVUyYxAB!2m1!1s0x88d9b6ece61d4d23:0x8e1b1afff37fa67d"
+        },
+        {
+          "id": "review:ChIJS9OKNvO22YgRh2s0ZWUHY64:3",
+          "title": "Review of Taco Bell",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25CemJGQjJXRTlKWmtwRFNqSjZXVFJGY1RKYVFVRRAB!2m1!1s0x88d9b6f3368ad34b:0xae63076565346b87"
+        },
+        {
+          "id": "review:ChIJCWCYxvC22YgRNWU2W-fZgn4:1",
+          "title": "Review of Old's Havana Cuban Bar & Cocina",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2tNeGRqaE5VV3RtZG14cmNWWllSMnRUVDB4MmMzYxAB!2m1!1s0x88d9b6f0c6986009:0x7e82d9e75b366535"
+        },
+        {
+          "id": "review:ChIJnzB6oPi32YgRNNmDNezouZY:0",
+          "title": "Review of Skinny Louie",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT205bFJsYzNaVzgzZW5sNVh5MWZVMlJPTm5KcVdGRRAB!2m1!1s0x88d9b7f8a07a309f:0x96b9e8ec3583d934"
+        },
+        {
+          "id": "places:ChIJIfXxKg232YgRXQU5gsL0V4k",
+          "title": "Trappin Empanadas",
+          "url": "https://maps.google.com/?cid=9896647822415562077&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:07:43.780Z"
+  },
+  "mission-affordable-restaurant": {
+    "question": "Is there room for an affordable sit-down restaurant in the Mission?",
+    "response": {
+      "answer": "Yes, I'd test an affordable sit-down concept, with a clear focus on a niche rather than a generic menu. The 800 m circle is packed with inexpensive counter-service and taquerias (Taqueria Cancun at 4.5 stars from 2,599 ratings, Taqueria El Buen Sabor, Little Chihuahua, Gallardo's), while the sit-down options skew expensive: Foreign Cinema ($50–100 per person), Flour + Water ($100+), Penny Roma ($40–100) and Good Good Culture Club ($40–100) [1] [2]. That gap suggests a middle tier around $15–30 per person with table service may be underserved, though I'd verify it with local visits.\n\nDemand signals support a family or residential audience: the tracts near the pin have high renter shares and median ages around 36–45, and several have 14–27% of households with children [3] [4]. Reviews of budget places praise \"huge portions\" and \"reasonable prices\" [5], which suggests value matters.\n\nI'd prioritize a casual, reasonably priced sit-down menu with a distinct angle, such as a regional Mexican or Central American concept, since many nearby options already cover tacos and Salvadoran food. Next steps: count weekday lunch and dinner covers at comparable mid-priced places, and test a pop-up or limited-hours dinner before committing to a lease.",
+      "citations": [
+        {
+          "id": "places:ChIJ5XSspPF_j4ARuI5plZ5X93Q",
+          "title": "Good Good Culture Club",
+          "url": "https://maps.google.com/?cid=8428301566270344888&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "places:ChIJDVaCXjd-j4AR4AOGUS0kLGc",
+          "title": "Flour + Water",
+          "url": "https://maps.google.com/?cid=7434356861941711840&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+        },
+        {
+          "id": "census:06075020801",
+          "title": "Census Tract 208.01; San Francisco County; California",
+          "url": "https://data.census.gov/profile?g=1400000US06075020801"
+        },
+        {
+          "id": "census:06075022803",
+          "title": "Census Tract 228.03; San Francisco County; California",
+          "url": "https://data.census.gov/profile?g=1400000US06075022803"
+        },
+        {
+          "id": "review:ChIJBxm1jjx-j4ARY3l-wL7YQss:3",
+          "title": "Review of Taqueria Cancun",
+          "url": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25WcGRIZHlPR1J2VVhoVVRFcEJWMGxOYTA5VVlrRRAB!2m1!1s0x808f7e3c8eb51907:0xcb42d8bec07e7963"
+        }
+      ]
+    },
+    "createdAt": "2026-10-17T23:08:20.631Z"
+  }
+}
