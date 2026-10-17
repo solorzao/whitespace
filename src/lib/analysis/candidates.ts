@@ -9,9 +9,11 @@ import { MIN_EXPECTED_COUNT } from "./gap-score";
 
 export const CONCEPT_COUNT = 3;
 
-export type GapType = "unserved" | "poorly_served" | "mismatched";
+// best_fit is not a measured gap: it only fills the slots the measured types leave empty, so an area
+// where every category meets its benchmark still gets three concepts.
+export type GapType = "unserved" | "poorly_served" | "mismatched" | "best_fit";
 
-// A category that matches more than one type takes the first in this order.
+// The measured types. A category that matches more than one takes the first in this order.
 export const GAP_TYPES: GapType[] = ["unserved", "poorly_served", "mismatched"];
 
 // unserved: the circle has at most half its benchmark, counted in OpenStreetMap (like the benchmark)
@@ -64,9 +66,9 @@ export type ConceptCategory = Gap & {
 export type CompetitorsByCategory = Partial<Record<CategoryId, Business[]>>;
 
 // Candidates are the top gaps by score plus the categories the 2 km data shows as poorly rated. Each
-// gets the first type it matches; a candidate that matches none is left out, so an area can get fewer
-// than `count`. Keeps one of each type where possible, then fills by score, and returns them strongest
-// first. Ties on score go to the gap table's order, which puts the least served first.
+// gets the first type it matches; a candidate that matches none is left out. Keeps one of each type
+// where possible, then fills by score, strongest first. Ties on score go to the gap table's order,
+// which puts the least served first. Slots still empty go to best_fit categories in that same order.
 export function pickConceptCategories(
   area: AreaData,
   gaps: Gap[],
@@ -95,7 +97,14 @@ export function pickConceptCategories(
     if (picked.length >= count) break;
     if (!picked.includes(c)) picked.push(c);
   }
-  return picked.sort(rank);
+  picked.sort(rank);
+  for (const gap of gaps) {
+    if (picked.length >= count) break;
+    if (picked.some((c) => c.category === gap.category)) continue;
+    const numbers = gapNumbers(gap, area, population, competitors[gap.category]);
+    picked.push({ ...gap, gapType: "best_fit", numbers, facts: describeNumbers(gap.category, "best_fit", numbers, population) });
+  }
+  return picked;
 }
 
 export function typeOf(n: GapNumbers): GapType | null {
@@ -207,6 +216,8 @@ export function describeNumbers(category: CategoryId, gapType: GapType, n: GapNu
       const cheapest = m.cheapest ? `; the cheapest costs ${priceRange(m.cheapest)} a person` : "";
       return `None of the ${m.of} ${plural} within 2 km that list a price level is at the lowest level ($)${cheapest}`;
     }),
+    // Its count against the benchmark is the unserved line, which follows.
+    best_fit: [],
   };
   return [gapType, ...GAP_TYPES.filter((t) => t !== gapType)].flatMap((t) => lines[t]);
 }

@@ -19,7 +19,6 @@ import { generateConcepts } from "./concepts";
 import { scoreGaps } from "./gap-score";
 import { buildProfile, profileReviews, type SuccessProfile } from "./profile";
 import {
-  evidenceLine,
   evidenceSize,
   nearestAndClosures,
   nearestLine,
@@ -59,10 +58,10 @@ export type AnalysisResult = Omit<AnalyzeResponse, "concepts"> & {
 // The card's small signals for one concept category (signals.ts), with the lines that state them.
 export type CategorySignals = {
   category: CategoryId;
-  evidence: EvidenceSize; // "Based on 3 census tracts, 9 competitors within 2 km and 36 reviews."
+  evidence: EvidenceSize; // how much data is behind the card; kept off the card, which never describes its method
   nearest: NearestAndClosures; // "No laundromat in the circle. The nearest is 1.4 km away, ..."
   price: PriceMix | null; // only when at least 4 competitors list a price level
-  lines: string[]; // the card lines, in that order
+  lines: string[]; // the card lines: nearest, then price
 };
 
 export type AnalyzeOptions = {
@@ -111,7 +110,7 @@ export async function analyzeArea(lat: number, lng: number, options: AnalyzeOpti
       evidence,
       nearest,
       price,
-      lines: [evidenceLine(evidence), nearestLine(nearest), ...(price ? [priceLine(price)] : [])],
+      lines: [nearestLine(nearest), ...(price ? [priceLine(price)] : [])],
     };
   });
   const competitors = competitorsNotOnMap(area.businesses, allCompetitors);

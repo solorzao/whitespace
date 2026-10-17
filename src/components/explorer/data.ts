@@ -7,6 +7,7 @@ export const GAP_LABELS: Record<GapType, string> = {
   unserved: "Unserved",
   poorly_served: "Poorly served",
   mismatched: "Mismatched",
+  best_fit: "Strong fit",
 };
 const strings = (value: unknown) =>
   Array.isArray(value) && value.every((item) => typeof item === "string");

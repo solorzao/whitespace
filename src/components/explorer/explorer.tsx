@@ -259,7 +259,7 @@ export default function Explorer() {
       .then(async (response) => {
         if (!response.ok)
           throw new Error(
-            "Could not load saved neighborhoods. Search and map selection are still available.",
+            "Could not load featured neighborhoods. Search and map selection still work.",
           );
         return response.json() as Promise<AreaIndex>;
       })
@@ -775,7 +775,7 @@ export default function Explorer() {
               ))}
               <small>
                 {index
-                  ? `${index.records.length.toLocaleString()} geolocated source documents · saved neighborhoods`
+                  ? `${index.records.length.toLocaleString()} places mapped · featured neighborhoods`
                   : "Choose a neighborhood or select a point"}
               </small>
             </div>
@@ -963,27 +963,14 @@ export default function Explorer() {
                       })}
                     </div>
                     <p className="source-provenance">
-                      {selection.area?.mock
-                        ? "Test mode · sample sources"
-                        : selection.area?.from === "saved"
-                          ? "Collected source snapshot"
-                          : "Live source collection"}{" "}
-                      · {selection.area?.businesses.length.toLocaleString()}{" "}
+                      {selection.area?.mock && "Test mode · sample sources · "}
+                      {selection.area?.businesses.length.toLocaleString()}{" "}
                       businesses
                     </p>
                     {!activeSources.size && (
                       <p className="empty-region">
                         All map sources are off. Turn on a source to see
                         records.
-                      </p>
-                    )}
-                    {!!selection.area?.errors.length && (
-                      <p className="empty-region">
-                        Some sources are unavailable:{" "}
-                        {selection.area.errors
-                          .map((error) => error.source)
-                          .join(", ")}
-                        .
                       </p>
                     )}
                   </>
@@ -1033,8 +1020,8 @@ export default function Explorer() {
                 </button>
               </form>
               <p className="card-footnote">
-                Research uses all available sources within the backend’s
-                neighborhood scope.
+                Research covers the {AREA_RADIUS_M.toLocaleString()} m around
+                this point.
               </p>
               <div className="place-credit">
                 <a
