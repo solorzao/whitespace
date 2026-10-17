@@ -13,7 +13,7 @@ Given any US point, return the businesses, demographics and `SourceDoc` records 
 
 | Decision | Choice |
 | --- | --- |
-| Radius | 800 m for everything except Wikipedia, which uses 1.5 km. |
+| Radius | 800 m for everything except Wikipedia, which uses 1.5 km, and the competitor search, which uses 2 km. |
 | Demo areas | Santa Monica (34.0195, -118.4912) and Lower Manhattan (40.7075, -74.0113). Tokyo moves to after the hackathon. |
 | Category counts | From OpenStreetMap only. Places is capped at 20 results, so it can't be used for counting. |
 | Census population | Every tract whose center point is in the circle, added up. One tract is much smaller than the circle, so a single tract would make every category look overserved. |
@@ -64,6 +64,7 @@ src/lib/ingest/
   census.ts              Tracts in the circle and their ACS demographics
   places.ts              Google Places businesses and reviews
   wikipedia.ts           Geotagged Wikipedia articles
+  competitors.ts         Places competitors and their reviews within 2 km, for one category
   index.ts               collectArea(): snap or run all adapters, then merge
 scripts/
   check-area.ts          Runs collectArea for a demo area or a lat,lng and prints a summary
@@ -93,9 +94,9 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 
 ### Google Places (New)
 
-- Nearby Search: 20 results within 800 m, with `includedTypes` set to the Google types that map to our categories, `rankPreference: POPULARITY` and `languageCode: en`. Field mask: `id, displayName, types, primaryType, location, rating, userRatingCount, businessStatus, googleMapsUri`.
-- Place Details with `reviews` for the top 8 by rating count. That's about 9 billed calls per live area.
-- Output: businesses with ratings and open or closed status, `places:<id>` records, and `review:<id>:<n>` records.
+- Nearby Search: 20 results within 800 m, with `includedTypes` set to the Google types that map to our categories, `rankPreference: POPULARITY` and `languageCode: en`. Field mask: `id, displayName, types, primaryType, location, rating, userRatingCount, businessStatus, googleMapsUri, priceLevel, regularOpeningHours`.
+- Place Details with `reviews, delivery, dineIn, takeout, reservable` for the top 8 by rating count. That's about 9 billed calls per live area. Rating is already in the Nearby Search mask and reviews already in Place Details, so the added fields should keep each call in its current billing tier. Confirm on the pricing page.
+- Output: businesses with ratings, review counts, open or closed status, price level, hours and service options (the `Business` fields in the [analysis plan](ANALYSIS_PLAN.md#contract-changes)), plus `places:<id>` records and `review:<id>:<n>` records.
 - When an OSM business and a Places business have matching names and are less than 50 m apart, merge them into one business, so the map doesn't show duplicate dots. Counts still come from OSM.
 
 ### Wikipedia (GeoSearch)
@@ -103,6 +104,13 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 - `list=geosearch` for up to 30 articles within 1.5 km, then their plain-text introductions in batches of 20.
 - Send a descriptive `User-Agent`, as Wikimedia's API policy requires.
 - Output: `wikipedia:<pageid>` records that link to the article.
+
+### Competitors (Google Places, 2 km)
+
+- `collectCompetitors(category, lat, lng, radiusM)`, for one concept category. `/api/analyze` calls it for up to 5 categories after scoring the gaps, so it isn't part of `collectArea`.
+- One Nearby Search within 2 km: `includedTypes` set to that category's Google types, 20 results, `rankPreference: POPULARITY`, the circle search's fields, plus `reviews, delivery, dineIn, takeout, reservable`.
+- If the Nearby Search field mask doesn't accept `places.reviews`, call Place Details for the 10 most-reviewed instead.
+- Output: businesses and their `places:` and `review:` records. It needs no saved files of its own, because a demo pin returns the saved `/api/analyze` response, which already includes them.
 
 ### collectArea
 
@@ -120,6 +128,7 @@ Post in the team chat when each PR is up.
 | 2 | Overpass, Census, `collectArea`, `check-area.ts` | The counts and demographics for both demo areas look right when checked by hand, and Oliver can call `collectArea` from `/api/analyze`. |
 | 3 | Places, reviews, merging duplicate businesses | Each demo area has ratings and reviews. |
 | 4 | Wikipedia, `ingest-demo.ts`, `data/demo/*.json` | Both saved demo files are committed, and a pin near a demo center loads instantly. |
+| 5 | Extra Places fields and the competitor search | Businesses have price level, hours and service options, and `collectCompetitors` returns 2 km businesses with reviews. |
 
 ## Timing
 
@@ -130,10 +139,11 @@ Post in the team chat when each PR is up.
 | 1:30–2:00 | `collectArea` and `check-area.ts`. Check both demo areas by hand. Open PR 2. |
 | 2:00–2:45 | Places adapter and reviews. Open PR 3. |
 | 2:45–3:15 | Wikipedia adapter and `ingest-demo.ts`. Open PR 4. |
+| Next | Extra Places fields and the competitor search. Open PR 5. |
 
 ## Risks
 
 - **Overpass rate limits.** The saved demo files cover the stage demo, and the mirror covers live pins.
-- **Places cost.** About 9 billed calls per live area. Saved demo areas cost nothing.
+- **Places cost.** About 9 billed calls per live area, plus up to 5 competitor searches. Saved demo areas cost nothing.
 - **Places terms.** Google limits how long Places content can be stored. Saved demo files are fine for a hackathon, but refresh them rather than keeping them long term.
 - **Tract center points.** Using tracts whose center point is in the circle is an approximation. A large tract at the edge can count fully or not at all.
