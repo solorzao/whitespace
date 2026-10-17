@@ -122,7 +122,7 @@ async function cannedChecks() {
     check(params.model === CLAUDE_MODEL, `model is ${CLAUDE_MODEL}`);
     check(params.output_config?.effort === "low", "effort is low");
     check(params.output_config?.format?.type === "json_schema", "structured output with a JSON schema");
-    check(params.fallbacks === "default" && params.betas?.includes("server-side-fallback-2026-07-01") === true, "fallbacks are on");
+    check(!("fallbacks" in params) && !("betas" in params), "no fallbacks (Haiku 5.5 has none)");
     const prompt = userText(params);
     check(prompt.includes("laundry | 0 | 0.00 | 0.21 | 1.18"), "gap table row for laundry");
     check(prompt.includes("[review:sample-ocean-kitchen:0]") && prompt.includes("[census:06037701801]"), "prompt lists doc ids");

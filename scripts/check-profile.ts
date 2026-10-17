@@ -10,13 +10,13 @@ import { buildProfile, describeFinding, profileReviews, type ProfileFinding, typ
 import {
   buildRequest,
   readTags,
-  TAGGING_MODEL,
   TagReviewsError,
   tagReviews,
   type ReviewTag,
   type TagsReply,
 } from "../src/lib/analysis/tag-reviews";
 import { TOPICS } from "../src/lib/analysis/topics";
+import { CLAUDE_MODEL } from "../src/lib/claude";
 import {
   LAUNDRY_CANNED_TAGS,
   LAUNDRY_CATEGORY,
@@ -101,7 +101,7 @@ function cannedChecks() {
   console.log("The tagging request");
   {
     const params = buildRequest(LAUNDRY_CATEGORY, reviews);
-    check(params.model === "claude-haiku-5-5", `model is ${params.model}`);
+    check(params.model === CLAUDE_MODEL, `model is ${params.model}`);
     check(!("fallbacks" in params) && !("betas" in params), "no fallbacks (Haiku 5.5 has none)");
     check(params.output_config?.effort === "low", "effort is low");
     check(params.output_config?.format?.type === "json_schema", "structured output with a JSON schema");
@@ -214,7 +214,7 @@ async function main() {
     process.exitCode = 1;
     return;
   } else {
-    console.log(`\nLive: tagging ${LAUNDRY_REVIEWS.length} reviews with ${TAGGING_MODEL}`);
+    console.log(`\nLive: tagging ${LAUNDRY_REVIEWS.length} reviews with ${CLAUDE_MODEL}`);
     const started = Date.now();
     tags = await tagReviews(LAUNDRY_CATEGORY, LAUNDRY_REVIEWS);
     console.log(`  Took ${((Date.now() - started) / 1000).toFixed(1)} s`);

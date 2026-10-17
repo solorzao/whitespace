@@ -4,7 +4,7 @@
 // Relative imports only, so this also runs in the tsx scripts.
 
 import type Anthropic from "@anthropic-ai/sdk";
-import { claude } from "../claude";
+import { claude, CLAUDE_MODEL } from "../claude";
 import { CATEGORY_LABELS } from "../ingest/categories";
 import type { CategoryId, SourceDoc } from "../types";
 import { isTopic, TOPIC_DESCRIPTIONS, TOPICS, type Topic } from "./topics";
@@ -31,10 +31,6 @@ type CreateParams = Anthropic.MessageCreateParamsNonStreaming;
 // The part of a response readTags reads. The check script passes canned replies through it.
 export type TagsReply = Pick<Message, "content" | "stop_reason" | "stop_details">;
 
-// Haiku rather than the app's CLAUDE_MODEL (Opus): tagging short reviews is high-volume extraction,
-// and Haiku is much faster and about 40x cheaper. Haiku 5.5 has no server-side fallback, so this call
-// sends no `fallbacks` and a decline throws TagReviewsError.
-export const TAGGING_MODEL = "claude-haiku-5-5";
 // Picking topics out of short reviews is extraction, not deep reasoning.
 const EFFORT = "low";
 // 20 competitors with 5 reviews each and up to 3 tags per review is around 8K output tokens,
@@ -129,7 +125,7 @@ export function buildRequest(category: CategoryId, reviews: SourceDoc[]): Create
     `Tag every review above.`,
   ].join("\n");
   return {
-    model: TAGGING_MODEL,
+    model: CLAUDE_MODEL, // Haiku 5.5: no server-side fallback, so a decline throws TagReviewsError
     max_tokens: MAX_TOKENS,
     thinking: { type: "adaptive" },
     output_config: { effort: EFFORT, format: { type: "json_schema", schema: TAGS_SCHEMA } },
