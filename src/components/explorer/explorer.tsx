@@ -1118,14 +1118,16 @@ export default function Explorer() {
             tabIndex={-1}
             ref={outputRef}
           >
-            <ResearchReport
-              key={report.id}
-              report={report}
-              asking={asking}
-              chatError={chatError}
-              onAsk={askFollowup}
-              onLocate={locate}
-            />
+            {reportOpen && (
+              <ResearchReport
+                key={report.id}
+                report={report}
+                asking={asking}
+                chatError={chatError}
+                onAsk={askFollowup}
+                onLocate={locate}
+              />
+            )}
           </article>
         </section>
       )}

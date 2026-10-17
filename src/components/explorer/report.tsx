@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { BusinessSummary } from "@/lib/analysis/summaries";
 import type { AskResponse, SourceDoc } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/ingest/categories";
@@ -107,6 +107,25 @@ function ReviewSummary({
   );
 }
 
+function ReportDetails({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <details id={id} className="report-section report-details">
+      <summary>
+        <h2>{title}</h2>
+      </summary>
+      <div className="report-details-body">{children}</div>
+    </details>
+  );
+}
+
 export function ResearchReport({
   report,
   asking,
@@ -127,6 +146,9 @@ export function ResearchReport({
   const { analysis } = report;
   const docs = analysis.docs;
   const demographics = analysis.demographics;
+  const latestTurn = report.conversation.at(-1);
+  const earlierTurns = report.conversation.slice(0, -1);
+  const leadingConcept = analysis.concepts[0];
   const sources = docs.filter((doc) =>
     `${doc.title} ${doc.source}`
       .toLowerCase()
@@ -154,51 +176,100 @@ export function ResearchReport({
           {new Date(report.createdAt).toLocaleString()}
         </p>
       </header>
-      {analysis.mock && (
-        <p className="report-warning" role="note">
-          Test mode is enabled. This report contains sample data.
-        </p>
+      <section id="report-conversation" className="report-section report-summary">
+        <h2>Summary</h2>
+        <div aria-live="polite">
+          {latestTurn ? (
+            <div className="conversation-turn">
+              {latestTurn.question !== report.question && (
+                <p className="chat-question">{latestTurn.question}</p>
+              )}
+              <Answer response={latestTurn.response} />
+            </div>
+          ) : leadingConcept ? (
+            <div className="summary-opportunity">
+              <h3>{leadingConcept.title}</h3>
+              <p>{leadingConcept.rationale}</p>
+              <Evidence ids={leadingConcept.evidence} docs={docs} />
+            </div>
+          ) : (
+            <p>
+              Explore the businesses below, or ask a question to focus the
+              research.
+            </p>
+          )}
+        </div>
+        <form
+          className="followup-form"
+          onSubmit={async (event) => {
+            event.preventDefault();
+            const query = question.trim();
+            if (query && (await onAsk(query))) setQuestion("");
+          }}
+        >
+          <label className="sr-only" htmlFor="followup-question">
+            Follow-up question
+          </label>
+          <textarea
+            id="followup-question"
+            rows={2}
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+            maxLength={2000}
+            required
+            placeholder="Which opportunity has the strongest evidence?"
+            disabled={asking}
+          />
+          <button type="submit" disabled={asking || !question.trim()}>
+            {asking ? "Researching…" : "Ask question ↗"}
+          </button>
+        </form>
+        {chatError && (
+          <p role="alert" className="report-warning">
+            {chatError}
+          </p>
+        )}
+      </section>
+      {!!earlierTurns.length && (
+        <ReportDetails id="report-history" title="Earlier questions">
+          {earlierTurns.map((turn, i) => (
+            <div key={i} className="conversation-turn">
+              <p className="chat-question">{turn.question}</p>
+              <Answer response={turn.response} />
+            </div>
+          ))}
+        </ReportDetails>
       )}
-      <div className="report-metrics">
-        <div>
-          <strong>{analysis.businesses.length.toLocaleString()}</strong>
-          <span>Businesses</span>
-        </div>
-        {demographics?.population != null && (
+      <ReportDetails id="report-overview" title="Area overview">
+        {analysis.mock && (
+          <p className="report-warning" role="note">
+            Test mode is enabled. This report contains sample data.
+          </p>
+        )}
+        <div className="report-metrics">
           <div>
-            <strong>{number(demographics.population)}</strong>
-            <span>Residents, estimated</span>
+            <strong>{analysis.businesses.length.toLocaleString()}</strong>
+            <span>Businesses</span>
           </div>
-        )}
-        {demographics?.medianIncome != null && (
+          {demographics?.population != null && (
+            <div>
+              <strong>{number(demographics.population)}</strong>
+              <span>Residents, estimated</span>
+            </div>
+          )}
+          {demographics?.medianIncome != null && (
+            <div>
+              <strong>${number(demographics.medianIncome)}</strong>
+              <span>Median income, estimated</span>
+            </div>
+          )}
           <div>
-            <strong>${number(demographics.medianIncome)}</strong>
-            <span>Median income, estimated</span>
+            <strong>{docs.length.toLocaleString()}</strong>
+            <span>Source documents</span>
           </div>
-        )}
-        <div>
-          <strong>{docs.length.toLocaleString()}</strong>
-          <span>Source documents</span>
         </div>
-      </div>
-      <nav className="report-nav" aria-label="Report sections">
-        {["opportunities", "gaps", "businesses", "sources", "conversation"].map(
-          (id) => (
-            <button
-              key={id}
-              onClick={() =>
-                document
-                  .getElementById(`report-${id}`)
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              {id === "conversation" ? "Ask a question" : categoryName(id)}
-            </button>
-          ),
-        )}
-      </nav>
-      <section id="report-opportunities" className="report-section">
-        <h2>Business opportunities</h2>
+      </ReportDetails>
+      <ReportDetails id="report-opportunities" title="Business opportunities">
         {analysis.concepts.length ? (
           analysis.concepts.map((concept) => (
             <article key={concept.title} className="opportunity-card">
@@ -258,13 +329,12 @@ export function ResearchReport({
         ) : (
           <p>
             {demographics
-              ? "Ask a question below about what this neighborhood could use."
-              : "Opportunity cards cover US neighborhoods. You can still explore the businesses here and ask about them below."}
+              ? "Ask a question above about what this neighborhood could use."
+              : "Opportunity cards cover US neighborhoods. You can still explore the businesses here and ask about them above."}
           </p>
         )}
-      </section>
-      <section id="report-gaps" className="report-section">
-        <h2>Category gaps</h2>
+      </ReportDetails>
+      <ReportDetails id="report-gaps" title="Category gaps">
         <p>
           Businesses per 1,000 residents compared with the project’s regional
           benchmarks. A larger gap is a signal to investigate.
@@ -295,9 +365,8 @@ export function ResearchReport({
         ) : (
           <p>No demographic benchmark is available for this location.</p>
         )}
-      </section>
-      <section id="report-businesses" className="report-section">
-        <h2>Businesses in this area</h2>
+      </ReportDetails>
+      <ReportDetails id="report-businesses" title="Businesses in this area">
         <label className="report-control">
           Category{" "}
           <select
@@ -364,9 +433,8 @@ export function ResearchReport({
         ) : (
           <p>No businesses in this category.</p>
         )}
-      </section>
-      <section id="report-sources" className="report-section">
-        <h2>Source evidence</h2>
+      </ReportDetails>
+      <ReportDetails id="report-sources" title="Source evidence">
         <p>
           Collected documents used by the analysis. Census tracts, Wikipedia
           context, and competitors can extend beyond the neighborhood circle.
@@ -412,52 +480,7 @@ export function ResearchReport({
             Show more sources ({sources.length - sourceLimit} remaining)
           </button>
         )}
-      </section>
-      <section id="report-conversation" className="report-section">
-        <h2>Ask about this neighborhood</h2>
-        <p>
-          Answers use the sources in this report. Follow-up questions include
-          the recent conversation.
-        </p>
-        <div aria-live="polite">
-          {report.conversation.map((turn, i) => (
-            <div key={i} className="conversation-turn">
-              <p className="chat-question">{turn.question}</p>
-              <Answer response={turn.response} />
-            </div>
-          ))}
-        </div>
-        <form
-          className="followup-form"
-          onSubmit={async (event) => {
-            event.preventDefault();
-            const query = question.trim();
-            if (query && (await onAsk(query))) setQuestion("");
-          }}
-        >
-          <label className="sr-only" htmlFor="followup-question">
-            Follow-up question
-          </label>
-          <textarea
-            id="followup-question"
-            rows={2}
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            maxLength={2000}
-            required
-            placeholder="Which opportunity has the strongest evidence?"
-            disabled={asking}
-          />
-          <button type="submit" disabled={asking || !question.trim()}>
-            {asking ? "Reading the sources…" : "Ask question ↗"}
-          </button>
-        </form>
-        {chatError && (
-          <p role="alert" className="report-warning">
-            {chatError}
-          </p>
-        )}
-      </section>
+      </ReportDetails>
     </>
   );
 }

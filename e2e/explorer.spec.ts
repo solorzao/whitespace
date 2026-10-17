@@ -37,9 +37,23 @@ test("neighborhood evidence, map filters, real API analysis and cited follow-up 
   await expect(
     page.getByRole("heading", { name: "Business opportunities", exact: true }),
   ).toBeVisible();
+  await expect(page.locator("#report-conversation h2")).toHaveText("Summary");
+  await expect(page.locator(".summary-opportunity")).toBeVisible();
+  await expect(page.locator(".report-details")).toHaveCount(5);
+  await expect(page.locator(".report-details[open]")).toHaveCount(0);
+  for (const selector of [
+    ".report-metrics",
+    ".opportunity-card",
+    ".table-scroll",
+    ".business-list",
+    ".source-documents",
+  ])
+    await expect(page.locator(selector).first()).toBeHidden();
+  await page.locator("#report-overview > summary").click();
   await expect(
     page.getByText("Test mode is enabled.", { exact: false }),
   ).toBeVisible();
+  await page.locator("#report-opportunities > summary").click();
   const card = page.locator(".opportunity-card").first();
   await expect(card.locator(".gap-type")).toHaveText("Poorly served");
   await expect(card.locator(".card-signals li").first()).toContainText(
@@ -47,16 +61,13 @@ test("neighborhood evidence, map filters, real API analysis and cited follow-up 
   );
   // Cards state what's nearby, never how the analysis was made.
   await expect(card.locator(".card-signals")).not.toContainText("Based on");
+  await page.locator("#report-businesses > summary").click();
   const summary = page.locator(".business-list .review-summary").first();
   await expect(summary).toContainText("Known for:");
   await expect(summary.getByRole("link").first()).toHaveAttribute(
     "href",
     /^https:\/\//,
   );
-  await page
-    .getByRole("navigation", { name: "Report sections" })
-    .getByRole("button", { name: "Ask a question", exact: true })
-    .click();
   await page
     .getByLabel("Follow-up question", { exact: true })
     .fill("Would a laundromat do well here?");
@@ -82,10 +93,15 @@ test("reports and conversations survive refresh and can reopen from history", as
 }) => {
   await research(page);
   const url = page.url();
+  await page.locator("#report-gaps > summary").click();
+  await expect(page.locator("#report-gaps table")).toBeVisible();
   await page.reload();
+  await expect(page.locator(".report-details[open]")).toHaveCount(0);
   await expect(
     page.getByRole("heading", { name: "Business opportunities", exact: true }),
   ).toBeVisible();
+  await page.locator("#report-sources > summary").click();
+  await expect(page.getByLabel("Find a source", { exact: true })).toBeVisible();
   await page
     .getByRole("button", { name: "Back to globe", exact: false })
     .click();
@@ -102,6 +118,7 @@ test("reports and conversations survive refresh and can reopen from history", as
     })
     .click();
   await expect(page).toHaveURL(url);
+  await expect(page.locator(".report-details[open]")).toHaveCount(0);
 });
 
 test("keyboard search submits a custom question in the chosen neighborhood", async ({
@@ -131,6 +148,29 @@ test("keyboard search submits a custom question in the chosen neighborhood", asy
     page.getByRole("heading", { name: "Lower Manhattan", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".cited-answer")).toContainText(
+    "Which business should I open here?",
+  );
+  const summaryBox = await page.locator("#report-conversation").boundingBox();
+  const overviewBox = await page.locator("#report-overview").boundingBox();
+  expect(summaryBox!.y + summaryBox!.height).toBeLessThanOrEqual(overviewBox!.y);
+  await expect(page.locator(".report-details[open]")).toHaveCount(0);
+
+  await page
+    .getByLabel("Follow-up question", { exact: true })
+    .fill("What should I test first?");
+  const followupRequest = page.waitForRequest((request) =>
+    request.url().endsWith("/api/ask"),
+  );
+  await page
+    .getByRole("button", { name: "Ask question ↗", exact: true })
+    .click();
+  expect((await followupRequest).postDataJSON().history).toHaveLength(2);
+  await expect(page.locator("#report-conversation .cited-answer")).toContainText(
+    "What should I test first?",
+  );
+  await expect(page.locator("#report-history .cited-answer")).toBeHidden();
+  await page.locator("#report-history > summary").click();
+  await expect(page.locator("#report-history .cited-answer")).toContainText(
     "Which business should I open here?",
   );
 });
