@@ -120,12 +120,15 @@ The front end never waits on data: mocked `/api/analyze` and `/api/ask` response
 - [ ] The deployed front end and API work together.
 - [ ] The three demo neighborhoods load instantly.
 
+## Hosting
+
+Next.js on Vercel for both the front end and the API routes, as one deployment. Azure is not required; add it only if a need comes up.
+
 ## Open decisions
 
 | Decision | Default if nobody objects |
 | --- | --- |
 | Demo neighborhoods | Pick three in the first 15 minutes. They must be in the US. |
-| Hosting | Next.js on Vercel for both the front end and the API routes. Use Azure only if the hackathon requires it. |
 | Claude model | `claude-opus-5-5`. Switch to `claude-sonnet-5-5` if the analysis is too slow for the demo. |
 | API keys | Who provides the Google Places key and the Anthropic key: TBD. |
 | Deployment owner | TBD. |
