@@ -3,6 +3,9 @@
 //   npx tsx --env-file=.env.local scripts/check-area.ts santa-monica
 //   npx tsx --env-file=.env.local scripts/check-area.ts 40.7075,-74.0113 --live
 //   npx tsx --env-file=.env.local scripts/check-area.ts all --live
+//
+// Live runs skip Google Places unless PLACES_LIVE=1 (billed, about $0.24 per area):
+//   PLACES_LIVE=1 npx tsx --env-file=.env.local scripts/check-area.ts santa-monica --live
 
 import { CATEGORIES } from "../src/lib/ingest/categories";
 import { getDemoArea } from "../src/lib/ingest/demo-areas";

@@ -170,7 +170,18 @@ export function reviewDocs(b: Business, reviews: Review[]): SourceDoc[] {
 
 export const placeIdOf = (b: Business) => b.id.slice("places:".length);
 
+// Google Places calls are billed, so they're off unless PLACES_LIVE=1. With them off, the demo areas
+// still have ratings and reviews from their saved files, and other pins get OSM, Census and Wikipedia
+// only. The ingest-demo script turns them on for itself.
+export function livePlacesEnabled(): boolean {
+  return process.env.PLACES_LIVE === "1";
+}
+
+export const PLACES_OFF_MESSAGE =
+  "Live Google Places calls are off (PLACES_LIVE isn't 1), so ratings and reviews are only available near the demo areas.";
+
 export function placesKey(): string {
+  if (!livePlacesEnabled()) throw new Error(PLACES_OFF_MESSAGE);
   const key = process.env.GOOGLE_PLACES_API_KEY;
   if (!key) throw new Error("GOOGLE_PLACES_API_KEY is not set");
   return key;

@@ -25,6 +25,9 @@ import { errorMessage } from "../src/lib/ingest/http";
 import type { AreaData, CategoryId } from "../src/lib/types";
 import type { DemoArea } from "../src/lib/ingest/demo-areas";
 
+// This script exists to make the billed Places calls, so it turns them on for itself.
+process.env.PLACES_LIVE = "1";
+
 // Parallel category fetches. Each is up to 2 searches and 5 details calls.
 const CONCURRENCY = 4;
 
