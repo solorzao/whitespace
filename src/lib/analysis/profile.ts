@@ -5,7 +5,7 @@
 
 import type { Business, CategoryId, SourceDoc } from "../types";
 import type { ReviewTag, Sentiment } from "./tag-reviews";
-import { TOPICS, type Topic } from "./topics";
+import { TOPIC_LABELS, TOPICS, type Topic } from "./topics";
 
 // Proposed in docs/ANALYSIS_PLAN.md ("Contract changes"). Move them to src/lib/types.ts once the team agrees.
 export type ProfileFinding = {
@@ -35,6 +35,8 @@ const MIN_REVIEWED_COMPETITORS = 6;
 const MIN_TOPIC_MENTIONS = 3; // reviews in the group the finding is about
 // Below this, praise that is nearly as common among the low-rated isn't something the best ones do.
 const MIN_TOPIC_DIFFERENCE = 0.2;
+// A detail labels a finding only when at least this share of its reviews mention it; otherwise the topic does.
+const MIN_LABEL_SHARE = 0.5;
 const MIN_ATTRIBUTE_DIFFERENCE = 0.5;
 // Google leaves many of these fields out, so an attribute needs this many businesses with the field in each
 // group. That also skips price for the categories Google gives no price level.
@@ -57,6 +59,15 @@ const ATTRIBUTES: { label: string; has: (c: ProfileCompetitor) => boolean | unde
   },
 ];
 
+// The reviews buildProfile compares: those of the top and bottom thirds. Tag only these, since the
+// middle third's reviews never count. Empty when there are too few reviewed competitors for a profile.
+export function profileReviews(competitors: ProfileCompetitor[], reviews: SourceDoc[]): SourceDoc[] {
+  const groups = rankGroups(competitors, reviews);
+  if (!groups) return [];
+  const compared = new Set([...groups.top.reviewIds, ...groups.low.reviewIds]);
+  return reviews.filter((doc) => compared.has(doc.id));
+}
+
 // Returns null when fewer than 6 competitors have a rating and at least one review.
 export function buildProfile(
   category: CategoryId,
@@ -64,31 +75,9 @@ export function buildProfile(
   reviews: SourceDoc[],
   tags: ReviewTag[],
 ): SuccessProfile | null {
-  const reviewsByCompetitor = new Map<string, string[]>();
-  for (const doc of reviews) {
-    const owner = doc.source === "review" ? competitorIdOf(doc.id) : null;
-    if (!owner) continue;
-    const ids = reviewsByCompetitor.get(owner) ?? [];
-    if (!ids.includes(doc.id)) ids.push(doc.id);
-    reviewsByCompetitor.set(owner, ids);
-  }
-
-  const unique = [...new Map(competitors.map((c) => [c.id, c])).values()];
-  const ranked = unique
-    .filter((c) => c.rating !== undefined && reviewsByCompetitor.has(c.id))
-    .sort(
-      (a, b) =>
-        (b.rating ?? 0) - (a.rating ?? 0) || (b.reviewCount ?? 0) - (a.reviewCount ?? 0) || a.id.localeCompare(b.id),
-    );
-  if (ranked.length < MIN_REVIEWED_COMPETITORS) return null;
-
-  const size = Math.floor(ranked.length / 3);
-  const group = (list: ProfileCompetitor[]): Group => ({
-    competitors: list,
-    reviewIds: list.flatMap((c) => reviewsByCompetitor.get(c.id) ?? []),
-  });
-  const top = group(ranked.slice(0, size));
-  const low = group(ranked.slice(-size));
+  const groups = rankGroups(competitors, reviews);
+  if (!groups) return null;
+  const { top, low } = groups;
 
   const tagsByReview = new Map<string, ReviewTag[]>();
   for (const tag of tags) tagsByReview.set(tag.reviewId, [...(tagsByReview.get(tag.reviewId) ?? []), tag]);
@@ -115,6 +104,35 @@ export function buildProfile(
   };
 }
 
+// Ranks competitors with a rating and reviews by rating, then review count, and returns the top and
+// bottom thirds with their review ids. null when fewer than MIN_REVIEWED_COMPETITORS qualify.
+function rankGroups(competitors: ProfileCompetitor[], reviews: SourceDoc[]): { top: Group; low: Group } | null {
+  const reviewsByCompetitor = new Map<string, string[]>();
+  for (const doc of reviews) {
+    const owner = doc.source === "review" ? competitorIdOf(doc.id) : null;
+    if (!owner) continue;
+    const ids = reviewsByCompetitor.get(owner) ?? [];
+    if (!ids.includes(doc.id)) ids.push(doc.id);
+    reviewsByCompetitor.set(owner, ids);
+  }
+
+  const unique = [...new Map(competitors.map((c) => [c.id, c])).values()];
+  const ranked = unique
+    .filter((c) => c.rating !== undefined && reviewsByCompetitor.has(c.id))
+    .sort(
+      (a, b) =>
+        (b.rating ?? 0) - (a.rating ?? 0) || (b.reviewCount ?? 0) - (a.reviewCount ?? 0) || a.id.localeCompare(b.id),
+    );
+  if (ranked.length < MIN_REVIEWED_COMPETITORS) return null;
+
+  const size = Math.floor(ranked.length / 3);
+  const group = (list: ProfileCompetitor[]): Group => ({
+    competitors: list,
+    reviewIds: list.flatMap((c) => reviewsByCompetitor.get(c.id) ?? []),
+  });
+  return { top: group(ranked.slice(0, size)), low: group(ranked.slice(-size)) };
+}
+
 // Praise is about the top third and complaints about the bottom third: "Top-rated: drop-off service
 // praised in 8 of 12 reviews", "Others: hours complained about in 6 of 9". Each review counts once.
 function topicFinding(
@@ -136,7 +154,11 @@ function topicFinding(
   const difference = kind === "praise" ? topShare - lowShare : lowShare - topShare;
   if (difference < MIN_TOPIC_DIFFERENCE - EPSILON) return null;
 
-  const label = mostCommon(leadIds.flatMap((id) => matches(id).map((t) => normalize(t.detail)))) ?? topic;
+  // The count covers every review on the topic, so a detail can only stand for them when most share it.
+  // Otherwise one reviewer's "ruined pants" would read as 14 reviews' complaint.
+  const details = leadIds.flatMap((id) => [...new Set(matches(id).map((t) => normalize(t.detail)))]);
+  const common = mostCommon(details);
+  const label = common && common.count >= leadIds.length * MIN_LABEL_SHARE ? common.value : TOPIC_LABELS[topic];
   // Reviews whose own detail matches the label make the best evidence.
   const hasLabel = (id: string) => matches(id).some((t) => normalize(t.detail) === label);
   const evidence = spreadOut([...leadIds.filter(hasLabel), ...leadIds.filter((id) => !hasLabel(id))]);
@@ -217,17 +239,11 @@ function spreadOut(reviewIds: string[]): string[] {
 }
 
 // The most frequent value; ties go to the one seen first.
-function mostCommon(values: string[]): string | null {
+function mostCommon(values: string[]): { value: string; count: number } | null {
   const counts = new Map<string, number>();
   for (const value of values) if (value) counts.set(value, (counts.get(value) ?? 0) + 1);
-  let best: string | null = null;
-  let bestCount = 0;
-  for (const [value, count] of counts) {
-    if (count > bestCount) {
-      best = value;
-      bestCount = count;
-    }
-  }
+  let best: { value: string; count: number } | null = null;
+  for (const [value, count] of counts) if (!best || count > best.count) best = { value, count };
   return best;
 }
 

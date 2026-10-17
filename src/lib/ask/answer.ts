@@ -8,7 +8,7 @@ import type { AskRequest, AskResponse, ChatTurn, Citation, SourceDoc } from "../
 type BetaMessage = Anthropic.Beta.BetaMessage;
 type TextMessage = { role: "user" | "assistant"; content: Anthropic.Beta.BetaTextBlockParam[] };
 
-// Chat needs speed more than depth. Opus 5.5 can't turn thinking off, and its default effort is medium.
+// Chat needs speed more than depth. Haiku 5.5 thinks by default, and its default effort is medium.
 const EFFORT = "low";
 // Thinking counts toward max_tokens, so leave room for it as well as the short answer.
 const MAX_TOKENS = 8000;
@@ -40,17 +40,11 @@ export async function answerQuestion(req: AskRequest): Promise<AskResponse> {
       model: CLAUDE_MODEL,
       max_tokens: MAX_TOKENS,
       output_config: { effort: EFFORT },
-      // If a safety classifier declines, the API retries on Anthropic's recommended fallback model.
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
       system: SYSTEM,
       messages: buildMessages(req),
     },
     { timeout: DEADLINE_MS, maxRetries: 1, signal: AbortSignal.timeout(DEADLINE_MS) },
   );
-  if (message.usage.iterations?.some((step) => step.type === "fallback_message")) {
-    console.info(`ask: answered by fallback model ${message.model}`);
-  }
   return toAskResponse(message, req.docs);
 }
 
@@ -100,7 +94,7 @@ export function toAskResponse(
   message: Pick<BetaMessage, "content" | "stop_reason" | "stop_details">,
   docs: SourceDoc[],
 ): AskResponse {
-  // A refusal here means the fallback model declined too, or the category isn't retried.
+  // Haiku 5.5 has no fallback model, so a safety decline ends here.
   if (message.stop_reason === "refusal") {
     console.warn(`ask: Claude declined (${message.stop_details?.category ?? "no category"})`);
     return { answer: REFUSAL_ANSWER, citations: [] };

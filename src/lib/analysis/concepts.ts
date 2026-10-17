@@ -128,12 +128,10 @@ export async function generateConceptsWith(
       throw new ConceptsError(`Claude request failed: ${errorText(error)}`, { cause: error });
     }
 
-    if (reply.model !== CLAUDE_MODEL) console.info(`concepts: served by fallback model ${reply.model}`);
-
     const result = readReply(reply, rules);
     if (result.kind === "ok") return result.concepts;
     if (result.kind === "refusal") {
-      // The server-side fallback already ran, so the same request would be declined again.
+      // The same request would be declined again, and Haiku 5.5 has no fallback model to retry on.
       throw new ConceptsError(`Claude declined to write concepts (category: ${result.category ?? "none"})`);
     }
     problems = result.problems;
@@ -153,9 +151,6 @@ function buildRequest(areaText: string, feedback: string | null): CreateParams {
   return {
     model: CLAUDE_MODEL,
     max_tokens: MAX_TOKENS,
-    // On a safety decline, the API reruns the request on Anthropic's recommended fallback model.
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default",
     thinking: { type: "adaptive" },
     output_config: { effort: EFFORT, format: { type: "json_schema", schema: CONCEPTS_SCHEMA } },
     system: SYSTEM_PROMPT,

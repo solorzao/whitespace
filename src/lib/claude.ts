@@ -1,7 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-// Per PROJECT_PLAN.md. Switch to "claude-sonnet-5-5" if the analysis is too slow for the demo.
-export const CLAUDE_MODEL = "claude-opus-5-5";
+// Every Claude call (review tagging, concepts, follow-up answers) uses Haiku 5.5: fast and cheap enough
+// for a live demo. Haiku 5.5 has no server-side fallback, so the calls send no `fallbacks`; a safety
+// decline comes back as stop_reason "refusal" and each call handles it.
+export const CLAUDE_MODEL = "claude-haiku-5-5";
 
 let client: Anthropic | undefined;
 

@@ -40,7 +40,8 @@ function checkResult(r: AnalysisResult) {
     r.concepts.every((c) => chosen.has(c.category) && c.evidence.every((id) => known.has(id))),
     "concepts use the concept categories and cite ids in docs",
   );
-  if (!noClaude) check(r.concepts.length === Math.min(CONCEPT_COUNT, chosen.size), `${r.concepts.length} concepts`);
+  // generateConcepts always writes 3; with fewer than 3 gaps, they may share a category.
+  if (!noClaude) check(r.concepts.length === (chosen.size > 0 ? CONCEPT_COUNT : 0), `${r.concepts.length} concepts`);
 }
 
 function print(r: AnalysisResult, seconds: number) {

@@ -148,7 +148,7 @@ Next.js on Vercel for both the front end and the API routes, as one deployment. 
 
 | Decision | Default if nobody objects |
 | --- | --- |
-| Claude model | `claude-opus-5-5`. Switch to `claude-sonnet-5-5` if the analysis is too slow for the demo. |
+| Claude model | `claude-haiku-5-5` for every call (decided 2026-10-17): fast and cheap enough for a live demo. It has no server-side fallback, so the calls send no `fallbacks`. |
 | API keys | Who provides the Google Places key and the Anthropic key: TBD. |
 
 ## If ahead of schedule
