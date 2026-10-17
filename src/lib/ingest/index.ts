@@ -38,9 +38,9 @@ export type CollectResult = AreaData & {
   demoArea?: string; // slug, when the pin snapped to a demo center
 };
 
-// Each adapter's own fetches have timeouts; this is a backstop. Overpass alone can take
-// 50 + 20 + 20 seconds when the main server is slow and the mirrors are down.
-const ADAPTER_TIMEOUT_MS = 95_000;
+// Each adapter's own fetches have timeouts; this is a backstop. Overpass gives up after 20 s, and the
+// other sources answer in a few seconds.
+const ADAPTER_TIMEOUT_MS = 25_000;
 
 
 function withTimeout<T>(source: SourceKind, p: Promise<AdapterResult<T>>): Promise<AdapterResult<T>> {
