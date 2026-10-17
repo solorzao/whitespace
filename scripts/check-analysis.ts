@@ -7,6 +7,7 @@
 // Add --live to skip the saved data (needs the Places and Census keys, and PLACES_LIVE=1 for Places).
 
 import { analyzeArea, CONCEPT_COUNT, type AnalysisResult } from "../src/lib/analysis";
+import { typeOf } from "../src/lib/analysis/candidates";
 import { describeFinding } from "../src/lib/analysis/profile";
 import { DEMO_AREAS } from "../src/lib/ingest";
 import { CATEGORY_LABELS } from "../src/lib/ingest/categories";
@@ -25,8 +26,13 @@ function check(condition: boolean, message: string) {
 function checkResult(r: AnalysisResult) {
   const ids = r.docs.map((d) => d.id);
   const known = new Set(ids);
-  const chosen = new Set(r.gaps.filter((g) => g.score > 0).slice(0, CONCEPT_COUNT).map((g) => g.category));
+  const chosen = new Set(r.conceptCategories.map((c) => c.category));
   check(known.size === ids.length, "doc ids are unique");
+  check(chosen.size === CONCEPT_COUNT, `${CONCEPT_COUNT} distinct concept categories (got ${chosen.size})`);
+  check(
+    r.conceptCategories.every((c) => c.gapType === typeOf(c.numbers) && c.facts.length > 0),
+    "each category has the first gap type its numbers match, and facts",
+  );
   check(r.businesses.every((b) => known.has(b.id)), "every business is in docs");
   check(r.competitors.every((c) => known.has(c.id)), "every competitor is in docs");
   const onMap = new Set(r.businesses.flatMap((b) => [b.id, ...(b.docIds ?? [])]));
@@ -37,8 +43,13 @@ function checkResult(r: AnalysisResult) {
     "every profile id is in docs",
   );
   check(
-    r.concepts.every((c) => chosen.has(c.category) && c.evidence.every((id) => known.has(id))),
-    "concepts use the concept categories and cite ids in docs",
+    r.concepts.every(
+      (c) =>
+        chosen.has(c.category) &&
+        c.gapType === r.conceptCategories.find((x) => x.category === c.category)?.gapType &&
+        c.evidence.every((id) => known.has(id)),
+    ),
+    "concepts use the concept categories, carry their gap types and cite ids in docs",
   );
   // generateConcepts always writes 3; with fewer than 3 gaps, they may share a category.
   if (!noClaude) check(r.concepts.length === (chosen.size > 0 ? CONCEPT_COUNT : 0), `${r.concepts.length} concepts`);
@@ -52,25 +63,32 @@ function print(r: AnalysisResult, seconds: number) {
       : "Demographics: none (outside the US?)",
   );
   console.log(`Top gaps: ${r.gaps.slice(0, 5).map((g) => `${g.category} ${g.score}`).join(", ")}`);
-  const chosen = r.gaps.filter((g) => g.score > 0).slice(0, CONCEPT_COUNT).map((g) => g.category);
-  console.log(`Concept categories: ${chosen.join(", ") || "none"}`);
+  const chosen = r.conceptCategories.map((c) => c.category);
+  console.log(`Concept categories: ${r.conceptCategories.map((c) => `${c.category} (${c.gapType})`).join(", ") || "none"}`);
   console.log(
     `Competitors within 2 km not on the map: ${chosen.map((c) => `${c} ${r.competitors.filter((b) => b.category === c).length}`).join(", ")}`,
   );
 
-  for (const category of chosen) {
+  for (const { category, gapType, score, numbers: n, facts } of r.conceptCategories) {
+    console.log(`\n  ${CATEGORY_LABELS[category]}: ${gapType}, score ${score}`);
+    const mismatches = n.mismatches.map((m) => `${m.check} (of ${m.of})`).join(", ") || "none";
+    console.log(
+      `    Circle: ${n.count}, expected ${n.expected}, shortfall ${n.shortfall}. Within 2 km: ${n.competitors}, ` +
+        `${n.rated} rated, average ${n.avgRating ?? "none"}. Mismatches: ${mismatches}`,
+    );
+    facts.forEach((f) => console.log(`    - ${f}`));
     const p = r.profiles.find((x) => x.category === category);
     if (!p) {
-      console.log(`\n  ${CATEGORY_LABELS[category]}: no success profile`);
+      console.log("    No success profile");
       continue;
     }
-    console.log(`\n  ${CATEGORY_LABELS[category]}: ${p.businessIds.length} compared, ${p.reviewCount} reviews`);
-    if (p.findings.length === 0) console.log("    (no findings)");
-    p.findings.forEach((f, i) => console.log(`  ${i < 2 ? "*" : " "} ${describeFinding(f)}`));
+    console.log(`    Success profile: ${p.businessIds.length} compared, ${p.reviewCount} reviews`);
+    if (p.findings.length === 0) console.log("      (no findings)");
+    p.findings.forEach((f, i) => console.log(`    ${i < 2 ? "*" : " "} ${describeFinding(f)}`));
   }
 
   for (const c of r.concepts) {
-    console.log(`\n  ${c.title} [${c.category}]`);
+    console.log(`\n  ${c.title} [${c.category}, ${c.gapType}]`);
     console.log(`    Rationale: ${c.rationale}`);
     console.log(`    Evidence:  ${c.evidence.join(", ")}`);
     console.log(`    Risk:      ${c.risk}`);

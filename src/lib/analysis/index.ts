@@ -1,20 +1,23 @@
 // analyzeArea(): everything /api/analyze returns for a pin. Follows "How /api/analyze runs" in
 // docs/ANALYSIS_PLAN.md, simplified for now:
-// - The concept categories are the top 3 gaps by score. Gap types and poorly rated candidates come later.
-// - generateConcepts doesn't read the success profiles yet, so it runs alongside the competitor search
-//   and tagging instead of after them. Once it takes profiles, it has to wait for them.
+// - The gap types need the 2 km competitors, so step 4 runs for every scored category before step 5
+//   picks the concept categories (candidates.ts). Saved demo areas have them all on disk; a live pin
+//   makes one Places call per scored category, up to 20.
+// - generateConcepts doesn't read the success profiles yet, so it runs alongside the tagging instead
+//   of after it. Once it takes profiles, it has to wait for them.
 // Relative imports only, so this also runs in the tsx scripts.
 
-import type { AnalyzeResponse, Business, CategoryId, Concept, Gap, SourceDoc } from "../types";
+import type { AnalyzeResponse, Business, CategoryId, Concept, SourceDoc } from "../types";
 import { COMPETITOR_RADIUS_M, collectArea, collectCompetitors, competitorsNotOnMap, type CollectResult } from "../ingest";
 import { errorMessage } from "../ingest/http";
 import { benchmarkFor } from "./benchmarks";
+import { pickConceptCategories, type CompetitorsByCategory, type ConceptCategory, type GapType } from "./candidates";
 import { generateConcepts } from "./concepts";
 import { scoreGaps } from "./gap-score";
 import { buildProfile, profileReviews, type SuccessProfile } from "./profile";
 import { tagReviews, type ReviewTag } from "./tag-reviews";
 
-export const CONCEPT_COUNT = 3;
+export { CONCEPT_COUNT } from "./candidates";
 
 // Something that failed without stopping the analysis: a data source, or one of the steps below.
 export type AnalysisIssue = {
@@ -25,7 +28,9 @@ export type AnalysisIssue = {
 
 // AnalyzeResponse plus the fields docs/ANALYSIS_PLAN.md proposes ("Contract changes"). The extra fields
 // move into types.ts once the team agrees on them; until then the UI can ignore them.
-export type AnalysisResult = AnalyzeResponse & {
+export type AnalysisResult = Omit<AnalyzeResponse, "concepts"> & {
+  concepts: (Concept & { gapType: GapType })[];
+  conceptCategories: ConceptCategory[]; // the concept categories, strongest first, with their gap types and numbers
   competitors: Business[]; // Places businesses within 2 km for the concept categories, not already in businesses
   profiles: SuccessProfile[]; // one per concept category with enough reviewed competitors
   errors: AnalysisIssue[];
@@ -44,20 +49,27 @@ export async function analyzeArea(lat: number, lng: number, options: AnalyzeOpti
   const area = await collectArea(lat, lng, { live: options.live });
   // Outside the US there are no demographics, so no gaps, and the rest has nothing to work on.
   const gaps = scoreGaps(area, benchmarkFor(area.center));
-  const chosen = gaps.filter((g) => g.score > 0).slice(0, CONCEPT_COUNT);
+
+  const searches = await Promise.all(gaps.map((g) => findCompetitors(area, g.category, options.live ?? false)));
+  const found = new Map(searches.flatMap((s) => (s.found ? [[s.category, s.found] as const] : [])));
+  const byCategory: CompetitorsByCategory = Object.fromEntries([...found].map(([c, f]) => [c, f.businesses]));
+  const chosen = pickConceptCategories(area, gaps, byCategory);
 
   const [studies, concepts] = await Promise.all([
-    Promise.all(chosen.map((g) => studyCompetitors(area, g.category, options.live ?? false, useClaude))),
+    Promise.all(chosen.flatMap((c) => found.get(c.category) ?? []).map((f) => studyCompetitors(f, useClaude))),
     writeConcepts(area, chosen, useClaude),
   ]);
+  const gapTypes = new Map(chosen.map((c) => [c.category, c.gapType]));
 
   const errors: AnalysisIssue[] = [
     ...area.errors,
+    ...searches.flatMap((s) => s.errors),
     ...studies.flatMap((s) => s.errors),
     ...concepts.errors,
   ];
-  const competitorDocs = studies.flatMap((s) => s.docs);
-  const allCompetitors = uniqueById(studies.flatMap((s) => s.businesses));
+  // Only the concept categories' competitors go out, which keeps the response the size it was.
+  const competitorDocs = chosen.flatMap((c) => found.get(c.category)?.docs ?? []);
+  const allCompetitors = uniqueById(chosen.flatMap((c) => found.get(c.category)?.businesses ?? []));
 
   return {
     center: area.center,
@@ -65,10 +77,11 @@ export async function analyzeArea(lat: number, lng: number, options: AnalyzeOpti
     demographics: area.demographics,
     businesses: area.businesses,
     gaps,
-    concepts: concepts.concepts,
+    concepts: concepts.concepts.map((c) => ({ ...c, gapType: gapTypes.get(c.category)! })),
     // The competitors' places: and review: records too, so profile evidence resolves and
     // follow-up answers can use them.
     docs: uniqueById([...area.docs, ...competitorDocs]),
+    conceptCategories: chosen,
     competitors: competitorsNotOnMap(area.businesses, allCompetitors),
     profiles: studies.flatMap((s) => (s.profile ? [s.profile] : [])),
     errors,
@@ -77,27 +90,29 @@ export async function analyzeArea(lat: number, lng: number, options: AnalyzeOpti
   };
 }
 
+type Found = { category: CategoryId; businesses: Business[]; docs: SourceDoc[] };
+
+// Step 4 for one category: competitors within 2 km. Never throws: without them, the category can
+// still be unserved, and its card renders without a success profile.
+async function findCompetitors(
+  area: CollectResult,
+  category: CategoryId,
+  live: boolean,
+): Promise<{ category: CategoryId; found: Found | null; errors: AnalysisIssue[] }> {
+  const result = await collectCompetitors(category, area.center.lat, area.center.lng, COMPETITOR_RADIUS_M, { live });
+  if (!result.ok) return { category, found: null, errors: [{ source: "competitors", category, message: result.error }] };
+  return { category, found: { category, businesses: result.data.businesses, docs: result.docs }, errors: [] };
+}
+
 type Study = {
-  businesses: Business[];
-  docs: SourceDoc[];
   profile: SuccessProfile | null;
   errors: AnalysisIssue[];
 };
 
-// Steps 4, 6 and 7 for one category: competitors within 2 km, their reviews tagged, the profile built.
-// Never throws: if a step fails, the card renders without a success profile.
-async function studyCompetitors(
-  area: CollectResult,
-  category: CategoryId,
-  live: boolean,
-  useClaude: boolean,
-): Promise<Study> {
-  const found = await collectCompetitors(category, area.center.lat, area.center.lng, COMPETITOR_RADIUS_M, { live });
-  if (!found.ok) {
-    return { businesses: [], docs: [], profile: null, errors: [{ source: "competitors", category, message: found.error }] };
-  }
-  const { businesses } = found.data;
-  const reviews = found.docs.filter((d) => d.source === "review");
+// Steps 6 and 7 for one concept category: its competitors' reviews tagged, the profile built.
+// Never throws: if tagging fails, the card renders without a success profile.
+async function studyCompetitors({ category, businesses, docs }: Found, useClaude: boolean): Promise<Study> {
+  const reviews = docs.filter((d) => d.source === "review");
   // Only the top and bottom thirds' reviews count, so the middle third's aren't sent to Claude.
   const compared = profileReviews(businesses, reviews);
 
@@ -108,21 +123,21 @@ async function studyCompetitors(
     } catch (error) {
       const issue: AnalysisIssue = { source: "tagging", category, message: errorMessage(error) };
       console.warn(`analyze: tagging ${category} failed: ${issue.message}`);
-      return { businesses, docs: found.docs, profile: null, errors: [issue] };
+      return { profile: null, errors: [issue] };
     }
   }
-  return { businesses, docs: found.docs, profile: buildProfile(category, businesses, reviews, tags), errors: [] };
+  return { profile: buildProfile(category, businesses, reviews, tags), errors: [] };
 }
 
 // Step 8. Never throws: a failed call leaves the cards empty and says why in errors.
 async function writeConcepts(
   area: CollectResult,
-  chosen: Gap[],
+  chosen: ConceptCategory[],
   useClaude: boolean,
 ): Promise<{ concepts: Concept[]; errors: AnalysisIssue[] }> {
   if (!useClaude || chosen.length === 0) return { concepts: [], errors: [] };
   try {
-    // Only the chosen gaps, so the cards' categories match the profiles'.
+    // Only the concept categories, with their gap types, so the cards' categories match the profiles'.
     return { concepts: await generateConcepts(area, chosen), errors: [] };
   } catch (error) {
     const message = errorMessage(error);
