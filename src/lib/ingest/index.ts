@@ -5,9 +5,10 @@ import path from "node:path";
 import type { AdapterError, AreaData, Demographics, LatLng, SourceKind } from "../types";
 import { emptyCounts } from "./categories";
 import { fetchCensus } from "./census";
-import { AREA_RADIUS_M, findDemoArea, type DemoArea } from "./demo-areas";
+import { AREA_RADIUS_M, WIKIPEDIA_RADIUS_M, findDemoArea, type DemoArea } from "./demo-areas";
 import { fetchOverpass } from "./overpass";
 import { fetchPlaces, mergeBusinesses } from "./places";
+import { fetchWikipedia } from "./wikipedia";
 import type { AdapterResult } from "./result";
 
 export { AREA_RADIUS_M, DEMO_AREAS, findDemoArea } from "./demo-areas";
@@ -61,10 +62,12 @@ function withTimeout<T>(source: SourceKind, p: Promise<AdapterResult<T>>): Promi
 
 export async function collectLive(center: LatLng, radiusM = AREA_RADIUS_M): Promise<AreaData> {
   const { lat, lng } = center;
-  const [osm, censusResult, places] = await Promise.all([
+  const [osm, censusResult, places, wikipedia] = await Promise.all([
     withTimeout("osm", fetchOverpass(lat, lng, radiusM)),
     withTimeout("census", fetchCensus(lat, lng, radiusM)),
     withTimeout("places", fetchPlaces(lat, lng, radiusM)),
+    // Wikipedia covers a wider area: landmarks a bit outside the circle still describe it.
+    withTimeout("wikipedia", fetchWikipedia(lat, lng, Math.max(radiusM, WIKIPEDIA_RADIUS_M))),
   ]);
 
   if (!osm.ok) throw new AreaUnavailableError(osm.error);
@@ -85,6 +88,8 @@ export async function collectLive(center: LatLng, radiusM = AREA_RADIUS_M): Prom
   } else {
     errors.push({ source: "places", message: places.error });
   }
+  if (wikipedia.ok) docs.push(...wikipedia.docs);
+  else errors.push({ source: "wikipedia", message: wikipedia.error });
 
   return {
     center,
