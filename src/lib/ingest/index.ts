@@ -1,17 +1,25 @@
 // collectArea(): the saved demo data for pins near a demo center, otherwise every adapter run live and merged.
 
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import type { AdapterError, AreaData, Demographics, LatLng, SourceKind } from "../types";
 import { emptyCounts } from "./categories";
 import { fetchCensus } from "./census";
-import { AREA_RADIUS_M, WIKIPEDIA_RADIUS_M, findDemoArea, type DemoArea } from "./demo-areas";
+import { AREA_RADIUS_M, WIKIPEDIA_RADIUS_M, findDemoArea } from "./demo-areas";
 import { fetchOverpass } from "./overpass";
 import { fetchPlaces, mergeBusinesses } from "./places";
 import { fetchWikipedia } from "./wikipedia";
 import type { AdapterResult } from "./result";
+import { demoFilePath, readSaved } from "./saved";
 
 export { AREA_RADIUS_M, DEMO_AREAS, findDemoArea } from "./demo-areas";
+export { DEMO_DIR, competitorsFilePath, demoFilePath } from "./saved";
+export {
+  COMPETITOR_RADIUS_M,
+  collectCompetitors,
+  competitorsNotOnMap,
+  fetchCompetitors,
+  type CompetitorsData,
+  type SavedCompetitors,
+} from "./competitors";
 
 // Thrown when there's no business data at all. /api/analyze should answer 503.
 export class AreaUnavailableError extends Error {
@@ -34,20 +42,6 @@ export type CollectResult = AreaData & {
 // 50 + 20 + 20 seconds when the main server is slow and the mirrors are down.
 const ADAPTER_TIMEOUT_MS = 95_000;
 
-export const DEMO_DIR = path.join(process.cwd(), "data", "demo");
-
-export function demoFilePath(area: DemoArea): string {
-  return path.join(DEMO_DIR, `${area.slug}.json`);
-}
-
-async function readSaved(area: DemoArea): Promise<AreaData | null> {
-  try {
-    return JSON.parse(await readFile(demoFilePath(area), "utf8")) as AreaData;
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return null;
-    throw err;
-  }
-}
 
 function withTimeout<T>(source: SourceKind, p: Promise<AdapterResult<T>>): Promise<AdapterResult<T>> {
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -105,7 +99,7 @@ export async function collectLive(center: LatLng, radiusM = AREA_RADIUS_M): Prom
 export async function collectArea(lat: number, lng: number, options: CollectOptions = {}): Promise<CollectResult> {
   const demo = options.live ? null : findDemoArea({ lat, lng });
   if (demo) {
-    const saved = await readSaved(demo);
+    const saved = await readSaved<AreaData>(demoFilePath(demo));
     if (saved) return { ...saved, from: "saved", demoArea: demo.slug };
     // No saved file yet: run live at the demo center, so the result matches what gets saved.
     return { ...(await collectLive(demo.center)), from: "live", demoArea: demo.slug };

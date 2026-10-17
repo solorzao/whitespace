@@ -158,10 +158,10 @@ The ask route needs no changes. The 2 km competitors and their reviews arrive in
 ## Asks for Kevin
 
 - **Extra Places fields.** Add `priceLevel` and `regularOpeningHours` to the circle's Nearby Search. Add `delivery`, `dineIn`, `takeout` and `reservable` to the Place Details call, which already requests reviews. Map them to the new `Business` fields. Rating is already in the Nearby Search field mask and reviews already in Place Details, so each call should stay in its current billing tier. Confirm on the Places pricing page.
-- **`collectCompetitors(category, lat, lng, radiusM)`.** One Nearby Search within 2 km, with `includedTypes` set to the category's Google types, 20 results ranked by popularity, and all the fields above plus `reviews`. If the Nearby Search field mask doesn't accept `places.reviews`, call Place Details for the 10 most-reviewed instead. It returns businesses plus their `places:` and `review:` records.
+- **`collectCompetitors(category, lat, lng, radiusM)`.** One Nearby Search within 2 km, with `includedPrimaryTypes` set to the category's Google types, 20 results ranked by popularity, and all the fields above plus `reviews`. Nearby Search accepts `places.reviews`, so it's one call per category. Primary types keep furniture stores out of hardware, for example. It returns businesses plus their `places:` and `review:` records.
 - **A new PR.** PR 4 (Wikipedia and the saved demo areas) has shipped, so the extra fields and the competitor search go in PR 5.
 
-That adds up to 5 billed Places calls per live area, or more if Place Details is needed. Saved demo areas cost nothing.
+That adds up to 5 billed Places calls per live area. Saved demo areas cost nothing, and live calls are off unless `PLACES_LIVE=1` (see the [ingestion plan](INGESTION_PLAN.md#risks)).
 
 ## Asks for Hadi
 
