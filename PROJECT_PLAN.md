@@ -98,7 +98,7 @@ Each demo area is the standard 800 m circle. The data for both is collected ahea
 | Santa Monica (downtown, Wilshire and 4th Street) | 34.0195, -118.4912 |
 | New York (Lower Manhattan) | 40.7075, -74.0113 |
 
-Required keys: Google Places API key with billing, Census API key and Anthropic API key. All three also have to be set on Vercel.
+Required keys: Google Places API key with billing, Census API key and Anthropic API key. Census and Anthropic also have to be set on Vercel. Google Places is only needed where the saved demo data is generated: live Places calls are billed, so the app makes none unless `PLACES_LIVE=1`. Leave that unset on Vercel, and the deployed app takes ratings, reviews and competitors only from the saved demo areas.
 
 ## Team
 

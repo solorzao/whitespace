@@ -76,6 +76,7 @@ export type Business = {
   // ...the existing fields
   reviewCount?: number;
   priceLevel?: 0 | 1 | 2 | 3 | 4; // free to very expensive
+  priceRange?: { min: number; max: number | null }; // US dollars per person; max null = open-ended ("$100+")
   hours?: string[]; // Google's weekday descriptions
   closesAt?: number; // latest weekday closing time in hours: 21.5 = 9:30 pm, 25 = 1 am
   services?: { delivery?: boolean; dineIn?: boolean; takeout?: boolean; reservable?: boolean };
@@ -109,9 +110,46 @@ If steps 4 to 7 fail, the cards still render, without a success profile. Today `
 | --- | --- | --- |
 | `unserved` | A shortfall (`1 - local / benchmark`) of at least 0.5, so the circle has at most half its benchmark, and it would expect at least 1. | "No laundromats; about 2 expected" |
 | `poorly_served` | At least 4 rated competitors within 2 km, with an average rating below 4.0. | "4 grocers average 3.4★" |
-| `mismatched` | At least 4 competitors within 2 km, and none open after 9 pm, none at price level 1, or none offering delivery. The hours rule applies to food, grocery, pharmacy, laundry and fitness. The delivery rule applies to food and grocery. | "4 cafés, none open after 9 pm" |
+| `mismatched` | One of the three checks below finds at least 4 competitors within 2 km that have the field, and none of them offer the option. | "4 cafés, none open after 9 pm" |
 
 A candidate that matches more than one type takes the first in this order, and ties go to the higher score. The thresholds are starting points, to tune on the two demo areas.
+
+**The `mismatched` checks.** Google leaves many of these fields out (see the [ingestion plan](INGESTION_PLAN.md#price-level)), so a missing value means unknown, not "no". Count only the competitors that have the field.
+
+| Check | Categories | Field | "None offer it" means |
+| --- | --- | --- | --- |
+| Late hours | Food and drink, grocery, pharmacy, laundry, fitness | `closesAt` | Every competitor with `closesAt` closes by 9 pm (`closesAt <= 21`) |
+| Budget price | Restaurant and bar only | `priceLevel` | No competitor with a price level is at level 1 |
+| Delivery | Food and drink, grocery | `services.delivery` | Every competitor with `services.delivery` has it `false` |
+
+Food and drink means restaurant, fast food, café, bar, bakery and specialty food.
+
+The budget check is limited to restaurants and bars because those are the only categories where level 1 carries information. In the saved demo data:
+- Bakeries, cafés, fast food and specialty food are almost all level 1 (29 of 30 bakeries), so the check would never fire.
+- Hair and beauty is never level 1 (0 of 21), so it would always fire, which is a false gap.
+- The other 13 categories have no price level at all.
+
+For the card, `priceRange` gives the dollar amounts: "5 restaurants within 2 km, the cheapest $20–30 a person".
+
+```ts
+// Competitors that have a field, and whether at least 4 of them do.
+const withField = <T>(bs: Business[], get: (b: Business) => T | undefined) =>
+  bs.map(get).filter((v): v is T => v !== undefined);
+
+const closes = withField(competitors, (b) => b.closesAt);
+const noLateHours = closes.length >= 4 && closes.every((h) => h <= 21);
+
+const levels = withField(competitors, (b) => b.priceLevel);
+const noBudget = ["restaurant", "bar"].includes(category) && levels.length >= 4 && !levels.includes(1);
+
+const delivery = withField(competitors, (b) => b.services?.delivery);
+const noDelivery = delivery.length >= 4 && delivery.every((d) => !d);
+
+// The cheapest price range, for the card text.
+const cheapest = competitors
+  .filter((b) => b.priceRange)
+  .sort((a, b) => a.priceRange!.min - b.priceRange!.min)[0]?.priceRange; // { min: 20, max: 30 }
+```
 
 ### Demand fit
 
@@ -122,7 +160,7 @@ Demand fit is already in `gap-score.ts`. Each category with a signal, such as re
 - A category needs at least 6 competitors with reviews. Otherwise its card says there aren't enough reviews nearby.
 - Rank competitors by rating, then by review count, and compare the top third with the bottom third.
 - For each topic, count praise in the top third's reviews and complaints in the bottom third's. Keep topics mentioned at least 3 times with the biggest difference between the groups.
-- Attributes are open after 9 pm, delivery, dine-in, reservations and price level 1 or 2. Keep those where the two groups differ by at least half.
+- Attributes are open after 9 pm (`closesAt > 21`), delivery, dine-in, reservations and price level 1 or 2. Keep those where the two groups differ by at least half. As in the `mismatched` checks, count only competitors that have the field, in both the count and the total. For example, "2 of 9 priced competitors", not "2 of 20". Skip the price attribute for categories without price levels, and skip any attribute that fewer than 3 competitors in either group have.
 - A finding's label is the most common detail among its tags. Its evidence is up to 3 of those reviews.
 - Keep up to 4 findings, biggest difference first. The card shows the first 2, for example: "Top-rated: drop-off service praised in 8 of 12 reviews. Others: hours complained about in 6 of 9."
 
@@ -158,10 +196,10 @@ The ask route needs no changes. The 2 km competitors and their reviews arrive in
 ## Asks for Kevin
 
 - **Extra Places fields.** Add `priceLevel` and `regularOpeningHours` to the circle's Nearby Search. Add `delivery`, `dineIn`, `takeout` and `reservable` to the Place Details call, which already requests reviews. Map them to the new `Business` fields. Rating is already in the Nearby Search field mask and reviews already in Place Details, so each call should stay in its current billing tier. Confirm on the Places pricing page.
-- **`collectCompetitors(category, lat, lng, radiusM)`.** One Nearby Search within 2 km, with `includedTypes` set to the category's Google types, 20 results ranked by popularity, and all the fields above plus `reviews`. If the Nearby Search field mask doesn't accept `places.reviews`, call Place Details for the 10 most-reviewed instead. It returns businesses plus their `places:` and `review:` records.
+- **`collectCompetitors(category, lat, lng, radiusM)`.** One Nearby Search within 2 km, with `includedPrimaryTypes` set to the category's Google types, 20 results ranked by popularity, and all the fields above plus `reviews`. Nearby Search accepts `places.reviews`, so it's one call per category. Primary types keep furniture stores out of hardware, for example. It returns businesses plus their `places:` and `review:` records.
 - **A new PR.** PR 4 (Wikipedia and the saved demo areas) has shipped, so the extra fields and the competitor search go in PR 5.
 
-That adds up to 5 billed Places calls per live area, or more if Place Details is needed. Saved demo areas cost nothing.
+That adds up to 5 billed Places calls per live area. Saved demo areas cost nothing, and live calls are off unless `PLACES_LIVE=1` (see the [ingestion plan](INGESTION_PLAN.md#risks)).
 
 ## Asks for Hadi
 

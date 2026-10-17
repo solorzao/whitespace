@@ -46,6 +46,22 @@
       "url": "https://www.openstreetmap.org/node/1028757169",
       "rating": 4.5,
       "status": "open",
+      "reviewCount": 834,
+      "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
+      "hours": [
+        "Monday: 7:00 AM – 10:00 PM",
+        "Tuesday: 7:00 AM – 10:00 PM",
+        "Wednesday: 7:00 AM – 10:00 PM",
+        "Thursday: 7:00 AM – 10:00 PM",
+        "Friday: 7:00 AM – 11:00 PM",
+        "Saturday: 7:00 AM – 11:00 PM",
+        "Sunday: 7:00 AM – 10:00 PM"
+      ],
+      "closesAt": 23,
       "docIds": [
         "osm:node/1028757169",
         "places:ChIJFzoSp82kwoARbw9rwj7CCZI"
@@ -156,6 +172,26 @@
       "url": "https://www.openstreetmap.org/node/2622898579",
       "rating": 4.5,
       "status": "open",
+      "reviewCount": 2930,
+      "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: Closed",
+        "Wednesday: 9:00 AM – 6:00 PM",
+        "Thursday: 9:00 AM – 6:00 PM",
+        "Friday: 9:00 AM – 6:00 PM",
+        "Saturday: 9:00 AM – 6:00 PM",
+        "Sunday: 9:00 AM – 6:00 PM"
+      ],
+      "closesAt": 18,
+      "services": {
+        "delivery": true,
+        "takeout": true
+      },
       "docIds": [
         "osm:node/2622898579",
         "places:ChIJVyASdc2kwoARat3uRCRLee8"
@@ -282,6 +318,20 @@
       "url": "https://www.openstreetmap.org/node/5111896328",
       "rating": 4.1,
       "status": "open",
+      "reviewCount": 1570,
+      "hours": [
+        "Monday: 10:00 AM – 8:00 PM",
+        "Tuesday: 10:00 AM – 8:00 PM",
+        "Wednesday: 10:00 AM – 8:00 PM",
+        "Thursday: 10:00 AM – 8:00 PM",
+        "Friday: 10:00 AM – 8:00 PM",
+        "Saturday: 10:00 AM – 8:00 PM",
+        "Sunday: 11:00 AM – 7:00 PM"
+      ],
+      "closesAt": 20,
+      "services": {
+        "delivery": true
+      },
       "docIds": [
         "osm:node/5111896328",
         "places:ChIJkRrJu9GkwoAR9zvkpff44AI"
@@ -488,6 +538,28 @@
       "url": "https://www.openstreetmap.org/node/5308835516",
       "rating": 4.6,
       "status": "open",
+      "reviewCount": 1946,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 60
+      },
+      "hours": [
+        "Monday: 11:30 AM – 10:00 PM",
+        "Tuesday: 11:30 AM – 10:00 PM",
+        "Wednesday: 11:30 AM – 10:00 PM",
+        "Thursday: 11:30 AM – 10:00 PM",
+        "Friday: 11:30 AM – 10:00 PM",
+        "Saturday: 11:30 AM – 10:00 PM",
+        "Sunday: 11:30 AM – 10:00 PM"
+      ],
+      "closesAt": 22,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true,
+        "reservable": false
+      },
       "docIds": [
         "osm:node/5308835516",
         "places:ChIJUTUaYMWkwoARkhJYrIBg6BQ"
@@ -518,6 +590,17 @@
       "url": "https://www.openstreetmap.org/node/5444138399",
       "rating": 3.4,
       "status": "open",
+      "reviewCount": 187,
+      "hours": [
+        "Monday: 5:00 AM – 10:00 PM",
+        "Tuesday: 5:00 AM – 10:00 PM",
+        "Wednesday: 5:00 AM – 10:00 PM",
+        "Thursday: 5:00 AM – 10:00 PM",
+        "Friday: 5:00 AM – 9:00 PM",
+        "Saturday: 7:00 AM – 7:00 PM",
+        "Sunday: 7:00 AM – 7:00 PM"
+      ],
+      "closesAt": 22,
       "docIds": [
         "osm:node/5444138399",
         "places:ChIJY07w5c-kwoAR7DtvOfuBVrU"
@@ -692,6 +775,28 @@
       "url": "https://www.openstreetmap.org/node/6600053327",
       "rating": 4.2,
       "status": "open",
+      "reviewCount": 3419,
+      "priceLevel": 3,
+      "priceRange": {
+        "min": 50,
+        "max": 100
+      },
+      "hours": [
+        "Monday: 10:00 AM – 12:00 AM",
+        "Tuesday: 10:00 AM – 12:00 AM",
+        "Wednesday: 10:00 AM – 12:00 AM",
+        "Thursday: 10:00 AM – 12:00 AM",
+        "Friday: 9:00 AM – 1:00 AM",
+        "Saturday: 9:00 AM – 1:00 AM",
+        "Sunday: 9:00 AM – 12:00 AM"
+      ],
+      "closesAt": 25,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true,
+        "reservable": true
+      },
       "docIds": [
         "osm:node/6600053327",
         "places:ChIJ0YbI98-kwoARR9xzsPQ28cE"
@@ -946,6 +1051,22 @@
       "url": "https://www.openstreetmap.org/node/9280888317",
       "rating": 3.8,
       "status": "open",
+      "reviewCount": 933,
+      "priceLevel": 1,
+      "priceRange": {
+        "min": 1,
+        "max": 20
+      },
+      "hours": [
+        "Monday: 5:00 AM – 10:30 PM",
+        "Tuesday: 5:00 AM – 10:30 PM",
+        "Wednesday: 5:00 AM – 10:30 PM",
+        "Thursday: 5:00 AM – 10:30 PM",
+        "Friday: 5:00 AM – 10:30 PM",
+        "Saturday: 5:00 AM – 10:00 PM",
+        "Sunday: 5:00 AM – 10:00 PM"
+      ],
+      "closesAt": 22.5,
       "docIds": [
         "osm:node/9280888317",
         "places:ChIJr4vVw8-kwoAR0iEipIyAZWw"
@@ -1216,6 +1337,22 @@
       "url": "https://www.openstreetmap.org/node/9750179101",
       "rating": 4.2,
       "status": "open",
+      "reviewCount": 1306,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 30
+      },
+      "hours": [
+        "Monday: 7:00 AM – 3:00 PM",
+        "Tuesday: 7:00 AM – 3:00 PM",
+        "Wednesday: 7:00 AM – 3:00 PM",
+        "Thursday: 7:00 AM – 3:00 PM",
+        "Friday: 7:00 AM – 3:00 PM",
+        "Saturday: 7:00 AM – 3:00 PM",
+        "Sunday: 7:00 AM – 3:00 PM"
+      ],
+      "closesAt": 15,
       "docIds": [
         "osm:node/9750179101",
         "places:ChIJE_NFKsqkwoARS1PVu8TV4Qs"
@@ -1366,6 +1503,17 @@
       "url": "https://www.openstreetmap.org/node/9906973036",
       "rating": 4.6,
       "status": "open",
+      "reviewCount": 477,
+      "hours": [
+        "Monday: 9:00 AM – 9:00 PM",
+        "Tuesday: 9:00 AM – 9:00 PM",
+        "Wednesday: 9:00 AM – 9:00 PM",
+        "Thursday: 9:00 AM – 9:00 PM",
+        "Friday: 9:00 AM – 9:00 PM",
+        "Saturday: 9:00 AM – 9:00 PM",
+        "Sunday: 9:00 AM – 9:00 PM"
+      ],
+      "closesAt": 21,
       "docIds": [
         "osm:node/9906973036",
         "places:ChIJB0twMSalwoAR9MT9bECOtlY"
@@ -1548,6 +1696,27 @@
       "url": "https://www.openstreetmap.org/node/10925656205",
       "rating": 4.6,
       "status": "open",
+      "reviewCount": 1777,
+      "priceLevel": 1,
+      "priceRange": {
+        "min": 1,
+        "max": 10
+      },
+      "hours": [
+        "Monday: 6:30 AM – 7:00 PM",
+        "Tuesday: 6:30 AM – 7:00 PM",
+        "Wednesday: 6:30 AM – 7:00 PM",
+        "Thursday: 6:30 AM – 7:00 PM",
+        "Friday: 6:30 AM – 9:00 PM",
+        "Saturday: 6:30 AM – 9:00 PM",
+        "Sunday: 6:30 AM – 7:00 PM"
+      ],
+      "closesAt": 21,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true
+      },
       "docIds": [
         "osm:node/10925656205",
         "places:ChIJO53j58ikwoARyIQAbNStag4"
@@ -1578,6 +1747,22 @@
       "url": "https://www.openstreetmap.org/node/11162008279",
       "rating": 4.4,
       "status": "open",
+      "reviewCount": 876,
+      "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
+      "hours": [
+        "Monday: 10:00 AM – 11:00 PM",
+        "Tuesday: 10:00 AM – 11:00 PM",
+        "Wednesday: 10:00 AM – 11:00 PM",
+        "Thursday: 10:00 AM – 1:00 AM",
+        "Friday: 10:00 AM – 1:00 AM",
+        "Saturday: 10:00 AM – 1:00 AM",
+        "Sunday: 10:00 AM – 1:00 AM"
+      ],
+      "closesAt": 25,
       "docIds": [
         "osm:node/11162008279",
         "places:ChIJVxai4w6lwoAR7I2zC_rbKhU"
@@ -1616,6 +1801,17 @@
       "url": "https://www.openstreetmap.org/node/11571526770",
       "rating": 4.2,
       "status": "open",
+      "reviewCount": 369,
+      "hours": [
+        "Monday: 10:00 AM – 9:00 PM",
+        "Tuesday: 10:00 AM – 9:00 PM",
+        "Wednesday: 10:00 AM – 9:00 PM",
+        "Thursday: 10:00 AM – 9:00 PM",
+        "Friday: 10:00 AM – 9:00 PM",
+        "Saturday: 10:00 AM – 9:00 PM",
+        "Sunday: 10:00 AM – 8:00 PM"
+      ],
+      "closesAt": 21,
       "docIds": [
         "osm:node/11571526770",
         "places:ChIJP6r9hsWkwoARFaJzrQEjFW4"
@@ -1646,6 +1842,28 @@
       "url": "https://www.openstreetmap.org/node/11657406067",
       "rating": 4.4,
       "status": "open",
+      "reviewCount": 2462,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 30
+      },
+      "hours": [
+        "Monday: 7:00 AM – 11:00 PM",
+        "Tuesday: 7:00 AM – 11:00 PM",
+        "Wednesday: 7:00 AM – 11:00 PM",
+        "Thursday: 7:00 AM – 11:00 PM",
+        "Friday: 7:00 AM – 12:00 AM",
+        "Saturday: 7:00 AM – 12:00 AM",
+        "Sunday: 7:00 AM – 11:00 PM"
+      ],
+      "closesAt": 24,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true,
+        "reservable": true
+      },
       "docIds": [
         "osm:node/11657406067",
         "places:ChIJo_q6Cz-lwoAR7gr_22DKAN8"
@@ -1716,6 +1934,28 @@
       "url": "https://www.openstreetmap.org/node/12422981101",
       "rating": 4.5,
       "status": "open",
+      "reviewCount": 3509,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 70
+      },
+      "hours": [
+        "Monday: 5:00 – 10:00 PM",
+        "Tuesday: 5:00 – 10:00 PM",
+        "Wednesday: 5:00 – 10:00 PM",
+        "Thursday: 5:00 – 10:00 PM",
+        "Friday: 11:00 AM – 12:00 AM",
+        "Saturday: 11:00 AM – 12:00 AM",
+        "Sunday: 11:00 AM – 10:00 PM"
+      ],
+      "closesAt": 24,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true,
+        "reservable": true
+      },
       "docIds": [
         "osm:node/12422981101",
         "places:ChIJq7OSk8WkwoARIhDrvzps_Cs"
@@ -1754,6 +1994,17 @@
       "url": "https://www.openstreetmap.org/way/133127903",
       "rating": 4.1,
       "status": "open",
+      "reviewCount": 1016,
+      "hours": [
+        "Monday: 6:00 AM – 11:00 PM",
+        "Tuesday: 6:00 AM – 11:00 PM",
+        "Wednesday: 6:00 AM – 11:00 PM",
+        "Thursday: 6:00 AM – 11:00 PM",
+        "Friday: 6:00 AM – 11:00 PM",
+        "Saturday: 6:00 AM – 11:00 PM",
+        "Sunday: 6:00 AM – 11:00 PM"
+      ],
+      "closesAt": 23,
       "docIds": [
         "osm:way/133127903",
         "places:ChIJ-eNZfMqkwoARjfzHjQ9ofjM"
@@ -1887,7 +2138,23 @@
       "lng": -118.49438210000001,
       "rating": 4.5,
       "status": "open",
-      "url": "https://maps.google.com/?cid=8522034137997084263&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+      "url": "https://maps.google.com/?cid=8522034137997084263&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "reviewCount": 516,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 60
+      },
+      "hours": [
+        "Monday: 12:00 – 9:00 PM",
+        "Tuesday: 12:00 – 9:00 PM",
+        "Wednesday: 12:00 – 9:00 PM",
+        "Thursday: 12:00 – 9:00 PM",
+        "Friday: 12:00 – 10:00 PM",
+        "Saturday: 11:30 AM – 10:00 PM",
+        "Sunday: 11:30 AM – 9:00 PM"
+      ],
+      "closesAt": 22
     },
     {
       "id": "places:ChIJoTqMzM-kwoARu_Eb7zx4n30",
@@ -1897,7 +2164,29 @@
       "lng": -118.4940971,
       "rating": 4.1,
       "status": "open",
-      "url": "https://maps.google.com/?cid=9052085979142943163&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+      "url": "https://maps.google.com/?cid=9052085979142943163&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "reviewCount": 4747,
+      "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 30
+      },
+      "hours": [
+        "Monday: 11:30 AM – 10:00 PM",
+        "Tuesday: 11:30 AM – 10:00 PM",
+        "Wednesday: 11:30 AM – 10:00 PM",
+        "Thursday: 11:30 AM – 10:00 PM",
+        "Friday: 11:30 AM – 11:00 PM",
+        "Saturday: 11:00 AM – 11:00 PM",
+        "Sunday: 10:00 AM – 10:00 PM"
+      ],
+      "closesAt": 23,
+      "services": {
+        "delivery": true,
+        "dineIn": true,
+        "takeout": true,
+        "reservable": true
+      }
     },
     {
       "id": "places:ChIJG3BCw9GlwoAR191JXPM28zQ",
@@ -1907,7 +2196,23 @@
       "lng": -118.4946372,
       "rating": 4.3,
       "status": "open",
-      "url": "https://maps.google.com/?cid=3815453728166239703&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA"
+      "url": "https://maps.google.com/?cid=3815453728166239703&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "reviewCount": 1029,
+      "priceLevel": 3,
+      "priceRange": {
+        "min": 50,
+        "max": 100
+      },
+      "hours": [
+        "Monday: 11:30 AM – 10:00 PM",
+        "Tuesday: 11:30 AM – 10:00 PM",
+        "Wednesday: 11:30 AM – 10:00 PM",
+        "Thursday: 11:30 AM – 10:00 PM",
+        "Friday: 11:30 AM – 12:00 AM",
+        "Saturday: 11:30 AM – 12:00 AM",
+        "Sunday: 11:30 AM – 10:00 PM"
+      ],
+      "closesAt": 24
     }
   ],
   "demographics": {
@@ -4199,7 +4504,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=13975011543267662919&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Élephante",
-      "text": "Élephante is a restaurant business on Google Maps. Rated 4.2 out of 5 from 3,418 ratings. Status: open.",
+      "text": "Élephante is a restaurant business on Google Maps. Rated 4.2 out of 5 from 3,419 ratings. Status: open. Price level: expensive ($$$). Price per person: $50–100. Latest weekday closing time: 1 am. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 10:00 AM – 12:00 AM; Tuesday: 10:00 AM – 12:00 AM; Wednesday: 10:00 AM – 12:00 AM; Thursday: 10:00 AM – 12:00 AM; Friday: 9:00 AM – 1:00 AM; Saturday: 9:00 AM – 1:00 AM; Sunday: 9:00 AM – 12:00 AM.",
       "lat": 34.0152447,
       "lng": -118.4979996,
       "category": "restaurant"
@@ -4209,7 +4514,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=6248337940380763380&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Trader Joe's",
-      "text": "Trader Joe's is a grocery business on Google Maps. Rated 4.6 out of 5 from 477 ratings. Status: open.",
+      "text": "Trader Joe's is a grocery business on Google Maps. Rated 4.6 out of 5 from 477 ratings. Status: open. Latest weekday closing time: 9 pm. Hours: Monday: 9:00 AM – 9:00 PM; Tuesday: 9:00 AM – 9:00 PM; Wednesday: 9:00 AM – 9:00 PM; Thursday: 9:00 AM – 9:00 PM; Friday: 9:00 AM – 9:00 PM; Saturday: 9:00 AM – 9:00 PM; Sunday: 9:00 AM – 9:00 PM.",
       "lat": 34.0153515,
       "lng": -118.4917559,
       "category": "grocery"
@@ -4219,7 +4524,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=8522034137997084263&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Din Tai Fung",
-      "text": "Din Tai Fung is a restaurant business on Google Maps. Rated 4.5 out of 5 from 516 ratings. Status: open.",
+      "text": "Din Tai Fung is a restaurant business on Google Maps. Rated 4.5 out of 5 from 516 ratings. Status: open. Price level: moderate ($$). Price per person: $20–60. Latest weekday closing time: 10 pm. Hours: Monday: 12:00 – 9:00 PM; Tuesday: 12:00 – 9:00 PM; Wednesday: 12:00 – 9:00 PM; Thursday: 12:00 – 9:00 PM; Friday: 12:00 – 10:00 PM; Saturday: 11:30 AM – 10:00 PM; Sunday: 11:30 AM – 9:00 PM.",
       "lat": 34.0132505,
       "lng": -118.49438210000001,
       "category": "restaurant"
@@ -4229,7 +4534,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=17255906066394176874&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Bay Cities Italian Deli & Bakery",
-      "text": "Bay Cities Italian Deli & Bakery is a specialty food business on Google Maps. Rated 4.5 out of 5 from 2,930 ratings. Status: open.",
+      "text": "Bay Cities Italian Deli & Bakery is a specialty food business on Google Maps. Rated 4.5 out of 5 from 2,930 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 6 pm. Offers delivery, takeout. Hours: Monday: Closed; Tuesday: Closed; Wednesday: 9:00 AM – 6:00 PM; Thursday: 9:00 AM – 6:00 PM; Friday: 9:00 AM – 6:00 PM; Saturday: 9:00 AM – 6:00 PM; Sunday: 9:00 AM – 6:00 PM.",
       "lat": 34.0179847,
       "lng": -118.48920190000001,
       "category": "specialty_food"
@@ -4239,7 +4544,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=207439325382851575&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Nike Santa Monica",
-      "text": "Nike Santa Monica is a clothing business on Google Maps. Rated 4.1 out of 5 from 1,570 ratings. Status: open.",
+      "text": "Nike Santa Monica is a clothing business on Google Maps. Rated 4.1 out of 5 from 1,570 ratings. Status: open. Latest weekday closing time: 8 pm. Offers delivery. Hours: Monday: 10:00 AM – 8:00 PM; Tuesday: 10:00 AM – 8:00 PM; Wednesday: 10:00 AM – 8:00 PM; Thursday: 10:00 AM – 8:00 PM; Friday: 10:00 AM – 8:00 PM; Saturday: 10:00 AM – 8:00 PM; Sunday: 11:00 AM – 7:00 PM.",
       "lat": 34.013987799999995,
       "lng": -118.4944566,
       "category": "clothing"
@@ -4249,7 +4554,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=9052085979142943163&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "The Cheesecake Factory",
-      "text": "The Cheesecake Factory is a restaurant business on Google Maps. Rated 4.1 out of 5 from 4,747 ratings. Status: open.",
+      "text": "The Cheesecake Factory is a restaurant business on Google Maps. Rated 4.1 out of 5 from 4,747 ratings. Status: open. Price level: moderate ($$). Price per person: $20–30. Latest weekday closing time: 11 pm. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 11:30 AM – 10:00 PM; Tuesday: 11:30 AM – 10:00 PM; Wednesday: 11:30 AM – 10:00 PM; Thursday: 11:30 AM – 10:00 PM; Friday: 11:30 AM – 11:00 PM; Saturday: 11:00 AM – 11:00 PM; Sunday: 10:00 AM – 10:00 PM.",
       "lat": 34.013669,
       "lng": -118.4940971,
       "category": "restaurant"
@@ -4259,7 +4564,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=3815453728166239703&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "LouLou Santa Monica",
-      "text": "LouLou Santa Monica is a restaurant business on Google Maps. Rated 4.3 out of 5 from 1,029 ratings. Status: open.",
+      "text": "LouLou Santa Monica is a restaurant business on Google Maps. Rated 4.3 out of 5 from 1,029 ratings. Status: open. Price level: expensive ($$$). Price per person: $50–100. Latest weekday closing time: 12 am. Hours: Monday: 11:30 AM – 10:00 PM; Tuesday: 11:30 AM – 10:00 PM; Wednesday: 11:30 AM – 10:00 PM; Thursday: 11:30 AM – 10:00 PM; Friday: 11:30 AM – 12:00 AM; Saturday: 11:30 AM – 12:00 AM; Sunday: 11:30 AM – 10:00 PM.",
       "lat": 34.013339699999996,
       "lng": -118.4946372,
       "category": "restaurant"
@@ -4269,7 +4574,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=10523155579133431663&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Bodega Wine Bar",
-      "text": "Bodega Wine Bar is a bar business on Google Maps. Rated 4.5 out of 5 from 834 ratings. Status: open.",
+      "text": "Bodega Wine Bar is a bar business on Google Maps. Rated 4.5 out of 5 from 834 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 11 pm. Hours: Monday: 7:00 AM – 10:00 PM; Tuesday: 7:00 AM – 10:00 PM; Wednesday: 7:00 AM – 10:00 PM; Thursday: 7:00 AM – 10:00 PM; Friday: 7:00 AM – 11:00 PM; Saturday: 7:00 AM – 11:00 PM; Sunday: 7:00 AM – 10:00 PM.",
       "lat": 34.0183156,
       "lng": -118.4893379,
       "category": "bar"
@@ -4279,7 +4584,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=1038833791918965960&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Sidecar Doughnuts & Coffee",
-      "text": "Sidecar Doughnuts & Coffee is a bakery business on Google Maps. Rated 4.6 out of 5 from 1,777 ratings. Status: open.",
+      "text": "Sidecar Doughnuts & Coffee is a bakery business on Google Maps. Rated 4.6 out of 5 from 1,777 ratings. Status: open. Price level: inexpensive ($). Price per person: $1–10. Latest weekday closing time: 9 pm. Offers delivery, dine-in, takeout. Hours: Monday: 6:30 AM – 7:00 PM; Tuesday: 6:30 AM – 7:00 PM; Wednesday: 6:30 AM – 7:00 PM; Thursday: 6:30 AM – 7:00 PM; Friday: 6:30 AM – 9:00 PM; Saturday: 6:30 AM – 9:00 PM; Sunday: 6:30 AM – 7:00 PM.",
       "lat": 34.021253099999996,
       "lng": -118.49601349999999,
       "category": "bakery"
@@ -4289,7 +4594,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=3169527237345742882&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "1212 Santa Monica",
-      "text": "1212 Santa Monica is a restaurant business on Google Maps. Rated 4.5 out of 5 from 3,509 ratings. Status: open.",
+      "text": "1212 Santa Monica is a restaurant business on Google Maps. Rated 4.5 out of 5 from 3,509 ratings. Status: open. Price level: moderate ($$). Price per person: $20–70. Latest weekday closing time: 12 am. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 5:00 – 10:00 PM; Tuesday: 5:00 – 10:00 PM; Wednesday: 5:00 – 10:00 PM; Thursday: 5:00 – 10:00 PM; Friday: 11:00 AM – 12:00 AM; Saturday: 11:00 AM – 12:00 AM; Sunday: 11:00 AM – 10:00 PM.",
       "lat": 34.0178522,
       "lng": -118.49904629999999,
       "category": "restaurant"
@@ -4299,7 +4604,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=3710517559012359309&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Vons",
-      "text": "Vons is a grocery business on Google Maps. Rated 4.1 out of 5 from 1,016 ratings. Status: open.",
+      "text": "Vons is a grocery business on Google Maps. Rated 4.1 out of 5 from 1,016 ratings. Status: open. Latest weekday closing time: 11 pm. Hours: Monday: 6:00 AM – 11:00 PM; Tuesday: 6:00 AM – 11:00 PM; Wednesday: 6:00 AM – 11:00 PM; Thursday: 6:00 AM – 11:00 PM; Friday: 6:00 AM – 11:00 PM; Saturday: 6:00 AM – 11:00 PM; Sunday: 6:00 AM – 11:00 PM.",
       "lat": 34.0265061,
       "lng": -118.4899059,
       "category": "grocery"
@@ -4309,7 +4614,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=1525273290802957804&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Shake Shack Santa Monica",
-      "text": "Shake Shack Santa Monica is a restaurant business on Google Maps. Rated 4.4 out of 5 from 876 ratings. Status: open.",
+      "text": "Shake Shack Santa Monica is a restaurant business on Google Maps. Rated 4.4 out of 5 from 876 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 1 am. Hours: Monday: 10:00 AM – 11:00 PM; Tuesday: 10:00 AM – 11:00 PM; Wednesday: 10:00 AM – 11:00 PM; Thursday: 10:00 AM – 1:00 AM; Friday: 10:00 AM – 1:00 AM; Saturday: 10:00 AM – 1:00 AM; Sunday: 10:00 AM – 1:00 AM.",
       "lat": 34.020198,
       "lng": -118.49743399999998,
       "category": "restaurant"
@@ -4319,7 +4624,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=7810790470281470418&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Starbucks Coffee Company",
-      "text": "Starbucks Coffee Company is a café business on Google Maps. Rated 3.8 out of 5 from 933 ratings. Status: open.",
+      "text": "Starbucks Coffee Company is a café business on Google Maps. Rated 3.8 out of 5 from 933 ratings. Status: open. Price level: inexpensive ($). Price per person: $1–20. Latest weekday closing time: 10:30 pm. Hours: Monday: 5:00 AM – 10:30 PM; Tuesday: 5:00 AM – 10:30 PM; Wednesday: 5:00 AM – 10:30 PM; Thursday: 5:00 AM – 10:30 PM; Friday: 5:00 AM – 10:30 PM; Saturday: 5:00 AM – 10:00 PM; Sunday: 5:00 AM – 10:00 PM.",
       "lat": 34.015789999999996,
       "lng": -118.49646999999999,
       "category": "cafe"
@@ -4329,7 +4634,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=7932284808794972693&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "SEPHORA",
-      "text": "SEPHORA is a hair and beauty business on Google Maps. Rated 4.2 out of 5 from 369 ratings. Status: open.",
+      "text": "SEPHORA is a hair and beauty business on Google Maps. Rated 4.2 out of 5 from 369 ratings. Status: open. Latest weekday closing time: 9 pm. Hours: Monday: 10:00 AM – 9:00 PM; Tuesday: 10:00 AM – 9:00 PM; Wednesday: 10:00 AM – 9:00 PM; Thursday: 10:00 AM – 9:00 PM; Friday: 10:00 AM – 9:00 PM; Saturday: 10:00 AM – 9:00 PM; Sunday: 10:00 AM – 8:00 PM.",
       "lat": 34.017246,
       "lng": -118.498416,
       "category": "hair_beauty"
@@ -4339,7 +4644,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=16069065987814525678&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Mel's Drive-in",
-      "text": "Mel's Drive-in is a restaurant business on Google Maps. Rated 4.4 out of 5 from 2,462 ratings. Status: open.",
+      "text": "Mel's Drive-in is a restaurant business on Google Maps. Rated 4.4 out of 5 from 2,462 ratings. Status: open. Price level: moderate ($$). Price per person: $20–30. Latest weekday closing time: 12 am. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 7:00 AM – 11:00 PM; Tuesday: 7:00 AM – 11:00 PM; Wednesday: 7:00 AM – 11:00 PM; Thursday: 7:00 AM – 11:00 PM; Friday: 7:00 AM – 12:00 AM; Saturday: 7:00 AM – 12:00 AM; Sunday: 7:00 AM – 11:00 PM.",
       "lat": 34.0151556,
       "lng": -118.48659719999998,
       "category": "restaurant"
@@ -4349,7 +4654,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=13066774284862438380&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Equinox Santa Monica",
-      "text": "Equinox Santa Monica is a fitness business on Google Maps. Rated 3.4 out of 5 from 187 ratings. Status: open.",
+      "text": "Equinox Santa Monica is a fitness business on Google Maps. Rated 3.4 out of 5 from 187 ratings. Status: open. Latest weekday closing time: 10 pm. Hours: Monday: 5:00 AM – 10:00 PM; Tuesday: 5:00 AM – 10:00 PM; Wednesday: 5:00 AM – 10:00 PM; Thursday: 5:00 AM – 10:00 PM; Friday: 5:00 AM – 9:00 PM; Saturday: 7:00 AM – 7:00 PM; Sunday: 7:00 AM – 7:00 PM.",
       "lat": 34.0153485,
       "lng": -118.496934,
       "category": "fitness"
@@ -4359,7 +4664,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=1506560181118964370&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "UOVO Santa Monica",
-      "text": "UOVO Santa Monica is a restaurant business on Google Maps. Rated 4.6 out of 5 from 1,946 ratings. Status: open.",
+      "text": "UOVO Santa Monica is a restaurant business on Google Maps. Rated 4.6 out of 5 from 1,946 ratings. Status: open. Price level: moderate ($$). Price per person: $20–60. Latest weekday closing time: 10 pm. Offers delivery, dine-in, takeout. No reservations. Hours: Monday: 11:30 AM – 10:00 PM; Tuesday: 11:30 AM – 10:00 PM; Wednesday: 11:30 AM – 10:00 PM; Thursday: 11:30 AM – 10:00 PM; Friday: 11:30 AM – 10:00 PM; Saturday: 11:30 AM – 10:00 PM; Sunday: 11:30 AM – 10:00 PM.",
       "lat": 34.0157467,
       "lng": -118.4982745,
       "category": "restaurant"
@@ -4369,7 +4674,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=856200445118731083&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Huckleberry Bakery & Cafe",
-      "text": "Huckleberry Bakery & Cafe is a café business on Google Maps. Rated 4.2 out of 5 from 1,306 ratings. Status: open.",
+      "text": "Huckleberry Bakery & Cafe is a café business on Google Maps. Rated 4.2 out of 5 from 1,306 ratings. Status: open. Price level: moderate ($$). Price per person: $20–30. Latest weekday closing time: 3 pm. Hours: Monday: 7:00 AM – 3:00 PM; Tuesday: 7:00 AM – 3:00 PM; Wednesday: 7:00 AM – 3:00 PM; Thursday: 7:00 AM – 3:00 PM; Friday: 7:00 AM – 3:00 PM; Saturday: 7:00 AM – 3:00 PM; Sunday: 7:00 AM – 3:00 PM.",
       "lat": 34.023869399999995,
       "lng": -118.4920639,
       "category": "cafe"
