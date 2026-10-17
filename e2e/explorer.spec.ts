@@ -59,8 +59,10 @@ test("neighborhood evidence, map filters, real API analysis and cited follow-up 
   const card = page.locator(".opportunity-card").first();
   await expect(card.locator(".gap-type")).toHaveText("Poorly served");
   await expect(card.locator(".card-signals li").first()).toContainText(
-    "Based on 2 census tracts",
+    "pharmacies in the circle",
   );
+  // Cards state what's nearby, never how the analysis was made.
+  await expect(card.locator(".card-signals")).not.toContainText("Based on");
   await page.locator("#report-businesses > summary").click();
   const summary = page.locator(".business-list .review-summary").first();
   await expect(summary).toContainText("Known for:");
