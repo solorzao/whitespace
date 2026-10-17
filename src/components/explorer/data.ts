@@ -1,6 +1,15 @@
+import type { GapType } from "@/lib/analysis/candidates";
 import type { SourceDoc } from "@/lib/types";
 import { types } from "./map/sources";
 import type { Analysis, MapRecord, Report } from "./types";
+
+export const GAP_LABELS: Record<GapType, string> = {
+  unserved: "Unserved",
+  poorly_served: "Poorly served",
+  mismatched: "Mismatched",
+};
+const strings = (value: unknown) =>
+  Array.isArray(value) && value.every((item) => typeof item === "string");
 
 export function mapRecords(docs: SourceDoc[]): MapRecord[] {
   return docs.flatMap((doc) => {
@@ -76,8 +85,26 @@ export function isAnalysis(value: unknown): value is Analysis {
           (field) => typeof field === "string",
         ) &&
         Array.isArray(c.evidence) &&
-        c.evidence.every((id) => typeof id === "string"),
+        c.evidence.every((id) => typeof id === "string") &&
+        (c.gapType === undefined || Object.hasOwn(GAP_LABELS, c.gapType)),
     ) &&
+    (data.signals === undefined ||
+      (Array.isArray(data.signals) &&
+        data.signals.every(
+          (s) => s && typeof s.category === "string" && strings(s.lines),
+        ))) &&
+    (data.summaries === undefined ||
+      (Array.isArray(data.summaries) &&
+        data.summaries.every(
+          (s) =>
+            s &&
+            typeof s.businessId === "string" &&
+            Number.isFinite(s.reviewCount) &&
+            [s.knownFor, s.complaints].every(
+              (line) => line === null || typeof line === "string",
+            ) &&
+            strings(s.evidence),
+        ))) &&
     (data.errors === undefined || (Array.isArray(data.errors) && data.errors.every(issue => issue && typeof issue.source === 'string'))) &&
     (data.profiles === undefined || (Array.isArray(data.profiles) && data.profiles.every(profile =>
       profile && typeof profile.category === 'string' && Number.isFinite(profile.radiusM) && Number.isFinite(profile.reviewCount) &&

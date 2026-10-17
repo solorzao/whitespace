@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
+  GAP_LABELS,
   mapRecords,
   readReports,
   saveReports,
@@ -8,9 +11,10 @@ import {
   isAnalysis,
   requestJSON,
 } from "../src/components/explorer/data";
+import { ResearchReport } from "../src/components/explorer/report";
 import { mockAnalysis } from "../src/lib/mock";
 import { parsePoint } from "../src/lib/point";
-import type { Report } from "../src/components/explorer/types";
+import type { Analysis, Report } from "../src/components/explorer/types";
 
 const analysis = mockAnalysis({ lat: 34.0195, lng: -118.4912 });
 const report: Report = {
@@ -138,4 +142,93 @@ test("cancelled requests never reach the API", async () => {
   const controller = new AbortController();
   controller.abort();
   await assert.rejects(requestJSON("/api/analyze", {}, controller.signal));
+});
+
+// A report saved before /api/analyze returned gap types, card signals and review summaries.
+function olderReport(): Report {
+  const older: Analysis = structuredClone(analysis);
+  delete older.signals;
+  delete older.summaries;
+  for (const concept of older.concepts) delete concept.gapType;
+  return { ...report, analysis: older };
+}
+const render = (value: Report) =>
+  renderToStaticMarkup(
+    createElement(ResearchReport, {
+      report: value,
+      asking: false,
+      chatError: "",
+      onAsk: async () => false,
+      onLocate: () => {},
+    }),
+  );
+const escaped = (text: string) =>
+  text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#x27;");
+
+test("analysis validation checks gap types, card signals and review summaries, and allows reports without them", () => {
+  assert(analysis.concepts.every((c) => c.gapType));
+  assert(analysis.signals.length && analysis.summaries.length);
+  assert(isAnalysis(olderReport().analysis));
+  let stored = "";
+  const storage = {
+    getItem: () => stored,
+    setItem: (_: string, value: string) => {
+      stored = value;
+    },
+  };
+  saveReports(storage, [olderReport()]);
+  assert.deepEqual(readReports(storage), [olderReport()]);
+
+  const [concept, ...concepts] = analysis.concepts;
+  const [summary, ...summaries] = analysis.summaries;
+  for (const broken of [
+    { concepts: [{ ...concept, gapType: "crowded" }, ...concepts] },
+    { signals: [{ category: "pharmacy", lines: [1] }] },
+    { signals: "Based on 2 census tracts." },
+    { summaries: [{ ...summary, knownFor: 5 }, ...summaries] },
+    { summaries: [{ ...summary, evidence: null }, ...summaries] },
+  ])
+    assert(!isAnalysis({ ...analysis, ...broken }));
+});
+
+test("concept cards show the gap type and signal lines, and businesses show review summaries", () => {
+  const html = render(report);
+  assert.deepEqual(
+    html.match(/<span class="gap-type">[^<]*<\/span>/g),
+    analysis.concepts.map(
+      (c) => `<span class="gap-type">${GAP_LABELS[c.gapType]}</span>`,
+    ),
+  );
+  assert(html.includes(`<span class="gap-type">Poorly served</span>`));
+  for (const line of analysis.signals.flatMap((s) => s.lines))
+    assert(html.includes(`<li>${escaped(line)}</li>`), line);
+
+  const ids = new Set(analysis.businesses.map((b) => b.id));
+  const onMap = analysis.summaries.filter((s) => ids.has(s.businessId));
+  assert(onMap.length > 0);
+  for (const s of onMap) {
+    if (s.knownFor)
+      assert(html.includes(`<strong>Known for:</strong> ${escaped(s.knownFor)}`));
+    if (s.complaints)
+      assert(html.includes(`<strong>Complaints:</strong> ${escaped(s.complaints)}`));
+  }
+  const review = analysis.docs.find((d) => d.id === onMap[0].evidence[0])!;
+  assert(html.includes(`href="${escaped(safeURL(review.url)!)}"`));
+  // Businesses with summaries come first in the list.
+  const first = analysis.businesses.find((b) =>
+    onMap.some((s) => s.businessId === b.id),
+  )!;
+  assert.notEqual(first, analysis.businesses[0]);
+  const list = html.slice(html.indexOf('<ul class="business-list">'));
+  assert(list.indexOf(escaped(first.name)) < list.indexOf("</li>"));
+
+  const older = render(olderReport());
+  for (const name of ["gap-type", "card-signals", "review-summary"])
+    assert(!older.includes(name), name);
+  assert(older.includes("Business opportunities"));
 });
