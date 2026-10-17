@@ -34,6 +34,12 @@ async function check(label: string, point: LatLng, live: boolean) {
     console.log(`  ${c.label.padEnd(16)} ${String(n).padStart(4)}  ${examples.join(", ")}`);
   }
 
+  const rated = area.businesses.filter((b) => b.rating !== undefined);
+  const merged = rated.filter((b) => b.docIds?.length);
+  console.log(`\nRated (Places): ${rated.length}, merged into an OSM business: ${merged.length}`);
+  for (const b of merged) console.log(`  ${b.name} ${b.rating}  ${b.docIds!.join(" + ")}`);
+  for (const b of rated.filter((b) => !b.docIds)) console.log(`  ${b.name} ${b.rating}  new from Places (${b.category})`);
+
   const d = area.demographics;
   console.log("\nDemographics:");
   if (!d) console.log("  none");
