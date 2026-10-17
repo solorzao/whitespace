@@ -8,7 +8,9 @@
 
 import { buildProfile, type ProfileFinding, type SuccessProfile } from "../src/lib/analysis/profile";
 import {
+  buildRequest,
   readTags,
+  TAGGING_MODEL,
   TagReviewsError,
   tagReviews,
   type ReviewTag,
@@ -96,22 +98,13 @@ function cannedChecks() {
     check(throwsTagError(() => readTags(reply({ tags: [] }), reviews)), "a missing reviews array throws");
   }
 
-  console.log("readTags reads only the text after a mid-answer fallback");
+  console.log("The tagging request");
   {
-    const fallback = {
-      content: [
-        { type: "text", text: '{"reviews": [{"id": "', citations: null },
-        { type: "fallback", from: { model: "claude-opus-5-5" }, to: { model: "claude-opus-5" } },
-        {
-          type: "text",
-          text: JSON.stringify({ reviews: [{ id: a, tags: [{ topic: "service", sentiment: "praise", detail: "drop-off" }] }] }),
-          citations: null,
-        },
-      ],
-      stop_reason: "end_turn",
-      stop_details: null,
-    } as unknown as TagsReply;
-    check(readTags(fallback, reviews).length === 1, "parses the fallback model's answer");
+    const params = buildRequest(LAUNDRY_CATEGORY, reviews);
+    check(params.model === "claude-haiku-5-5", `model is ${params.model}`);
+    check(!("fallbacks" in params) && !("betas" in params), "no fallbacks (Haiku 5.5 has none)");
+    check(params.output_config?.effort === "low", "effort is low");
+    check(params.output_config?.format?.type === "json_schema", "structured output with a JSON schema");
   }
 
   console.log("buildProfile needs 6 reviewed competitors");
@@ -227,7 +220,7 @@ async function main() {
     process.exitCode = 1;
     return;
   } else {
-    console.log(`\nLive: tagging ${LAUNDRY_REVIEWS.length} reviews with Claude`);
+    console.log(`\nLive: tagging ${LAUNDRY_REVIEWS.length} reviews with ${TAGGING_MODEL}`);
     const started = Date.now();
     tags = await tagReviews(LAUNDRY_CATEGORY, LAUNDRY_REVIEWS);
     console.log(`  Took ${((Date.now() - started) / 1000).toFixed(1)} s`);

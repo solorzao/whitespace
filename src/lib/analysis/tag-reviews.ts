@@ -4,7 +4,7 @@
 // Relative imports only, so this also runs in the tsx scripts.
 
 import type Anthropic from "@anthropic-ai/sdk";
-import { claude, CLAUDE_MODEL } from "../claude";
+import { claude } from "../claude";
 import { CATEGORY_LABELS } from "../ingest/categories";
 import type { CategoryId, SourceDoc } from "../types";
 import { isTopic, TOPIC_DESCRIPTIONS, TOPICS, type Topic } from "./topics";
@@ -26,11 +26,15 @@ export class TagReviewsError extends Error {
   }
 }
 
-type BetaMessage = Anthropic.Beta.BetaMessage;
-type CreateParams = Anthropic.Beta.Messages.MessageCreateParamsNonStreaming;
+type Message = Anthropic.Message;
+type CreateParams = Anthropic.MessageCreateParamsNonStreaming;
 // The part of a response readTags reads. The check script passes canned replies through it.
-export type TagsReply = Pick<BetaMessage, "content" | "stop_reason" | "stop_details">;
+export type TagsReply = Pick<Message, "content" | "stop_reason" | "stop_details">;
 
+// Haiku rather than the app's CLAUDE_MODEL (Opus): tagging short reviews is high-volume extraction,
+// and Haiku is much faster and about 40x cheaper. Haiku 5.5 has no server-side fallback, so this call
+// sends no `fallbacks` and a decline throws TagReviewsError.
+export const TAGGING_MODEL = "claude-haiku-5-5";
 // Picking topics out of short reviews is extraction, not deep reasoning.
 const EFFORT = "low";
 // 20 competitors with 5 reviews each and up to 3 tags per review is around 8K output tokens,
@@ -96,9 +100,9 @@ export async function tagReviews(category: CategoryId, reviews: SourceDoc[]): Pr
   const docs = reviews.filter((doc) => doc.source === "review").slice(0, MAX_REVIEWS);
   if (docs.length === 0) return [];
 
-  let message: BetaMessage;
+  let message: Message;
   try {
-    message = await claude().beta.messages.create(buildRequest(category, docs), {
+    message = await claude().messages.create(buildRequest(category, docs), {
       timeout: DEADLINE_MS,
       maxRetries: 1,
       signal: AbortSignal.timeout(DEADLINE_MS),
@@ -107,9 +111,6 @@ export async function tagReviews(category: CategoryId, reviews: SourceDoc[]): Pr
     throw new TagReviewsError(`Claude request failed: ${error instanceof Error ? error.message : String(error)}`, {
       cause: error,
     });
-  }
-  if (message.usage.iterations?.some((step) => step.type === "fallback_message")) {
-    console.info(`tag-reviews: ${category} tagged by fallback model ${message.model}`);
   }
   return readTags(message, docs);
 }
@@ -126,11 +127,8 @@ export function buildRequest(category: CategoryId, reviews: SourceDoc[]): Create
     `Tag every review above.`,
   ].join("\n");
   return {
-    model: CLAUDE_MODEL,
+    model: TAGGING_MODEL,
     max_tokens: MAX_TOKENS,
-    // On a safety decline, the API reruns the request on Anthropic's recommended fallback model.
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default",
     thinking: { type: "adaptive" },
     output_config: { effort: EFFORT, format: { type: "json_schema", schema: TAGS_SCHEMA } },
     system: SYSTEM_PROMPT,
@@ -146,10 +144,7 @@ export function readTags(reply: TagsReply, reviews: SourceDoc[]): ReviewTag[] {
   if (reply.stop_reason === "max_tokens") throw new TagReviewsError("the tags were cut off at max_tokens");
   if (reply.stop_reason !== "end_turn") throw new TagReviewsError(`Claude stopped with ${reply.stop_reason}`);
 
-  // After a mid-answer fallback, the declined model's partial text sits before the fallback block.
-  const lastFallback = reply.content.findLastIndex((block) => block.type === "fallback");
   const text = reply.content
-    .slice(lastFallback + 1)
     .flatMap((block) => (block.type === "text" ? [block.text] : []))
     .join("")
     .trim();
