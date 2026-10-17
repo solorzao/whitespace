@@ -131,6 +131,7 @@ export function buildRequest(category: CategoryId, reviews: SourceDoc[]): Create
     // On a safety decline, the API reruns the request on Anthropic's recommended fallback model.
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
+    thinking: { type: "adaptive" },
     output_config: { effort: EFFORT, format: { type: "json_schema", schema: TAGS_SCHEMA } },
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: text }],
