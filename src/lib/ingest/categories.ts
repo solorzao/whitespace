@@ -127,7 +127,7 @@ export function categorizeOsm(tags: Record<string, string | undefined>): Categor
 
 // Google Places (New) types from Table A, so every one is valid in includedTypes.
 // Checked against developers.google.com/maps/documentation/places/web-service/place-types on 2026-10-17.
-// Nearby Search allows at most 50 includedTypes; this is 47.
+// Nearby Search allows at most 50 includedTypes; this is 48.
 export const GOOGLE_TYPES = {
   supermarket: "grocery",
   grocery_store: "grocery",
@@ -174,11 +174,19 @@ export const GOOGLE_TYPES = {
   hardware_store: "hardware",
   home_improvement_store: "hardware",
   garden_center: "hardware",
+  building_materials_store: "hardware",
   bank: "bank",
   book_store: "books",
 } as const satisfies Record<string, CategoryId>;
 
 export const PLACES_INCLUDED_TYPES = Object.keys(GOOGLE_TYPES);
+
+// The Google types for one category, for a Nearby Search limited to that category.
+export function googleTypesFor(category: CategoryId): string[] {
+  return Object.entries(GOOGLE_TYPES)
+    .filter(([, c]) => c === category)
+    .map(([type]) => type);
+}
 
 // Big draws that list our types among theirs (a hotel with a gym and a restaurant, a mall with
 // clothing stores) but aren't the businesses we count. Excluding them leaves Nearby Search's

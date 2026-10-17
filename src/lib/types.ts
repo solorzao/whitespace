@@ -82,6 +82,7 @@ export type AskRequest = {
   question: string;
   docs: SourceDoc[];
   history?: ChatTurn[];
+  center?: LatLng; // the pin, so the answer can fetch reviews for a category the docs don't cover
 };
 
 export type Citation = { id: string; title: string; url: string };
@@ -89,6 +90,7 @@ export type Citation = { id: string; title: string; url: string };
 export type AskResponse = {
   answer: string;
   citations: Citation[];
+  docs?: SourceDoc[]; // fetched while answering; the client adds them to the docs it sends next time
 };
 
 // What collectArea() returns. /api/analyze adds gaps and concepts to this.

@@ -28,7 +28,7 @@ const NEARBY_FIELDS = [
   "googleMapsUri",
 ].map((f) => `places.${f}`);
 
-type Place = {
+export type Place = {
   id: string;
   displayName?: { text: string };
   types?: string[];
@@ -40,7 +40,7 @@ type Place = {
   googleMapsUri?: string;
 };
 
-type Review = {
+export type Review = {
   rating?: number;
   relativePublishTimeDescription?: string;
   text?: { text: string };
@@ -70,15 +70,30 @@ function headers(key: string, fields: string[]) {
   };
 }
 
-async function searchNearby(lat: number, lng: number, radiusM: number, key: string): Promise<Place[]> {
+export type NearbySearch = {
+  lat: number;
+  lng: number;
+  radiusM: number;
+  includedTypes?: string[];
+  // Only places whose main type is one of these. Stricter than includedTypes, which also matches
+  // a furniture store that lists home_improvement_store among its types.
+  includedPrimaryTypes?: string[];
+  rankPreference?: "POPULARITY" | "DISTANCE";
+};
+
+export async function searchNearby(search: NearbySearch, key: string): Promise<Place[]> {
+  const { lat, lng, radiusM, includedTypes = PLACES_INCLUDED_TYPES, includedPrimaryTypes, rankPreference = "POPULARITY" } =
+    search;
+  const types = includedPrimaryTypes
+    ? { includedPrimaryTypes }
+    : { includedTypes, excludedPrimaryTypes: PLACES_EXCLUDED_PRIMARY_TYPES };
   const res = await fetchJson<{ places?: Place[] }>(`${API}/places:searchNearby`, {
     method: "POST",
     headers: headers(key, NEARBY_FIELDS),
     body: JSON.stringify({
-      includedTypes: PLACES_INCLUDED_TYPES,
-      excludedPrimaryTypes: PLACES_EXCLUDED_PRIMARY_TYPES,
+      ...types,
       maxResultCount: MAX_RESULTS,
-      rankPreference: "POPULARITY",
+      rankPreference,
       languageCode: "en",
       locationRestriction: { circle: { center: { latitude: lat, longitude: lng }, radius: radiusM } },
     }),
@@ -88,7 +103,7 @@ async function searchNearby(lat: number, lng: number, radiusM: number, key: stri
 }
 
 // One failed details call loses that place's reviews, not the whole adapter.
-async function fetchReviews(placeId: string, key: string): Promise<Review[]> {
+export async function fetchReviews(placeId: string, key: string): Promise<Review[]> {
   try {
     const res = await fetchJson<{ reviews?: Review[] }>(`${API}/places/${placeId}?languageCode=en`, {
       headers: headers(key, ["id", "reviews"]),
@@ -100,9 +115,9 @@ async function fetchReviews(placeId: string, key: string): Promise<Review[]> {
   }
 }
 
-type Parsed = { business: Business; ratingCount: number };
+export type Parsed = { business: Business; ratingCount: number };
 
-function parsePlace(place: Place): Parsed | null {
+export function parsePlace(place: Place): Parsed | null {
   const name = place.displayName?.text;
   const category = categorizeGoogle(place.types ?? [], place.primaryType);
   if (!name || !place.location || !category) return null;
@@ -121,15 +136,17 @@ function parsePlace(place: Place): Parsed | null {
   };
 }
 
-function placeDoc({ business: b, ratingCount }: Parsed): SourceDoc {
+// note adds a sentence, such as how far the place is from the pin.
+export function placeDoc({ business: b, ratingCount }: Parsed, note?: string): SourceDoc {
   const parts = [`${b.name} is a ${CATEGORY_LABELS[b.category].toLowerCase()} business on Google Maps.`];
   if (b.rating !== undefined) parts.push(`Rated ${b.rating} out of 5 from ${ratingCount.toLocaleString("en-US")} ratings.`);
   if (b.status) parts.push(`Status: ${STATUS_TEXT[b.status]}.`);
+  if (note) parts.push(note);
   return { id: b.id, source: "places", url: b.url, title: b.name, text: parts.join(" "), lat: b.lat, lng: b.lng, category: b.category };
 }
 
-function reviewDocs(b: Business, reviews: Review[]): SourceDoc[] {
-  const placeId = b.id.slice("places:".length);
+export function reviewDocs(b: Business, reviews: Review[]): SourceDoc[] {
+  const placeId = placeIdOf(b);
   return reviews
     .filter((r) => r.text?.text)
     .map((r, n) => {
@@ -151,19 +168,25 @@ function reviewDocs(b: Business, reviews: Review[]): SourceDoc[] {
     });
 }
 
+export const placeIdOf = (b: Business) => b.id.slice("places:".length);
+
+export function placesKey(): string {
+  const key = process.env.GOOGLE_PLACES_API_KEY;
+  if (!key) throw new Error("GOOGLE_PLACES_API_KEY is not set");
+  return key;
+}
+
 export function fetchPlaces(lat: number, lng: number, radiusM: number): Promise<AdapterResult<PlacesData>> {
   return settle<PlacesData>(async () => {
-    const key = process.env.GOOGLE_PLACES_API_KEY;
-    if (!key) throw new Error("GOOGLE_PLACES_API_KEY is not set");
-
-    const parsed = (await searchNearby(lat, lng, radiusM, key)).map(parsePlace).filter((p) => p !== null);
+    const key = placesKey();
+    const parsed = (await searchNearby({ lat, lng, radiusM }, key)).map(parsePlace).filter((p) => p !== null);
     const mostRated = [...parsed].sort((a, b) => b.ratingCount - a.ratingCount).slice(0, REVIEWED_PLACES);
     const reviews = await Promise.all(
-      mostRated.map(async (p) => reviewDocs(p.business, await fetchReviews(p.business.id.slice("places:".length), key))),
+      mostRated.map(async (p) => reviewDocs(p.business, await fetchReviews(placeIdOf(p.business), key))),
     );
 
     return {
-      docs: [...parsed.map(placeDoc), ...reviews.flat()],
+      docs: [...parsed.map((p) => placeDoc(p)), ...reviews.flat()],
       data: { businesses: parsed.map((p) => p.business) },
     };
   });

@@ -110,6 +110,20 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 - Otherwise run all adapters in parallel with `Promise.allSettled`, each with its own timeout, and merge the results.
 - Returns `{ center, radiusM, businesses, demographics, categoryCounts, docs, errors }`, which Oliver uses to build the `/api/analyze` response.
 
+### Category reviews
+
+Added after the first four PRs. The general reviews come from the 8 most-rated places, which are mostly restaurants and bars, so they say little about a laundromat or a daycare. Category reviews are fetched for the category being evaluated.
+
+- `getCategoryReviews(lat, lng, category)` in `category-reviews.ts`: a Nearby Search for places whose primary Google type is in that category (`includedPrimaryTypes`), ranked by popularity, within 800 m. Searching by primary type keeps furniture stores that merely list `home_improvement_store` out of hardware, for example. If fewer than 3 competitors are found, a second search ranked by distance looks out to 2 km. The nearest competitors and their distance are evidence for a gap, too.
+- Reviews for the 5 most-rated competitors, up to 25 reviews in all. That's 6–7 billed calls per category.
+- Output: the competitors, each with its distance and whether it's inside the circle, plus `places:` and `review:` docs in the usual format. The place docs say how far each competitor is from the pin.
+- Saved demo areas: `ingest-demo.ts` also saves category reviews for all 20 categories, about 130 calls per area, once. `getCategoryReviews` uses the saved data near a demo center, the same way `collectArea` does.
+- For `/api/analyze` (Oliver): after the gap score, call `getCategoryReviews` for the top 3 gap categories and pass the results to `addCategoryReviews(area, results)` before `generateConcepts`. That helper puts up to 8 reviews per category ahead of the general reviews, so they fit in the concepts prompt. It also adds in-circle competitors that aren't on the map yet.
+- For `/api/ask` (Oliver): `CATEGORY_REVIEWS_TOOL` is a tool definition for Claude, and `runCategoryReviewsTool(input, center)` runs it. Claude calls it when a question is about a kind of business the documents don't cover well.
+- Contract changes:
+  - `AskRequest` gains `center`, so the tool knows where to search.
+  - `AskResponse` gains `docs`, the newly fetched documents. The client adds them to the docs it sends with the next question.
+
 ## Pull requests
 
 Post in the team chat when each PR is up.
@@ -120,6 +134,7 @@ Post in the team chat when each PR is up.
 | 2 | Overpass, Census, `collectArea`, `check-area.ts` | The counts and demographics for both demo areas look right when checked by hand, and Oliver can call `collectArea` from `/api/analyze`. |
 | 3 | Places, reviews, merging duplicate businesses | Each demo area has ratings and reviews. |
 | 4 | Wikipedia, `ingest-demo.ts`, `data/demo/*.json` | Both saved demo files are committed, and a pin near a demo center loads instantly. |
+| 5 | Category reviews, `addCategoryReviews`, the ask tool, saved category reviews | Both demo areas have reviews for every category, and Oliver can call them from `/api/analyze` and `/api/ask`. |
 
 ## Timing
 

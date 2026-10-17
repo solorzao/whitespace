@@ -33,7 +33,7 @@ Click a US neighborhood and Whitespace shows which businesses it is missing and 
 | --- | --- | --- | --- |
 | OpenStreetMap (Overpass) | All `shop`, `amenity` and `leisure` nodes and ways within 800 m, mapped to about 20 categories with a hardcoded dictionary. | 1 | None |
 | TIGERweb and ACS 2020–2024 5-year | The tracts whose center point is inside the circle, then their population, median income, median age, % renters, % households with kids and % households with no vehicle, combined for the circle. | 3 | Census API key |
-| Google Places (New) | Nearby Search, limited to our categories and ranked by popularity: 20 results with name, types, rating, userRatingCount and businessStatus. Place Details with reviews for the top 8 by rating count. | About 9 | Google Cloud key with billing on |
+| Google Places (New) | Nearby Search, limited to our categories and ranked by popularity: 20 results with name, types, rating, userRatingCount and businessStatus. Place Details with reviews for the top 8 by rating count. **Category reviews:** for a category being evaluated, its competitors (out to 2 km when there are fewer than 3 nearby) and reviews of the top 5. | About 9, plus about 6 per category reviewed | Google Cloud key with billing on |
 | Wikipedia (GeoSearch) | Up to 30 geotagged articles within 1.5 km, for follow-up answers only. Built last and cut first. | 2 | None |
 
 If a source breaks, drop it. Overpass, Census and Claude alone are still a demo.
@@ -41,8 +41,8 @@ If a source breaks, drop it. Overpass, Census and Claude alone are still a demo.
 ## How it works
 
 1. **Gap score** (pure code, about 20 lines). For each category, `count_per_1k = count / (pop / 1000)`. Compare it to a hardcoded table of typical US urban densities: `gap = benchmark - local`. Multiply by a demand-fit weight from the demographics (more renters → laundromat, more kids → daycare, higher income → specialty grocery). Sort.
-2. **Analysis.** One Claude call with the gap table, demographics and review snippets. It returns JSON with a strict schema: the top 3 concepts, each with its rationale, evidence and risk. Evidence is a list of `SourceDoc` IDs, so each card can link to and highlight its sources.
-3. **Follow-up answers (retrieval).** `/api/ask` builds the context from the area's documents: the demographics and gap table always, the businesses as a compact table, and the reviews that best match the question. Claude answers only from those documents and cites them by ID, and the server turns the IDs into links. If the documents don't answer the question, the answer says so.
+2. **Analysis.** Fetch category reviews for the top 3 gap categories (`collectCategoryReviews`, then `addCategoryReviews`), so the reviews describe the businesses being proposed rather than the area's most popular restaurants. Then one Claude call with the gap table, demographics and review snippets. It returns JSON with a strict schema: the top 3 concepts, each with its rationale, evidence and risk. Evidence is a list of `SourceDoc` IDs, so each card can link to and highlight its sources.
+3. **Follow-up answers (retrieval).** `/api/ask` builds the context from the area's documents: the demographics and gap table always, the businesses as a compact table, and the reviews that best match the question. When the question is about a kind of business the documents don't cover well, Claude calls the `get_category_reviews` tool (`CATEGORY_REVIEWS_TOOL`), and the response returns the new documents so the front end can send them with the next question. Claude answers only from those documents and cites them by ID, and the server turns the IDs into links. If the documents don't answer the question, the answer says so.
 
 The API keeps no state between calls. `/api/analyze` returns the area's documents, and the front end sends them back with each question. Serverless functions don't share memory, so an in-memory cache can't be relied on to connect the two calls.
 
@@ -76,11 +76,13 @@ POST /api/analyze { lat, lng }
     docs: [SourceDoc]
   }
 
-POST /api/ask { question, docs, history? }
-→ { answer, citations: [{ id, title, url }] }
+POST /api/ask { question, docs, history?, center? }
+→ { answer, citations: [{ id, title, url }], docs? }
 ```
 
 `businesses[].id` is a `SourceDoc` ID, so cards and citations can highlight the matching dots.
+
+`center` in `/api/ask` is the pin, so the answer can fetch category reviews. Any `docs` in the response were fetched while answering. The front end adds them to the docs it sends with the next question, and drops duplicates by `id`.
 
 ## Demonstration data
 
