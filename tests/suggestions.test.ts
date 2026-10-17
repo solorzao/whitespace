@@ -4,7 +4,7 @@ import { isAnalysis } from "../src/components/explorer/data";
 import { NO_DOCS_ANSWER, REFUSAL_ANSWER } from "../src/lib/ask/answer";
 import { DEMO_AREAS, findDemoArea } from "../src/lib/ingest/demo-areas";
 import { SUGGESTIONS, SUGGESTION_PLACES } from "../src/lib/suggestions";
-import { savedThread } from "../src/lib/suggestions/saved";
+import { CAVEAT, savedThread } from "../src/lib/suggestions/saved";
 
 test("suggestions have unique ids and questions, at listed places", () => {
   assert.equal(new Set(SUGGESTIONS.map((s) => s.id)).size, SUGGESTIONS.length);
@@ -36,6 +36,10 @@ test("every suggestion has a saved thread that answers its question from the pla
     assert(citations.every((c) => ids.has(c.id)), `${s.id}: a citation isn't in the docs`);
     const markers = [...answer.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1]));
     assert(markers.every((n) => n >= 1 && n <= citations.length), `${s.id}: a marker has no citation`);
+    // Shown as finished research: nothing about missing data or how the answer was made.
+    assert.equal(CAVEAT.exec(answer)?.[0], undefined, `${s.id}: the answer talks about its evidence`);
+    for (const c of thread.analysis.concepts)
+      assert.equal(CAVEAT.exec(`${c.title} ${c.rationale} ${c.risk}`)?.[0], undefined, `${s.id}: the ${c.category} card`);
   }
 });
 

@@ -22,6 +22,7 @@ import { readSaved } from "../src/lib/ingest/saved";
 import { SUGGESTIONS, type SuggestionPlace } from "../src/lib/suggestions";
 import {
   ANSWERS_FILE,
+  CAVEAT,
   isDemoPlace,
   placeAnalysisPath,
   SUGGESTIONS_DIR,
@@ -35,6 +36,10 @@ function problems(r: AnalysisResult): string[] {
   const ids = new Set(r.docs.map((d) => d.id));
   const missing = r.concepts.flatMap((c) => c.evidence).filter((id) => !ids.has(id));
   if (missing.length) found.push(`concept evidence not in docs: ${missing.join(", ")}`);
+  for (const c of r.concepts) {
+    const caveat = CAVEAT.exec(`${c.title} ${c.rationale} ${c.risk}`);
+    if (caveat) found.push(`the ${c.category} card says "${caveat[0]}"`);
+  }
   // Follow-up questions send these docs to /api/ask, which refuses more than this (src/app/api/ask/route.ts).
   const chars = r.docs.reduce((sum, d) => sum + d.id.length + d.title.length + d.text.length, 0);
   if (r.docs.length > 1500 || chars > 600_000) found.push(`${r.docs.length} docs, ${chars} chars: over the /api/ask limits`);
@@ -128,9 +133,15 @@ async function main() {
       }
       try {
         const response = await answerQuestion({ question: s.question, docs: analysis.docs });
-        answers[s.id] = { question: s.question, response, createdAt: new Date().toISOString() };
         console.log(`\n  [${s.id}] ${s.question}\n  ${response.answer.replace(/\n/g, "\n  ")}`);
         console.log(`  ${response.citations.length} citations`);
+        const caveat = CAVEAT.exec(response.answer);
+        if (caveat || response.citations.length === 0) {
+          ok = false;
+          console.error(`  [${s.id}] not saved: ${caveat ? `the answer says "${caveat[0]}"` : "no citations"}. Reword the question.`);
+          continue;
+        }
+        answers[s.id] = { question: s.question, response, createdAt: new Date().toISOString() };
         // Saved after every answer, so a failure later in the run keeps what's done.
         await writeFile(ANSWERS_FILE, `${JSON.stringify(answers, null, 2)}\n`);
       } catch (error) {

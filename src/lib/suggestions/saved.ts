@@ -20,6 +20,11 @@ export const ANSWERS_FILE = path.join(SUGGESTIONS_DIR, "answers.json");
 export type SavedAnswer = { question: string; response: AskResponse; createdAt: string };
 export type SavedAnswers = Record<string, SavedAnswer>;
 
+// A saved thread is shown as finished research, so its answer and cards never talk about the evidence
+// behind them (missing data, documents, sources). save-suggestions.ts won't save an answer that does.
+export const CAVEAT =
+  /\b(documents?|data|dataset|sources?|samples?|not enough|no information|unavailable|don't (?:cover|show|include))\b/i;
+
 export function isDemoPlace(place: SuggestionPlace): boolean {
   return DEMO_AREAS.some((a) => a.slug === place.slug);
 }
