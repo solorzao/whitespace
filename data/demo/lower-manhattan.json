@@ -32,6 +32,10 @@
       "status": "open",
       "reviewCount": 5969,
       "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 30
+      },
       "hours": [
         "Monday: 11:00 AM – 12:00 AM",
         "Tuesday: 11:00 AM – 12:00 AM",
@@ -560,6 +564,10 @@
       "status": "open",
       "reviewCount": 3555,
       "priceLevel": 4,
+      "priceRange": {
+        "min": 100,
+        "max": null
+      },
       "hours": [
         "Monday: 12:00 – 10:00 PM",
         "Tuesday: 12:00 – 10:00 PM",
@@ -1512,6 +1520,10 @@
       "status": "open",
       "reviewCount": 8691,
       "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 60
+      },
       "hours": [
         "Monday: 11:00 AM – 2:00 AM",
         "Tuesday: 11:00 AM – 2:00 AM",
@@ -2384,6 +2396,10 @@
       "status": "open",
       "reviewCount": 4119,
       "priceLevel": 4,
+      "priceRange": {
+        "min": 100,
+        "max": null
+      },
       "hours": [
         "Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM",
         "Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM",
@@ -2551,6 +2567,10 @@
       "status": "open",
       "reviewCount": 6244,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: Open 24 hours",
         "Tuesday: Open 24 hours",
@@ -2806,6 +2826,10 @@
       "status": "open",
       "reviewCount": 2278,
       "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 30
+      },
       "hours": [
         "Monday: 7:30 AM – 7:30 PM",
         "Tuesday: 7:30 AM – 7:30 PM",
@@ -2880,6 +2904,10 @@
       "status": "open",
       "reviewCount": 3107,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: 6:30 AM – 11:00 PM",
         "Tuesday: 6:30 AM – 11:00 PM",
@@ -3106,6 +3134,10 @@
       "status": "open",
       "reviewCount": 1975,
       "priceLevel": 4,
+      "priceRange": {
+        "min": 100,
+        "max": null
+      },
       "hours": [
         "Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM",
         "Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM",
@@ -3196,6 +3228,10 @@
       "status": "open",
       "reviewCount": 7357,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: 10:00 AM – 3:00 AM",
         "Tuesday: 10:00 AM – 3:00 AM",
@@ -3236,6 +3272,10 @@
       "status": "open",
       "reviewCount": 3562,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: 11:00 AM – 11:00 PM",
         "Tuesday: 11:00 AM – 11:00 PM",
@@ -4184,6 +4224,10 @@
       "status": "open",
       "reviewCount": 2382,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: 7:00 AM – 6:00 PM",
         "Tuesday: 7:00 AM – 6:00 PM",
@@ -4963,6 +5007,10 @@
       "status": "open",
       "reviewCount": 595,
       "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 60
+      },
       "hours": [
         "Monday: 12:00 PM – 1:00 AM",
         "Tuesday: 12:00 PM – 1:00 AM",
@@ -5117,6 +5165,10 @@
       "status": "open",
       "reviewCount": 6936,
       "priceLevel": 2,
+      "priceRange": {
+        "min": 20,
+        "max": 70
+      },
       "hours": [
         "Monday: 11:30 AM – 12:00 AM",
         "Tuesday: 11:30 AM – 12:00 AM",
@@ -5285,6 +5337,10 @@
       "url": "https://maps.google.com/?cid=11726917301095402965&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "reviewCount": 970,
       "priceLevel": 1,
+      "priceRange": {
+        "min": 10,
+        "max": 20
+      },
       "hours": [
         "Monday: 7:30 AM – 9:00 PM",
         "Tuesday: 7:30 AM – 10:00 PM",
@@ -11547,7 +11603,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=16891641895788260568&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "The Dead Rabbit",
-      "text": "The Dead Rabbit is a bar business on Google Maps. Rated 4.7 out of 5 from 8,691 ratings. Status: open. Price level: moderate ($$). Latest weekday closing time: 3 am. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 11:00 AM – 2:00 AM; Tuesday: 11:00 AM – 2:00 AM; Wednesday: 11:00 AM – 2:00 AM; Thursday: 11:00 AM – 2:00 AM; Friday: 11:00 AM – 3:00 AM; Saturday: 11:00 AM – 3:00 AM; Sunday: 11:00 AM – 2:00 AM.",
+      "text": "The Dead Rabbit is a bar business on Google Maps. Rated 4.7 out of 5 from 8,691 ratings. Status: open. Price level: moderate ($$). Price per person: $20–60. Latest weekday closing time: 3 am. Offers delivery, dine-in, takeout, reservations. Hours: Monday: 11:00 AM – 2:00 AM; Tuesday: 11:00 AM – 2:00 AM; Wednesday: 11:00 AM – 2:00 AM; Thursday: 11:00 AM – 2:00 AM; Friday: 11:00 AM – 3:00 AM; Saturday: 11:00 AM – 3:00 AM; Sunday: 11:00 AM – 2:00 AM.",
       "lat": 40.7032685,
       "lng": -74.0110218,
       "category": "bar"
@@ -11567,7 +11623,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=10332424901773702701&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Joe’s Pizza",
-      "text": "Joe’s Pizza is a restaurant business on Google Maps. Rated 4.5 out of 5 from 7,357 ratings. Status: open. Price level: inexpensive ($). Latest weekday closing time: 5 am. Offers delivery, dine-in, takeout. No reservations. Hours: Monday: 10:00 AM – 3:00 AM; Tuesday: 10:00 AM – 3:00 AM; Wednesday: 10:00 AM – 3:00 AM; Thursday: 10:00 AM – 4:00 AM; Friday: 10:00 AM – 5:00 AM; Saturday: 10:00 AM – 5:00 AM; Sunday: 10:00 AM – 3:00 AM.",
+      "text": "Joe’s Pizza is a restaurant business on Google Maps. Rated 4.5 out of 5 from 7,357 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 5 am. Offers delivery, dine-in, takeout. No reservations. Hours: Monday: 10:00 AM – 3:00 AM; Tuesday: 10:00 AM – 3:00 AM; Wednesday: 10:00 AM – 3:00 AM; Thursday: 10:00 AM – 4:00 AM; Friday: 10:00 AM – 5:00 AM; Saturday: 10:00 AM – 5:00 AM; Sunday: 10:00 AM – 3:00 AM.",
       "lat": 40.7100842,
       "lng": -74.007677,
       "category": "restaurant"
@@ -11577,7 +11633,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=18160583941611163358&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Fraunces Tavern",
-      "text": "Fraunces Tavern is a restaurant business on Google Maps. Rated 4.5 out of 5 from 6,936 ratings. Status: open. Price level: moderate ($$). Latest weekday closing time: 1 am. Offers dine-in, takeout, reservations. No delivery. Hours: Monday: 11:30 AM – 12:00 AM; Tuesday: 11:30 AM – 12:00 AM; Wednesday: 11:30 AM – 12:00 AM; Thursday: 11:30 AM – 1:00 AM; Friday: 11:30 AM – 1:00 AM; Saturday: 11:00 AM – 1:00 AM; Sunday: 11:00 AM – 12:00 AM.",
+      "text": "Fraunces Tavern is a restaurant business on Google Maps. Rated 4.5 out of 5 from 6,936 ratings. Status: open. Price level: moderate ($$). Price per person: $20–70. Latest weekday closing time: 1 am. Offers dine-in, takeout, reservations. No delivery. Hours: Monday: 11:30 AM – 12:00 AM; Tuesday: 11:30 AM – 12:00 AM; Wednesday: 11:30 AM – 12:00 AM; Thursday: 11:30 AM – 1:00 AM; Friday: 11:30 AM – 1:00 AM; Saturday: 11:00 AM – 1:00 AM; Sunday: 11:00 AM – 12:00 AM.",
       "lat": 40.7034181,
       "lng": -74.01136489999999,
       "category": "restaurant"
@@ -11587,7 +11643,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=6967162704871465124&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Manhatta",
-      "text": "Manhatta is a restaurant business on Google Maps. Rated 4.7 out of 5 from 4,119 ratings. Status: open. Price level: very expensive ($$$$). Latest weekday closing time: 10:30 pm. Offers dine-in, reservations. No delivery. Hours: Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Wednesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Thursday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Friday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Saturday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Sunday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM.",
+      "text": "Manhatta is a restaurant business on Google Maps. Rated 4.7 out of 5 from 4,119 ratings. Status: open. Price level: very expensive ($$$$). Price per person: $100+. Latest weekday closing time: 10:30 pm. Offers dine-in, reservations. No delivery. Hours: Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Wednesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Thursday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Friday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Saturday: 11:30 AM – 2:00 PM, 5:00 – 10:30 PM; Sunday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM.",
       "lat": 40.707997399999996,
       "lng": -74.00888259999999,
       "category": "restaurant"
@@ -11607,7 +11663,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=17579726522195362484&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Liberty Bagels Wall Street",
-      "text": "Liberty Bagels Wall Street is a bakery business on Google Maps. Rated 4.5 out of 5 from 2,382 ratings. Status: open. Price level: inexpensive ($). Latest weekday closing time: 6 pm. Hours: Monday: 7:00 AM – 6:00 PM; Tuesday: 7:00 AM – 6:00 PM; Wednesday: 7:00 AM – 6:00 PM; Thursday: 7:00 AM – 6:00 PM; Friday: 7:00 AM – 6:00 PM; Saturday: 7:00 AM – 6:00 PM; Sunday: 7:00 AM – 6:00 PM.",
+      "text": "Liberty Bagels Wall Street is a bakery business on Google Maps. Rated 4.5 out of 5 from 2,382 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 6 pm. Hours: Monday: 7:00 AM – 6:00 PM; Tuesday: 7:00 AM – 6:00 PM; Wednesday: 7:00 AM – 6:00 PM; Thursday: 7:00 AM – 6:00 PM; Friday: 7:00 AM – 6:00 PM; Saturday: 7:00 AM – 6:00 PM; Sunday: 7:00 AM – 6:00 PM.",
       "lat": 40.70587150000001,
       "lng": -74.0129819,
       "category": "bakery"
@@ -11617,7 +11673,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=11726917301095402965&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Conwell Coffee & Cocktail Hall",
-      "text": "Conwell Coffee & Cocktail Hall is a café business on Google Maps. Rated 4.3 out of 5 from 970 ratings. Status: open. Price level: inexpensive ($). Latest weekday closing time: 10 pm. Hours: Monday: 7:30 AM – 9:00 PM; Tuesday: 7:30 AM – 10:00 PM; Wednesday: 7:30 AM – 10:00 PM; Thursday: 7:30 AM – 10:00 PM; Friday: 7:30 AM – 10:00 PM; Saturday: 9:00 AM – 11:00 PM; Sunday: 9:00 AM – 9:00 PM.",
+      "text": "Conwell Coffee & Cocktail Hall is a café business on Google Maps. Rated 4.3 out of 5 from 970 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 10 pm. Hours: Monday: 7:30 AM – 9:00 PM; Tuesday: 7:30 AM – 10:00 PM; Wednesday: 7:30 AM – 10:00 PM; Thursday: 7:30 AM – 10:00 PM; Friday: 7:30 AM – 10:00 PM; Saturday: 9:00 AM – 11:00 PM; Sunday: 9:00 AM – 9:00 PM.",
       "lat": 40.7054353,
       "lng": -74.0091413,
       "category": "cafe"
@@ -11637,7 +11693,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=14515069883813908268&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "LOS TACOS No.1",
-      "text": "LOS TACOS No.1 is a restaurant business on Google Maps. Rated 4.8 out of 5 from 3,562 ratings. Status: open. Price level: inexpensive ($). Latest weekday closing time: 11 pm. Hours: Monday: 11:00 AM – 11:00 PM; Tuesday: 11:00 AM – 11:00 PM; Wednesday: 11:00 AM – 11:00 PM; Thursday: 11:00 AM – 11:00 PM; Friday: 11:00 AM – 11:00 PM; Saturday: 11:00 AM – 11:00 PM; Sunday: 11:00 AM – 10:00 PM.",
+      "text": "LOS TACOS No.1 is a restaurant business on Google Maps. Rated 4.8 out of 5 from 3,562 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 11 pm. Hours: Monday: 11:00 AM – 11:00 PM; Tuesday: 11:00 AM – 11:00 PM; Wednesday: 11:00 AM – 11:00 PM; Thursday: 11:00 AM – 11:00 PM; Friday: 11:00 AM – 11:00 PM; Saturday: 11:00 AM – 11:00 PM; Sunday: 11:00 AM – 10:00 PM.",
       "lat": 40.7142906,
       "lng": -74.00871029999999,
       "category": "restaurant"
@@ -11647,7 +11703,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=18122407860095452109&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Old Mates Pub",
-      "text": "Old Mates Pub is a bar business on Google Maps. Rated 4.4 out of 5 from 595 ratings. Status: open. Price level: moderate ($$). Latest weekday closing time: 2 am. Hours: Monday: 12:00 PM – 1:00 AM; Tuesday: 12:00 PM – 1:00 AM; Wednesday: 12:00 PM – 1:00 AM; Thursday: 12:00 PM – 1:00 AM; Friday: 12:00 PM – 2:00 AM; Saturday: 12:00 PM – 2:00 AM; Sunday: 12:00 – 11:00 PM.",
+      "text": "Old Mates Pub is a bar business on Google Maps. Rated 4.4 out of 5 from 595 ratings. Status: open. Price level: moderate ($$). Price per person: $20–60. Latest weekday closing time: 2 am. Hours: Monday: 12:00 PM – 1:00 AM; Tuesday: 12:00 PM – 1:00 AM; Wednesday: 12:00 PM – 1:00 AM; Thursday: 12:00 PM – 1:00 AM; Friday: 12:00 PM – 2:00 AM; Saturday: 12:00 PM – 2:00 AM; Sunday: 12:00 – 11:00 PM.",
       "lat": 40.7060643,
       "lng": -74.0043451,
       "category": "bar"
@@ -11657,7 +11713,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=11727143204444923317&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Delmonico's",
-      "text": "Delmonico's is a restaurant business on Google Maps. Rated 4.5 out of 5 from 3,555 ratings. Status: open. Price level: very expensive ($$$$). Latest weekday closing time: 10 pm. Hours: Monday: 12:00 – 10:00 PM; Tuesday: 12:00 – 10:00 PM; Wednesday: 12:00 – 10:00 PM; Thursday: 12:00 – 10:00 PM; Friday: 12:00 – 10:00 PM; Saturday: 12:00 – 10:00 PM; Sunday: 12:00 – 9:00 PM.",
+      "text": "Delmonico's is a restaurant business on Google Maps. Rated 4.5 out of 5 from 3,555 ratings. Status: open. Price level: very expensive ($$$$). Price per person: $100+. Latest weekday closing time: 10 pm. Hours: Monday: 12:00 – 10:00 PM; Tuesday: 12:00 – 10:00 PM; Wednesday: 12:00 – 10:00 PM; Thursday: 12:00 – 10:00 PM; Friday: 12:00 – 10:00 PM; Saturday: 12:00 – 10:00 PM; Sunday: 12:00 – 9:00 PM.",
       "lat": 40.705026800000006,
       "lng": -74.0102557,
       "category": "restaurant"
@@ -11667,7 +11723,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=9576094421762484060&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "McDonald's",
-      "text": "McDonald's is a fast food business on Google Maps. Rated 3.8 out of 5 from 6,244 ratings. Status: open. Price level: inexpensive ($). Open 24 hours. Offers delivery, dine-in, takeout. Hours: Monday: Open 24 hours; Tuesday: Open 24 hours; Wednesday: Open 24 hours; Thursday: Open 24 hours; Friday: Open 24 hours; Saturday: Open 24 hours; Sunday: Open 24 hours.",
+      "text": "McDonald's is a fast food business on Google Maps. Rated 3.8 out of 5 from 6,244 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Open 24 hours. Offers delivery, dine-in, takeout. Hours: Monday: Open 24 hours; Tuesday: Open 24 hours; Wednesday: Open 24 hours; Thursday: Open 24 hours; Friday: Open 24 hours; Saturday: Open 24 hours; Sunday: Open 24 hours.",
       "lat": 40.7094789,
       "lng": -74.01003639999999,
       "category": "fast_food"
@@ -11687,7 +11743,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=16791775602704842009&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Chick-fil-A",
-      "text": "Chick-fil-A is a fast food business on Google Maps. Rated 4.4 out of 5 from 3,107 ratings. Status: open. Price level: inexpensive ($). Latest weekday closing time: 11 pm. Hours: Monday: 6:30 AM – 11:00 PM; Tuesday: 6:30 AM – 11:00 PM; Wednesday: 6:30 AM – 11:00 PM; Thursday: 6:30 AM – 11:00 PM; Friday: 6:30 AM – 11:00 PM; Saturday: 6:30 AM – 11:00 PM; Sunday: Closed.",
+      "text": "Chick-fil-A is a fast food business on Google Maps. Rated 4.4 out of 5 from 3,107 ratings. Status: open. Price level: inexpensive ($). Price per person: $10–20. Latest weekday closing time: 11 pm. Hours: Monday: 6:30 AM – 11:00 PM; Tuesday: 6:30 AM – 11:00 PM; Wednesday: 6:30 AM – 11:00 PM; Thursday: 6:30 AM – 11:00 PM; Friday: 6:30 AM – 11:00 PM; Saturday: 6:30 AM – 11:00 PM; Sunday: Closed.",
       "lat": 40.7104194,
       "lng": -74.00854989999999,
       "category": "fast_food"
@@ -11707,7 +11763,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=15549094825839982866&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "Crown Shy",
-      "text": "Crown Shy is a restaurant business on Google Maps. Rated 4.5 out of 5 from 1,975 ratings. Status: open. Price level: very expensive ($$$$). Latest weekday closing time: 10 pm. Hours: Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Wednesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Thursday: 11:30 AM – 2:00 PM, 5:00 – 10:00 PM; Friday: 5:00 – 10:00 PM; Saturday: 5:00 – 10:00 PM; Sunday: 5:00 – 9:30 PM.",
+      "text": "Crown Shy is a restaurant business on Google Maps. Rated 4.5 out of 5 from 1,975 ratings. Status: open. Price level: very expensive ($$$$). Price per person: $100+. Latest weekday closing time: 10 pm. Hours: Monday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Tuesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Wednesday: 11:30 AM – 2:00 PM, 5:00 – 9:30 PM; Thursday: 11:30 AM – 2:00 PM, 5:00 – 10:00 PM; Friday: 5:00 – 10:00 PM; Saturday: 5:00 – 10:00 PM; Sunday: 5:00 – 9:30 PM.",
       "lat": 40.70619620000001,
       "lng": -74.0075229,
       "category": "restaurant"
@@ -11727,7 +11783,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=16599045874533675706&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "La Parisienne",
-      "text": "La Parisienne is a restaurant business on Google Maps. Rated 4.6 out of 5 from 2,278 ratings. Status: open. Price level: moderate ($$). Latest weekday closing time: 7:30 pm. Hours: Monday: 7:30 AM – 7:30 PM; Tuesday: 7:30 AM – 7:30 PM; Wednesday: 7:30 AM – 7:30 PM; Thursday: 7:30 AM – 7:30 PM; Friday: 7:30 AM – 7:30 PM; Saturday: 8:00 AM – 5:00 PM; Sunday: 8:00 AM – 5:00 PM.",
+      "text": "La Parisienne is a restaurant business on Google Maps. Rated 4.6 out of 5 from 2,278 ratings. Status: open. Price level: moderate ($$). Price per person: $20–30. Latest weekday closing time: 7:30 pm. Hours: Monday: 7:30 AM – 7:30 PM; Tuesday: 7:30 AM – 7:30 PM; Wednesday: 7:30 AM – 7:30 PM; Thursday: 7:30 AM – 7:30 PM; Friday: 7:30 AM – 7:30 PM; Saturday: 8:00 AM – 5:00 PM; Sunday: 8:00 AM – 5:00 PM.",
       "lat": 40.70959,
       "lng": -74.009362,
       "category": "restaurant"
@@ -11737,7 +11793,7 @@
       "source": "places",
       "url": "https://maps.google.com/?cid=18073902503334449035&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
       "title": "O'Hara's",
-      "text": "O'Hara's is a restaurant business on Google Maps. Rated 4.6 out of 5 from 5,969 ratings. Status: open. Price level: moderate ($$). Latest weekday closing time: 12 am. Offers dine-in, takeout, reservations. No delivery. Hours: Monday: 11:00 AM – 12:00 AM; Tuesday: 11:00 AM – 12:00 AM; Wednesday: 11:00 AM – 12:00 AM; Thursday: 11:00 AM – 12:00 AM; Friday: 11:00 AM – 12:00 AM; Saturday: 11:00 AM – 12:00 AM; Sunday: 12:00 PM – 12:00 AM.",
+      "text": "O'Hara's is a restaurant business on Google Maps. Rated 4.6 out of 5 from 5,969 ratings. Status: open. Price level: moderate ($$). Price per person: $20–30. Latest weekday closing time: 12 am. Offers dine-in, takeout, reservations. No delivery. Hours: Monday: 11:00 AM – 12:00 AM; Tuesday: 11:00 AM – 12:00 AM; Wednesday: 11:00 AM – 12:00 AM; Thursday: 11:00 AM – 12:00 AM; Friday: 11:00 AM – 12:00 AM; Saturday: 11:00 AM – 12:00 AM; Sunday: 12:00 PM – 12:00 AM.",
       "lat": 40.7095008,
       "lng": -74.0126642,
       "category": "restaurant"
