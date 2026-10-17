@@ -44,6 +44,9 @@ export type Business = {
   rating?: number;
   status?: BusinessStatus;
   url: string;
+  // Every SourceDoc id for this business, when OSM and Places listings were merged into one dot:
+  // ["osm:node/1", "places:ChIJ..."]. Reviews of it are "review:<place id>:<n>".
+  docIds?: string[];
 };
 
 export type Gap = {
