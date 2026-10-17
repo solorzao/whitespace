@@ -2817,21 +2817,55 @@ select {
   font-size: 10px;
   margin-top: 8px;
 }
-.report-nav {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 20px;
-  padding: 20px 0;
-  font-size: 11px;
-  border-bottom: 1px solid #ffffff12;
-}
-.report-nav a {
-  text-transform: capitalize;
-}
 .report-section {
   padding-top: 48px;
   scroll-margin-top: 35px;
+}
+.report-summary {
+  padding: 24px 0 32px;
+}
+.report-summary .conversation-turn {
+  padding: 0;
+  border: 0;
+}
+.report-details {
+  padding-top: 0;
+  border-top: 1px solid #ffffff16;
+}
+.report-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.report-details > summary::-webkit-details-marker {
+  display: none;
+}
+.model-output .report-details > summary h2 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+.report-details > summary::after {
+  content: "+";
+  color: #97a8bf;
+  font-size: 20px;
+}
+.report-details[open] > summary::after {
+  content: "−";
+}
+.report-details > summary:hover h2 {
+  color: #fff;
+}
+.report-details-body {
+  padding-bottom: 24px;
+}
+.report-details-body > .report-metrics {
+  margin-top: 0;
+  border: 0;
 }
 .opportunity-card {
   border: 1px solid #ffffff18;
