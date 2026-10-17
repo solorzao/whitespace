@@ -8,8 +8,7 @@ import type { Report } from "./types";
 
 const categoryName = (id: string) =>
   CATEGORY_LABELS[id as CategoryId] || id.replaceAll("_", " ");
-const number = (value: number | null | undefined) =>
-  value == null ? "Unavailable" : Math.round(value).toLocaleString();
+const number = (value: number) => Math.round(value).toLocaleString();
 
 export function Answer({ response }: { response: AskResponse }) {
   return (
@@ -151,12 +150,8 @@ export function ResearchReport({
         <h1>{report.name}</h1>
         <p className="report-question">{report.question}</p>
         <p className="report-provenance">
-          {analysis.mock
-            ? "Test mode · sample analysis"
-            : analysis.from === "saved"
-              ? "Collected source snapshot · AI analysis"
-              : "Live source collection · AI analysis"}{" "}
-          · {new Date(report.createdAt).toLocaleString()}
+          {analysis.mock && "Test mode · sample analysis · "}
+          {new Date(report.createdAt).toLocaleString()}
         </p>
       </header>
       {analysis.mock && (
@@ -164,32 +159,23 @@ export function ResearchReport({
           Test mode is enabled. This report contains sample data.
         </p>
       )}
-      {!!analysis.errors?.length && (
-        <p className="report-warning" role="status">
-          Some results are unavailable:{" "}
-          {[...new Set(analysis.errors.map((issue) => issue.source))].join(
-            ", ",
-          )}
-          . Available evidence is shown below.
-        </p>
-      )}
       <div className="report-metrics">
         <div>
           <strong>{analysis.businesses.length.toLocaleString()}</strong>
           <span>Businesses</span>
         </div>
-        <div>
-          <strong>{number(demographics?.population)}</strong>
-          <span>Residents, estimated</span>
-        </div>
-        <div>
-          <strong>
-            {demographics?.medianIncome == null
-              ? "Unavailable"
-              : `$${number(demographics.medianIncome)}`}
-          </strong>
-          <span>Median income, estimated</span>
-        </div>
+        {demographics?.population != null && (
+          <div>
+            <strong>{number(demographics.population)}</strong>
+            <span>Residents, estimated</span>
+          </div>
+        )}
+        {demographics?.medianIncome != null && (
+          <div>
+            <strong>${number(demographics.medianIncome)}</strong>
+            <span>Median income, estimated</span>
+          </div>
+        )}
         <div>
           <strong>{docs.length.toLocaleString()}</strong>
           <span>Source documents</span>
@@ -236,7 +222,11 @@ export function ResearchReport({
                 <strong>What to test</strong> {concept.risk}
               </p>
               {(analysis.profiles ?? [])
-                .filter((profile) => profile.category === concept.category)
+                .filter(
+                  (profile) =>
+                    profile.category === concept.category &&
+                    profile.findings.length > 0,
+                )
                 .map((profile) => (
                   <details
                     key={profile.category}
@@ -246,29 +236,21 @@ export function ResearchReport({
                       Competitor signals · {profile.reviewCount} reviews within{" "}
                       {profile.radiusM / 1000} km
                     </summary>
-                    <p>
-                      Small review samples describe these competitors; they do
-                      not establish statistical significance.
-                    </p>
-                    {profile.findings.length ? (
-                      profile.findings.map((finding, i) => (
-                        <div key={i}>
-                          <h4>{finding.label}</h4>
-                          <p>
-                            {finding.top.count} of {finding.top.of} in the
-                            top-rated group · {finding.low.count} of{" "}
-                            {finding.low.of} in the lower-rated group (
-                            {finding.kind === "attribute"
-                              ? "businesses"
-                              : "reviews"}
-                            )
-                          </p>
-                          <Evidence ids={finding.evidence} docs={docs} />
-                        </div>
-                      ))
-                    ) : (
-                      <p>No clear differences in the available sample.</p>
-                    )}
+                    {profile.findings.map((finding, i) => (
+                      <div key={i}>
+                        <h4>{finding.label}</h4>
+                        <p>
+                          {finding.top.count} of {finding.top.of} in the
+                          top-rated group · {finding.low.count} of{" "}
+                          {finding.low.of} in the lower-rated group (
+                          {finding.kind === "attribute"
+                            ? "businesses"
+                            : "reviews"}
+                          )
+                        </p>
+                        <Evidence ids={finding.evidence} docs={docs} />
+                      </div>
+                    ))}
                   </details>
                 ))}
             </article>
@@ -276,8 +258,8 @@ export function ResearchReport({
         ) : (
           <p>
             {demographics
-              ? "No concepts are available. Review the category gaps and source evidence, or try the analysis again."
-              : "Demographic benchmarks are available for US neighborhoods. Business and source evidence can still be explored here."}
+              ? "Ask a question below about what this neighborhood could use."
+              : "Opportunity cards cover US neighborhoods. You can still explore the businesses here and ask about them below."}
           </p>
         )}
       </section>

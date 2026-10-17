@@ -40,7 +40,7 @@ export function mockAnswer(question: string, docs: SourceDoc[]): AskResponse {
       `This is a sample answer to "${question}". ` +
       (cited.length === 2
         ? "Most households in the area rent [1], and a nearby reviewer says they drive across town to do laundry [2]."
-        : "There isn't enough data in this area to answer it."),
+        : "A walkable, everyday service usually does well in a dense neighborhood like this one."),
     citations: cited.map(({ id, title, url }) => ({ id, title, url })),
   };
 }

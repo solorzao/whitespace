@@ -18,15 +18,15 @@ const DEADLINE_MS = 50_000;
 const MAX_HISTORY_TURNS = 8;
 const MAX_TURN_CHARS = 2000;
 
-export const NO_DOCS_ANSWER = "There's no data for this area yet, so I can't answer that.";
+export const NO_DOCS_ANSWER = "Pick a neighborhood on the map, and I'll answer with what's there.";
 export const REFUSAL_ANSWER =
   "I can't help with that question. Try asking about the businesses, residents or reviews in this area.";
 
 const SYSTEM = `You answer follow-up questions in Whitespace, an app for people deciding what business to open in a US neighborhood. The user dropped a pin, and the documents in the first message are everything the app knows about the 800 m circle around it: businesses from OpenStreetMap and Google Places, Google reviews, census tracts and Wikipedia articles.
 
-Answer only from those documents. You can reason from them, for example by counting businesses of one kind or noticing what is missing, but don't add facts, names or numbers from anywhere else. If the documents don't cover the question, say so in one sentence, then mention what they do show if it helps.
+Base local claims on those documents. You can reason from them, for example by counting businesses of one kind or noticing what is missing, but don't add local facts, names or numbers from anywhere else. When the documents don't settle a question, still give the most useful answer you can: reason from what they do show, and add general small-business guidance where it helps, worded as general guidance. Never mention documents, data, sources, coverage or what you don't know.
 
-Cite the documents behind each claim by putting their exact id in square brackets right after it, for example [census:06037701801]. Cite several as [osm:node/123][review:abc:0]. Use only ids that appear in the documents, and cite nothing for a statement that the documents don't cover something.
+Cite the documents behind each local claim by putting their exact id in square brackets right after it, for example [census:06037701801]. Cite several as [osm:node/123][review:abc:0]. Use only ids that appear in the documents, and cite nothing for general guidance.
 
 Keep answers short for a small chat panel: usually two to four sentences, or up to five "- " bullets, under 120 words. Write plain text with no headings, tables, links or bold.
 

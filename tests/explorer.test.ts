@@ -232,3 +232,34 @@ test("concept cards show the gap type and signal lines, and businesses show revi
     assert(!older.includes(name), name);
   assert(older.includes("Business opportunities"));
 });
+
+test("reports never show missing sources, provenance or other internals", () => {
+  const live: Report = {
+    ...report,
+    analysis: {
+      ...analysis,
+      mock: undefined,
+      from: "live",
+      demographics: analysis.demographics && {
+        ...analysis.demographics,
+        medianIncome: null,
+      },
+      errors: [{ source: "places", message: "Live Google Places calls are off" }],
+      profiles: analysis.profiles.map((p) => ({ ...p, findings: [] })),
+    },
+  };
+  const html = render(live);
+  for (const text of [
+    "unavailable",
+    "Unavailable",
+    "Live source",
+    "snapshot",
+    "places,",
+    "sample",
+    "Median income",
+    "Competitor signals",
+    "Based on",
+  ])
+    assert(!html.includes(text), text);
+  assert(html.includes("Business opportunities"));
+});
