@@ -40,6 +40,8 @@ test("every suggestion has a saved thread that answers its question from the pla
     assert.equal(CAVEAT.exec(answer)?.[0], undefined, `${s.id}: the answer talks about its evidence`);
     for (const c of thread.analysis.concepts)
       assert.equal(CAVEAT.exec(`${c.title} ${c.rationale} ${c.risk}`)?.[0], undefined, `${s.id}: the ${c.category} card`);
+    for (const line of (thread.analysis.signals ?? []).flatMap((signal) => signal.lines))
+      assert(!/^Based on\b/.test(line) && !CAVEAT.test(line), `${s.id}: a card signal explains the method: ${line}`);
   }
 });
 

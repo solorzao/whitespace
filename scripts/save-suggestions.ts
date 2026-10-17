@@ -40,6 +40,9 @@ function problems(r: AnalysisResult): string[] {
     const caveat = CAVEAT.exec(`${c.title} ${c.rationale} ${c.risk}`);
     if (caveat) found.push(`the ${c.category} card says "${caveat[0]}"`);
   }
+  // The card's method line ("Based on N census tracts, ...") isn't shown, so a saved analysis mustn't carry it.
+  const method = r.signals.flatMap((s) => s.lines).find((line) => /^Based on\b/.test(line) || CAVEAT.test(line));
+  if (method) found.push(`a card signal explains the method: "${method}"`);
   // Follow-up questions send these docs to /api/ask, which refuses more than this (src/app/api/ask/route.ts).
   const chars = r.docs.reduce((sum, d) => sum + d.id.length + d.title.length + d.text.length, 0);
   if (r.docs.length > 1500 || chars > 600_000) found.push(`${r.docs.length} docs, ${chars} chars: over the /api/ask limits`);
