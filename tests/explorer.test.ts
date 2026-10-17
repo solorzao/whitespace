@@ -81,15 +81,26 @@ test("history restores completed evidence and rejects corrupt or incomplete repo
 
 test("history keeps a bounded number of recent reports and handles unavailable storage", () => {
   let stored = "";
-  saveReports(
-    {
-      setItem: (_, value) => {
-        stored = value;
-      },
+  const storage: Pick<Storage, "setItem"> = {
+    setItem: (_, value) => {
+      stored = value;
     },
-    Array.from({ length: 10 }, (_, i) => ({ ...report, id: `${i}` })),
+  };
+  // Without its source documents a report is small, so only the count limit applies.
+  const small: Report = { ...report, analysis: { ...analysis, docs: [] } };
+  saveReports(
+    storage,
+    Array.from({ length: 10 }, (_, i) => ({ ...small, id: `${i}` })),
   );
   assert.equal(JSON.parse(stored).length, 6);
+  // The mock is a saved demo analysis of about 0.5 MB, so full reports stop at the size limit first.
+  saveReports(
+    storage,
+    Array.from({ length: 10 }, (_, i) => ({ ...report, id: `${i}` })),
+  );
+  const kept: unknown[] = JSON.parse(stored);
+  assert(kept.length >= 1 && kept.length < 6);
+  assert(stored.length <= 1_500_000);
   assert.deepEqual(
     readReports({
       getItem: () => {

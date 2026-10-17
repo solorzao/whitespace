@@ -42,7 +42,7 @@ const MAX_TOKENS = 16000;
 // only the top and bottom thirds' reviews (52 there).
 const DEADLINE_MS = 60_000;
 
-const MAX_REVIEWS = 100;
+export const MAX_REVIEWS = 100; // per call; the rest are left untagged
 const MAX_REVIEW_CHARS = 600;
 const MAX_TAGS_PER_REVIEW = 3;
 const MAX_DETAIL_WORDS = 5;
@@ -94,7 +94,8 @@ const TAGS_SCHEMA = {
   additionalProperties: false,
 };
 
-export async function tagReviews(category: CategoryId, reviews: SourceDoc[]): Promise<ReviewTag[]> {
+// category null tags a mix of businesses, such as every reviewed business in the circle.
+export async function tagReviews(category: CategoryId | null, reviews: SourceDoc[]): Promise<ReviewTag[]> {
   const docs = reviews.filter((doc) => doc.source === "review").slice(0, MAX_REVIEWS);
   if (docs.length === 0) return [];
 
@@ -113,11 +114,11 @@ export async function tagReviews(category: CategoryId, reviews: SourceDoc[]): Pr
   return readTags(message, docs);
 }
 
-export function buildRequest(category: CategoryId, reviews: SourceDoc[]): CreateParams {
+export function buildRequest(category: CategoryId | null, reviews: SourceDoc[]): CreateParams {
   // JSON lines, so quotes and newlines in a review can't break out of its record.
   const lines = reviews.map((doc) => JSON.stringify({ id: doc.id, text: clip(doc.text) }));
   const text = [
-    `Category: ${CATEGORY_LABELS[category]}`,
+    category ? `Category: ${CATEGORY_LABELS[category]}` : `Category: several kinds of business`,
     `<reviews>`,
     ...lines,
     `</reviews>`,
