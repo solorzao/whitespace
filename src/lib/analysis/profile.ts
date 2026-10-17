@@ -104,6 +104,15 @@ export function buildProfile(
   };
 }
 
+// The label for a set of reviews about one topic, given each review's tags on it. A count covers every
+// review on the topic, so a detail can only stand for them when at least half share it; otherwise the
+// topic does. Without this, one reviewer's "ruined pants" would read as 14 reviews' complaint.
+export function topicLabel(topic: Topic, tagsPerReview: ReviewTag[][]): string {
+  const details = tagsPerReview.flatMap((tags) => [...new Set(tags.map((t) => normalize(t.detail)))]);
+  const common = mostCommon(details);
+  return common && common.count >= tagsPerReview.length * MIN_LABEL_SHARE ? common.value : TOPIC_LABELS[topic];
+}
+
 // Ranks competitors with a rating and reviews by rating, then review count, and returns the top and
 // bottom thirds with their review ids. null when fewer than MIN_REVIEWED_COMPETITORS qualify.
 function rankGroups(competitors: ProfileCompetitor[], reviews: SourceDoc[]): { top: Group; low: Group } | null {
@@ -154,11 +163,7 @@ function topicFinding(
   const difference = kind === "praise" ? topShare - lowShare : lowShare - topShare;
   if (difference < MIN_TOPIC_DIFFERENCE - EPSILON) return null;
 
-  // The count covers every review on the topic, so a detail can only stand for them when most share it.
-  // Otherwise one reviewer's "ruined pants" would read as 14 reviews' complaint.
-  const details = leadIds.flatMap((id) => [...new Set(matches(id).map((t) => normalize(t.detail)))]);
-  const common = mostCommon(details);
-  const label = common && common.count >= leadIds.length * MIN_LABEL_SHARE ? common.value : TOPIC_LABELS[topic];
+  const label = topicLabel(topic, leadIds.map(matches));
   // Reviews whose own detail matches the label make the best evidence.
   const hasLabel = (id: string) => matches(id).some((t) => normalize(t.detail) === label);
   const evidence = spreadOut([...leadIds.filter(hasLabel), ...leadIds.filter((id) => !hasLabel(id))]);
