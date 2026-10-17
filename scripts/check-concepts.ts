@@ -5,6 +5,7 @@
 // Add --prompt to print the prompt sent to Claude.
 
 import Anthropic from "@anthropic-ai/sdk";
+import { GAP_TYPES } from "../src/lib/analysis/candidates";
 import {
   ConceptsError,
   generateConcepts,
@@ -196,6 +197,22 @@ ${prompt}
     const { send, calls } = scripted(withConcepts(shared));
     const result = await generateConceptsWith(send, area, twoGaps);
     check(result.length === 3 && calls.length === 1, "accepted on the first try");
+  }
+
+  console.log("Typed gaps are kept at score 0, and the prompt gives their types and facts");
+  {
+    const typed = [
+      { ...gaps[0], gapType: "mismatched" as const, facts: ["None of the 5 laundromats within 2 km that list hours is open after 9 pm"] },
+      { ...gaps[1], gapType: "unserved" as const, facts: ["0 childcare centers in the circle"] },
+      { ...gaps[2], score: 0, gapType: "poorly_served" as const, facts: ["6 rated hardware stores within 2 km average 3.4 stars"] },
+    ];
+    const { send, calls } = scripted(withConcepts(goodConcepts));
+    checkRules(await generateConceptsWith(send, area, typed), typed);
+    const prompt = userText(calls[0]);
+    check(prompt.includes("hardware | 0 | 0.00 | 0.12 | 0.00 | poorly_served"), "gap table row has the type");
+    check(prompt.includes("- 6 rated hardware stores within 2 km average 3.4 stars"), "prompt lists the facts");
+    const system = typeof calls[0].system === "string" ? calls[0].system : "";
+    check(GAP_TYPES.every((t) => system.includes(`- ${t}:`)), "system prompt explains each gap type");
   }
 
   console.log("A refusal throws without a retry");

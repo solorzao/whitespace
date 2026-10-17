@@ -5,6 +5,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { claude, CLAUDE_MODEL } from "../claude";
 import { CATEGORY_IDS } from "../ingest/categories";
 import type { AreaData, Business, CategoryId, Concept, Gap } from "../types";
+import type { GapType } from "./candidates";
 
 // Thrown when Claude can't produce valid concepts. The route turns it into a 502.
 export class ConceptsError extends Error {
@@ -43,9 +44,14 @@ const SYSTEM_PROMPT = `You are the market analyst behind Whitespace. A user drop
 
 A gap is a business category with fewer businesses per 1,000 residents than a typical US urban neighborhood, weighted by how well the local demographics fit it. The gap table is sorted by score, highest first.
 
+When the gap table gives a gap type, code chose it from the data, and the concept must answer it. The facts listed under <gap_types> are the numbers behind each type.
+- unserved: the circle has at most half the businesses of this category that its residents would support. The opening is supplying what's missing.
+- poorly_served: the area may have plenty of these businesses, even a score of 0, but those within 2 km are rated below 4 stars on average. The opening is a better-run one, so say what it would do better.
+- mismatched: every business of this category within 2 km that lists the detail lacks the same option: open after 9 pm, a budget price, or delivery. The opening is that missing option, so build the concept around it.
+
 - Each concept is a specific business someone could open, such as "Laundromat with wash-and-fold pickup" rather than "Laundry", and its category is one of the category ids in the gap table.
 - Give each concept a different category, unless the table has fewer than three. Favor the highest-scoring gaps, but pass over one when the demographics or reviews argue against it.
-- rationale: one or two sentences that cite specific numbers from the data, such as the business count, the rate per 1,000 against the benchmark, and the demographics that create demand. Use only numbers that appear in the data.
+- rationale: one or two sentences that cite specific numbers from the data, such as the gap type's facts, the business count, the rate per 1,000 against the benchmark, and the demographics that create demand. Use only numbers that appear in the data.
 - evidence: two to four ids copied exactly from the square brackets in the data, the ones that support the rationale. Good evidence is the census tracts behind a demographic claim, reviews that mention the need, and existing businesses that would compete.
 - risk: one sentence on the most likely reason the business would fail, grounded in the data where possible.
 - Order the concepts strongest first.
@@ -90,16 +96,20 @@ const sendToClaude: SendConceptsRequest = (params, { timeout }) =>
   // No SDK retries: generateConceptsWith retries once itself and keeps both attempts inside BUDGET_MS.
   claude().beta.messages.create(params, { timeout, maxRetries: 0 });
 
-export function generateConcepts(area: AreaData, gaps: Gap[]): Promise<Concept[]> {
+// A gap that candidates.ts picked as a concept category: its type, and the numbers behind it as sentences.
+// Typed gaps are kept whatever their score, since a poorly served or mismatched category can score 0.
+export type ConceptGap = Gap & { gapType?: GapType; facts?: string[] };
+
+export function generateConcepts(area: AreaData, gaps: ConceptGap[]): Promise<Concept[]> {
   return generateConceptsWith(sendToClaude, area, gaps);
 }
 
 export async function generateConceptsWith(
   send: SendConceptsRequest,
   area: AreaData,
-  gaps: Gap[],
+  gaps: ConceptGap[],
 ): Promise<Concept[]> {
-  const ranked = gaps.filter((g) => g.score > 0).sort((a, b) => b.score - a.score);
+  const ranked = gaps.filter((g) => g.gapType || g.score > 0).sort((a, b) => b.score - a.score);
   if (ranked.length === 0) return [];
 
   const rules: Rules = {
@@ -250,7 +260,7 @@ function validateConcepts(raw: unknown, rules: Rules): { concepts: Concept[]; pr
   return { concepts, problems };
 }
 
-function describeArea(area: AreaData, gaps: Gap[], docIds: Set<string>): string {
+function describeArea(area: AreaData, gaps: ConceptGap[], docIds: Set<string>): string {
   const gapCategories = new Set(gaps.map((g) => g.category));
   const cite = (id: string) => (docIds.has(id) ? ` [${id}]` : "");
   const out: string[] = [
@@ -279,17 +289,27 @@ function describeArea(area: AreaData, gaps: Gap[], docIds: Set<string>): string 
     out.push(`<demographics>Not available for this area.</demographics>`, "");
   }
 
+  const typed = gaps.filter((g) => g.gapType);
   out.push(
     `<gaps>`,
     `Highest score first. "count" is OpenStreetMap businesses in the circle; the benchmark is a typical US urban neighborhood.`,
-    `category | count | per 1,000 residents | benchmark per 1,000 | score`,
+    `category | count | per 1,000 residents | benchmark per 1,000 | score${typed.length ? " | gap type" : ""}`,
     ...gaps.map(
       (g) =>
-        `${g.category} | ${area.categoryCounts[g.category] ?? 0} | ${g.localPer1k.toFixed(2)} | ${g.benchmarkPer1k.toFixed(2)} | ${g.score.toFixed(2)}`,
+        `${g.category} | ${area.categoryCounts[g.category] ?? 0} | ${g.localPer1k.toFixed(2)} | ${g.benchmarkPer1k.toFixed(2)} | ${g.score.toFixed(2)}${g.gapType ? ` | ${g.gapType}` : ""}`,
     ),
     `</gaps>`,
     "",
   );
+  if (typed.length) {
+    out.push(
+      `<gap_types>`,
+      `"Within 2 km" counts Google Places businesses of the category within 2 km of the pin, a wider area than the circle.`,
+      ...typed.flatMap((g) => [`${g.category} (${g.gapType}):`, ...(g.facts ?? []).map((f) => `- ${f}`)]),
+      `</gap_types>`,
+      "",
+    );
+  }
 
   const byCategory = new Map<CategoryId, Business[]>();
   for (const b of area.businesses) byCategory.set(b.category, [...(byCategory.get(b.category) ?? []), b]);
