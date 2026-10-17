@@ -1,23 +1,22 @@
-// Runs scoreGaps on a hand-written area and checks the basic rules. With --demo, it also scores
-// both demo areas from live data.
+// Runs scoreGaps on a hand-written area and checks the basic rules. With --demo, it also runs
+// collectArea on both demo areas and scores them.
 //
 //   npx tsx scripts/check-gaps.ts
-//   npx tsx scripts/check-gaps.ts --demo
+//   npx tsx --env-file=.env.local scripts/check-gaps.ts --demo
 //
-// collectArea() isn't on main yet, so --demo builds a stand-in AreaData: OSM counts from one
-// Overpass query for the 800 m circle, and the 2020 Census population of the tracts whose center
-// point is in the circle, from TIGERweb (no key needed). The demographic percentages need ACS,
-// so they are null and every demand weight is 1. Replace this with collectArea once it lands.
+// Without CENSUS_API_KEY, collectArea has no demographics, so --demo falls back to the 2020 Census
+// population (POP100, from TIGERweb, no key needed) of the same tracts collectArea would pick.
+// The demographic percentages need ACS, so in that case every demand weight is 1.
 
 import assert from "node:assert/strict";
 import type { AreaData, CategoryId, Demographics, Gap } from "../src/lib/types";
 import { CATEGORY_IDS, emptyCounts } from "../src/lib/ingest/categories";
-import { DEMO_AREAS, AREA_RADIUS_M } from "../src/lib/ingest/demo-areas";
+import { AREA_RADIUS_M, DEMO_AREAS, collectArea } from "../src/lib/ingest/index";
 import { isInCircle } from "../src/lib/ingest/geo";
-import { fetchJson } from "../src/lib/ingest/http";
+import { errorMessage, fetchJson } from "../src/lib/ingest/http";
+import { USER_AGENT } from "../src/lib/ingest/result";
 import { BENCHMARKS, benchmarkFor, type Benchmark } from "../src/lib/analysis/benchmarks";
 import { MIN_EXPECTED_COUNT, demandFit, scoreGaps } from "../src/lib/analysis/gap-score";
-import { USER_AGENT, businessQuery, countByCategory, runOverpass } from "./lib/osm";
 
 function printTable(title: string, area: AreaData, benchmark: Benchmark, gaps: Gap[]) {
   const d = area.demographics;
@@ -96,16 +95,16 @@ function checkSample() {
   console.log("Sample checks passed.");
 }
 
-type TractQuery = { features?: { attributes: { GEOID: string; POP100: number; CENTLAT: string; CENTLON: string } }[] };
+type TractQuery = { features?: { attributes: { GEOID: string; POP100: number; INTPTLAT: string; INTPTLON: string } }[] };
 
-const TIGER_TRACTS =
+const TIGER_2020_TRACTS =
   "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Census2020/MapServer/6/query";
 
-// 2020 population of the tracts whose center point is in the circle, or of the tract
-// containing the center if none is.
-async function circlePopulation(lat: number, lng: number, radiusM: number) {
+// The 2020 population of the tracts whose internal point is in the circle, or of the tract that
+// contains the center if none is: the same rule as src/lib/ingest/census.ts.
+async function census2020Demographics(lat: number, lng: number, radiusM: number): Promise<Demographics> {
   const query = (distance: number) =>
-    `${TIGER_TRACTS}?` +
+    `${TIGER_2020_TRACTS}?` +
     new URLSearchParams({
       geometry: `${lng},${lat}`,
       geometryType: "esriGeometryPoint",
@@ -113,54 +112,57 @@ async function circlePopulation(lat: number, lng: number, radiusM: number) {
       spatialRel: "esriSpatialRelIntersects",
       distance: String(distance),
       units: "esriSRUnit_Meter",
-      outFields: "GEOID,POP100,CENTLAT,CENTLON",
+      outFields: "GEOID,POP100,INTPTLAT,INTPTLON",
       returnGeometry: "false",
       f: "json",
     });
   const opts = { headers: { "User-Agent": USER_AGENT }, timeoutMs: 60_000 };
-  const near = await fetchJson<TractQuery>(query(radiusM), opts);
-  let tracts = (near.features ?? [])
-    .map((f) => f.attributes)
-    .filter((t) => isInCircle({ lat, lng }, { lat: parseFloat(t.CENTLAT), lng: parseFloat(t.CENTLON) }, radiusM));
-  if (tracts.length === 0) tracts = ((await fetchJson<TractQuery>(query(0), opts)).features ?? []).map((f) => f.attributes);
-  return { tractFips: tracts.map((t) => t.GEOID), population: tracts.reduce((sum, t) => sum + t.POP100, 0) };
+  const tractsOf = (res: TractQuery) => (res.features ?? []).map((f) => f.attributes);
+  let tracts = tractsOf(await fetchJson<TractQuery>(query(radiusM), opts)).filter((t) =>
+    isInCircle({ lat, lng }, { lat: Number(t.INTPTLAT), lng: Number(t.INTPTLON) }, radiusM),
+  );
+  if (tracts.length === 0) tracts = tractsOf(await fetchJson<TractQuery>(query(0), opts));
+  return {
+    tractFips: tracts.map((t) => t.GEOID),
+    population: tracts.reduce((sum, t) => sum + t.POP100, 0),
+    medianIncome: null,
+    medianAge: null,
+    medianRent: null,
+    pctRenters: null,
+    pctWithKids: null,
+    pctNoVehicle: null,
+  };
 }
 
-async function demoArea(slug: string): Promise<AreaData> {
-  const demo = DEMO_AREAS.find((a) => a.slug === slug)!;
+async function checkDemo(demo: (typeof DEMO_AREAS)[number]) {
   const { lat, lng } = demo.center;
-  const elements = await runOverpass(businessQuery("", `(around:${AREA_RADIUS_M},${lat},${lng})`, 60), 90_000);
-  const { tractFips, population } = await circlePopulation(lat, lng, AREA_RADIUS_M);
-  return {
-    center: demo.center,
-    radiusM: AREA_RADIUS_M,
-    businesses: [],
-    demographics: {
-      tractFips,
-      population,
-      medianIncome: null,
-      medianAge: null,
-      medianRent: null,
-      pctRenters: null,
-      pctWithKids: null,
-      pctNoVehicle: null,
-    },
-    categoryCounts: countByCategory(elements),
-    docs: [],
-    errors: [],
-  };
+  const area: AreaData = await collectArea(lat, lng);
+  for (const e of area.errors) console.log(`\n${demo.name}: ${e.source} failed: ${e.message}`);
+  let source = "ACS 2020–2024";
+  if (!area.demographics) {
+    area.demographics = await census2020Demographics(lat, lng, area.radiusM);
+    source = "2020 Census counts, no demand weights";
+  }
+  const benchmark = benchmarkFor(demo.center);
+  const gaps = scoreGaps(area, benchmark);
+  printTable(`${demo.name} (${area.demographics.tractFips.length} tracts, ${source})`, area, benchmark, gaps);
+  console.log(`${gaps.filter((g) => g.score > 0).length} of ${gaps.length} scored categories have a gap.`);
 }
 
 async function main() {
   checkSample();
   if (!process.argv.includes("--demo")) return;
   for (const demo of DEMO_AREAS) {
-    const area = await demoArea(demo.slug);
-    const benchmark = benchmarkFor(demo.center);
-    const gaps = scoreGaps(area, benchmark);
-    printTable(`${demo.name} (stand-in data, ${area.demographics!.tractFips.length} tracts)`, area, benchmark, gaps);
-    const positive = gaps.filter((g) => g.score > 0);
-    console.log(`${positive.length} of ${gaps.length} scored categories have a gap.`);
+    // Overpass is often busy, so give each area a second try.
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        await checkDemo(demo);
+        break;
+      } catch (err) {
+        console.log(`\n${demo.name}, attempt ${attempt}: ${errorMessage(err)}`);
+        if (attempt === 1) await new Promise((r) => setTimeout(r, 30_000));
+      }
+    }
   }
 }
 
