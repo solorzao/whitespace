@@ -8,10 +8,9 @@
 
 import { answerQuestion, buildMessages, REFUSAL_ANSWER, toAskResponse } from "../src/lib/ask/answer";
 import { mockAnalysis } from "../src/lib/mock";
-import type { AskResponse, ChatTurn } from "../src/lib/types";
+import type { AskResponse, ChatTurn, SourceDoc } from "../src/lib/types";
 
 const docs = mockAnalysis({ lat: 34.0195, lng: -118.4912 }).docs;
-const docsById = new Map(docs.map((doc) => [doc.id, doc]));
 let failures = 0;
 
 function check(ok: boolean, label: string) {
@@ -21,7 +20,8 @@ function check(ok: boolean, label: string) {
 
 // Every citation is a request doc, cited once, and the [n] markers are exactly 1..citations.length,
 // first used in that order.
-function checkCitations(response: AskResponse, label: string) {
+function checkCitations(response: AskResponse, label: string, sourceDocs = docs) {
+  const docsById = new Map(sourceDocs.map((doc) => [doc.id, doc]));
   check(
     response.citations.every((c) => {
       const doc = docsById.get(c.id);
@@ -50,6 +50,19 @@ const reply = (stop_reason: Reply["stop_reason"], text?: string): Reply => ({
 
 function cannedChecks() {
   console.log("Canned model replies");
+  // Keep parser fixtures independent of the periodically refreshed neighborhood snapshot.
+  const docs: SourceDoc[] = [
+    ["census:06037701801", "census"],
+    ["review:sample-ocean-kitchen:0", "review"],
+    ["wikipedia:1080546", "wikipedia"],
+    ["osm:node/9000000003", "osm"],
+  ].map(([id, source]) => ({
+    id,
+    source: source as SourceDoc["source"],
+    title: id,
+    text: "Canned citation fixture.",
+    url: `https://example.com/${id}`,
+  }));
 
   const mixed = toAskResponse(
     reply(
@@ -73,7 +86,7 @@ function cannedChecks() {
       "census:06037701801 review:sample-ocean-kitchen:0 wikipedia:1080546 osm:node/9000000003",
     "citations are numbered in order of first use",
   );
-  checkCitations(mixed, "mixed");
+  checkCitations(mixed, "mixed", docs);
 
   const uncovered = toAskResponse(reply("end_turn", "The documents don't include commercial rents."), docs);
   check(
