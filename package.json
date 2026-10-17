@@ -9,7 +9,7 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test:e2e": "playwright test",
-    "test": "node --test tests/map/*.test.js && tsx --test tests/explorer.test.ts tests/analysis.test.ts"
+    "test": "node --test tests/map/*.test.js && tsx --test tests/explorer.test.ts tests/analysis.test.ts tests/suggestions.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

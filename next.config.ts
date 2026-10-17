@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   // collectArea reads the saved demo areas from disk, so ship them with the API routes.
   outputFileTracingIncludes: {
     "/api/*": ["./data/demo/**/*.json"],
+    // The suggestion threads are prerendered, but a cache miss reads the same files.
+    "/api/suggestions/*": [
+      "./data/demo/*-analysis.json",
+      "./data/suggestions/**/*.json",
+    ],
   },
   turbopack: {
     rules: {
