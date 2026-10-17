@@ -11,7 +11,7 @@ import { errorMessage } from "../ingest/http";
 import { benchmarkFor } from "./benchmarks";
 import { generateConcepts } from "./concepts";
 import { scoreGaps } from "./gap-score";
-import { buildProfile, type SuccessProfile } from "./profile";
+import { buildProfile, profileReviews, type SuccessProfile } from "./profile";
 import { tagReviews, type ReviewTag } from "./tag-reviews";
 
 export const CONCEPT_COUNT = 3;
@@ -98,11 +98,13 @@ async function studyCompetitors(
   }
   const { businesses } = found.data;
   const reviews = found.docs.filter((d) => d.source === "review");
+  // Only the top and bottom thirds' reviews count, so the middle third's aren't sent to Claude.
+  const compared = profileReviews(businesses, reviews);
 
   let tags: ReviewTag[] = [];
-  if (useClaude && reviews.length > 0) {
+  if (useClaude && compared.length > 0) {
     try {
-      tags = await tagReviews(category, reviews);
+      tags = await tagReviews(category, compared);
     } catch (error) {
       const issue: AnalysisIssue = { source: "tagging", category, message: errorMessage(error) };
       console.warn(`analyze: tagging ${category} failed: ${issue.message}`);

@@ -40,9 +40,11 @@ const EFFORT = "low";
 // 20 competitors with 5 reviews each and up to 3 tags per review is around 8K output tokens,
 // and thinking counts toward max_tokens too.
 const MAX_TOKENS = 16000;
-// The 3 categories are tagged in parallel before the concepts call, all inside the analyze route's
-// maxDuration. Covers the SDK's one retry as well.
-const DEADLINE_MS = 45_000;
+// The 3 categories are tagged in parallel, alongside the concepts call's 75 s budget, inside the analyze
+// route's maxDuration. Covers the SDK's one retry as well. On Lower Manhattan's saved data, 87 childcare
+// reviews took 23 s alone and timed out at 45 s with all three categories at once; analyzeArea now sends
+// only the top and bottom thirds' reviews (52 there).
+const DEADLINE_MS = 60_000;
 
 const MAX_REVIEWS = 100;
 const MAX_REVIEW_CHARS = 600;
@@ -55,7 +57,7 @@ For each review, return 0 to 3 tags for the specific things the reviewer praises
 - topic: one of
 ${TOPICS.map((t) => `  - ${t}: ${TOPIC_DESCRIPTIONS[t]}`).join("\n")}
 - sentiment: "praise" or "complaint".
-- detail: at most 5 words naming the specific thing, in lowercase, such as "drop-off service", "broken dryers", "open late" or "rude attendant". Use the plainest common wording, so the same thing gets the same detail in every review that mentions it.
+- detail: 1 to 3 lowercase words naming the general thing, the way many reviewers would put it, not this reviewer's particulars. Write "broken machines", not "washer 4 leaked"; "rude staff", not "rude cursing employee"; "high prices", not "higher than delivery prices"; "drop-off service", "open late", "clean". Reuse the same detail whenever reviews mention the same thing, because code counts identical details.
 
 Tag only what the reviewer actually says. A vague review such as "great place" or "it's fine" gets no tags. Return every review, copying its id exactly, even when it has no tags.
 
@@ -80,7 +82,7 @@ const TAGS_SCHEMA = {
               properties: {
                 topic: { type: "string", enum: [...TOPICS] },
                 sentiment: { type: "string", enum: ["praise", "complaint"] },
-                detail: { type: "string", description: "At most 5 lowercase words naming the specific thing." },
+                detail: { type: "string", description: "1 to 3 lowercase words naming the general thing." },
               },
               required: ["topic", "sentiment", "detail"],
               additionalProperties: false,

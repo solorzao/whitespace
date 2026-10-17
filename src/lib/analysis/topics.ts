@@ -34,6 +34,22 @@ export const TOPIC_DESCRIPTIONS: Record<Topic, string> = {
   other: "anything specific that fits none of the above",
 };
 
+// A finding's label when no single detail covers most of its reviews: "staff complained about in 11 of 30 reviews".
+export const TOPIC_LABELS: Record<Topic, string> = {
+  price: "prices",
+  quality: "quality",
+  selection: "selection",
+  service: "service",
+  staff: "staff",
+  wait: "wait times",
+  hours: "hours",
+  cleanliness: "cleanliness",
+  space: "space",
+  atmosphere: "atmosphere",
+  location: "location",
+  other: "other details",
+};
+
 const TOPIC_SET = new Set<string>(TOPICS);
 
 export function isTopic(value: unknown): value is Topic {

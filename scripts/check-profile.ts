@@ -6,7 +6,7 @@
 // Both modes first run the tag parsing and profile checks against canned data, then print the profile
 // the way the concept card shows it.
 
-import { buildProfile, describeFinding, type ProfileFinding, type SuccessProfile } from "../src/lib/analysis/profile";
+import { buildProfile, describeFinding, profileReviews, type ProfileFinding, type SuccessProfile } from "../src/lib/analysis/profile";
 import {
   buildRequest,
   readTags,
@@ -111,6 +111,13 @@ function cannedChecks() {
   {
     const five = LAUNDRY_COMPETITORS.slice(0, 5);
     check(buildProfile(LAUNDRY_CATEGORY, five, LAUNDRY_REVIEWS, LAUNDRY_CANNED_TAGS) === null, "5 returns null");
+    check(profileReviews(five, LAUNDRY_REVIEWS).length === 0, "and profileReviews has nothing to tag");
+    const compared = profileReviews(LAUNDRY_COMPETITORS, LAUNDRY_REVIEWS);
+    const middle = ["sample-lincoln-coin", "sample-pico-suds", "sample-main-street-cleaners"];
+    check(
+      compared.length === 25 && !compared.some((r) => middle.some((m) => r.id.startsWith(`review:${m}:`))),
+      `profileReviews leaves out the middle third (${compared.length} of ${LAUNDRY_REVIEWS.length} reviews)`,
+    );
     const unrated = LAUNDRY_COMPETITORS.map((c, i) => (i < 4 ? { ...c, rating: undefined } : c));
     check(
       buildProfile(LAUNDRY_CATEGORY, unrated, LAUNDRY_REVIEWS, LAUNDRY_CANNED_TAGS) === null,
