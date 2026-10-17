@@ -1,5 +1,12 @@
-import { mockAnalysis } from "@/lib/mock";
+import { analyzeArea } from "@/lib/analysis";
+import { AreaUnavailableError } from "@/lib/ingest";
+// useMocks isn't a React hook; the alias keeps the rules-of-hooks lint from flagging it.
+import { mockAnalysis, useMocks as mocksEnabled } from "@/lib/mock";
 import type { AnalyzeRequest } from "@/lib/types";
+
+// The concepts call budgets 75 s, and the competitor search and tagging run alongside it. Demo pins
+// read saved area data, so most of this goes to Claude; a live area adds the data sources' time.
+export const maxDuration = 120;
 
 function parsePoint(body: unknown): AnalyzeRequest | null {
   if (typeof body !== "object" || body === null) return null;
@@ -16,6 +23,15 @@ export async function POST(request: Request) {
     return Response.json({ error: "Send JSON with numeric lat and lng." }, { status: 400 });
   }
 
-  // TODO(oliver): replace with collectArea + scoreGaps + the Claude analysis; keep mocks behind useMocks().
-  return Response.json(mockAnalysis(point));
+  if (mocksEnabled()) return Response.json(mockAnalysis(point));
+
+  try {
+    return Response.json(await analyzeArea(point.lat, point.lng));
+  } catch (error) {
+    if (error instanceof AreaUnavailableError) {
+      return Response.json({ error: error.message }, { status: 503 });
+    }
+    console.error("analyze: failed", error);
+    return Response.json({ error: "Couldn't analyze this area. Try again in a moment." }, { status: 500 });
+  }
 }
