@@ -4,9 +4,7 @@ import { savedThread } from "@/lib/suggestions/saved";
 
 // GET /api/suggestions/<id>: a search suggestion's saved thread (scripts/save-suggestions.ts), the place's
 // analysis with the question answered. Every one is prerendered at build time, so opening a suggestion is
-// a static fetch with no Claude, Places or Overpass call.
-export const dynamicParams = false;
-
+// a static fetch with no Claude, Places or Overpass call. Any other id gets a 404.
 export function generateStaticParams() {
   return SUGGESTIONS.map(({ id }) => ({ id }));
 }
