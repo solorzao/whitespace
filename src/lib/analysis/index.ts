@@ -33,6 +33,7 @@ import { summarizeBusinesses, type BusinessSummary } from "./summaries";
 import { MAX_REVIEWS, tagReviews, type ReviewTag } from "./tag-reviews";
 
 export { CONCEPT_COUNT } from "./candidates";
+export { savedAnalysis } from "./saved";
 
 // Something that failed without stopping the analysis: a data source, or one of the steps below.
 export type AnalysisIssue = {

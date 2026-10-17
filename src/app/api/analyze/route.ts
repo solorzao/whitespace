@@ -1,11 +1,12 @@
-import { analyzeArea } from "@/lib/analysis";
+import type { NextRequest } from "next/server";
+import { analyzeArea, savedAnalysis } from "@/lib/analysis";
 import { AreaUnavailableError } from "@/lib/ingest";
 // useMocks isn't a React hook; the alias keeps the rules-of-hooks lint from flagging it.
 import { mockAnalysis, useMocks as mocksEnabled } from "@/lib/mock";
 import type { AnalyzeRequest } from "@/lib/types";
 
 // The concepts call budgets 75 s, and the competitor search and tagging run alongside it. Demo pins
-// read saved area data, so most of this goes to Claude; a live area adds the data sources' time.
+// return the saved analysis instantly; a live area adds the data sources' time.
 export const maxDuration = 120;
 
 function parsePoint(body: unknown): AnalyzeRequest | null {
@@ -17,7 +18,8 @@ function parsePoint(body: unknown): AnalyzeRequest | null {
   return { lat, lng };
 }
 
-export async function POST(request: Request) {
+// POST /api/analyze?live=1 skips the saved demo data and runs every source and Claude call.
+export async function POST(request: NextRequest) {
   const point = parsePoint(await request.json().catch(() => null));
   if (!point) {
     return Response.json({ error: "Send JSON with numeric lat and lng." }, { status: 400 });
@@ -25,8 +27,11 @@ export async function POST(request: Request) {
 
   if (mocksEnabled()) return Response.json(mockAnalysis(point));
 
+  const live = request.nextUrl.searchParams.get("live") === "1";
   try {
-    return Response.json(await analyzeArea(point.lat, point.lng));
+    // A pin near a demo center gets the saved response. Without the file, it's analyzed as before.
+    const saved = live ? null : await savedAnalysis(point.lat, point.lng);
+    return Response.json(saved ?? (await analyzeArea(point.lat, point.lng, { live })));
   } catch (error) {
     if (error instanceof AreaUnavailableError) {
       return Response.json({ error: error.message }, { status: 503 });
