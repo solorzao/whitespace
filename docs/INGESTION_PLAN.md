@@ -20,7 +20,7 @@ Given any US point, return the businesses, demographics and `SourceDoc` records 
 | Wikipedia | Kept, but built last and the first thing cut. It feeds `/api/ask` only. |
 | Shared types | Kevin writes `src/lib/types.ts` from the contract in the first 15 minutes, and Oliver imports it. |
 | Testing | A check script, not a test framework. |
-| Failures | If Overpass and its mirror both fail, return a clear "business data unavailable, try again" error. A Census, Places or Wikipedia failure only removes that part of the result. |
+| Failures | If no Overpass server answers within 20 s, return a clear "business data unavailable, try again" error. A Census, Places or Wikipedia failure only removes that part of the result. |
 
 ## Categories
 
@@ -81,7 +81,10 @@ Every adapter takes `(lat, lng, radiusM)` and returns its `SourceDoc` records pl
 ### OpenStreetMap (Overpass)
 
 - One query for named `shop`, `amenity` and `leisure` nodes, ways and relations within 800 m, with `out center tags` so ways have a point.
-- Use `overpass-api.de`, and try a mirror once if it fails. Set a 25-second timeout.
+- Ask `overpass-api.de` first. If it hasn't answered after 3 s, or fails sooner, also ask the `overpass.kumi.systems` and `overpass.private.coffee` mirrors, and use the first good answer. The others are cancelled. Waiting 3 s before asking the mirrors keeps the load on these free servers low.
+- A server that returns a 5xx or 429 error is asked again after 1, 2 and then 4 s. On 2026-10-17 all three servers were switching between errors and working within seconds.
+- After 20 s in total, give up and return the "try again" error. Measured on three pins while the servers were unstable: 5 of 6 runs answered in 6–9 s, and 1 hit the 20 s cap. Before this change, the main server alone could take 30–40 s, and a slow main server delayed the mirrors by up to 50 s.
+- Each run logs which server answered and how long it took (`overpass: overpass.kumi.systems answered in 6.4 s`), so the Vercel logs show how the servers are doing.
 - Output: one business per mapped element, one `SourceDoc` each (`osm:node/123`, linking to openstreetmap.org), and a count per category.
 
 ### US Census (ACS 2020–2024 5-year)
@@ -191,7 +194,7 @@ Post in the team chat when each PR is up.
 
 ## Risks
 
-- **Overpass rate limits.** The saved demo files cover the stage demo, and the mirror covers live pins.
+- **Overpass reliability.** The saved demo files cover the stage demo. For live pins, the race between the three servers with retries usually answers in under 10 s, but when all three are down a pin fails after 20 s and has to be retried.
 - **Places cost.** About 9 billed calls per live area, plus up to 5 competitor searches. Saved demo areas cost nothing. Live Places calls are off unless `PLACES_LIVE=1`, which stays unset on Vercel, so the deployed app is never billed. Away from the demo areas it skips ratings, reviews and competitors, and `errors` says why. `ingest-demo.ts` turns live calls on for itself.
 - **Sparse Google fields.** Price level exists only for food and drink, and hair and beauty: see [Price level](#price-level). Service options are set for about half of competitors, and almost none outside food. Rules built on these fields have to treat a missing value as unknown.
 - **Places terms.** Google limits how long Places content can be stored. Saved demo files are fine for a hackathon, but refresh them rather than keeping them long term.
