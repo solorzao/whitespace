@@ -13,6 +13,7 @@ import {
   DEMO_AREAS,
   findDemoArea,
 } from "@/lib/ingest/demo-areas";
+import { SUGGESTIONS, threadId, type Suggestion } from "@/lib/suggestions";
 import { types } from "./map/sources";
 import { sourcePaths } from "./map/icons";
 import type { Globe } from "./map/globe";
@@ -36,12 +37,6 @@ import "./explorer.css";
 
 const RADIUS_KM = AREA_RADIUS_M / 1000;
 const DEFAULT_QUESTION = "What businesses is this neighborhood missing?";
-const SUGGESTIONS = [
-  DEFAULT_QUESTION,
-  "Would a laundromat do well here?",
-  "Which businesses have the strongest reviews?",
-  "What do the residents and reviews suggest?",
-];
 const coordinate = (point: MapPoint) =>
   `${point.lat.toFixed(4)}°, ${point.lon.toFixed(4)}°`;
 const message = (error: unknown) =>
@@ -58,6 +53,38 @@ type Selection = {
   error?: string;
 };
 type Run = { name: string; question: string; step: string; collapsed: boolean };
+type SearchItem = {
+  kind: "question" | "suggestion" | "place";
+  title: string;
+  description: string;
+  point: MapPoint | null;
+  suggestion?: Suggestion;
+};
+const placeItem = (area: (typeof DEMO_AREAS)[number]): SearchItem => ({
+  kind: "place",
+  title: area.name,
+  description: "Explore collected neighborhood sources",
+  point: { lat: area.center.lat, lon: area.center.lng, name: area.name },
+});
+const suggestionItem = (suggestion: Suggestion): SearchItem => ({
+  kind: "suggestion",
+  title: suggestion.question,
+  description: `${suggestion.place.name} · Saved research`,
+  point: null,
+  suggestion,
+});
+const isReport = (value: unknown): value is Report => {
+  const report = value as Report | null;
+  return (
+    !!report &&
+    typeof report.id === "string" &&
+    typeof report.name === "string" &&
+    typeof report.question === "string" &&
+    typeof report.createdAt === "string" &&
+    isAnalysis(report.analysis) &&
+    Array.isArray(report.conversation)
+  );
+};
 
 function Icon({ id }: { id: string }) {
   return (
@@ -99,6 +126,7 @@ export default function Explorer() {
   const progressRef = useRef(0);
   const collapsedRef = useRef(false);
   const reportRouteAdded = useRef(false);
+  const suggestionThreads = useRef(new Map<string, Promise<Report>>());
   const [mapStatus, setMapStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
@@ -136,6 +164,22 @@ export default function Explorer() {
     } catch {
       setStorageWarning(true);
     }
+  }, []);
+  // A suggestion's saved thread is a static file; hovering a suggestion starts loading it, so a click
+  // usually finds it loaded. A failed load is forgotten, so the next attempt retries.
+  const loadSuggestion = useCallback((id: string) => {
+    let pending = suggestionThreads.current.get(id);
+    if (!pending) {
+      pending = fetch(`/api/suggestions/${id}`).then(async (response) => {
+        const body: unknown = await response.json().catch(() => null);
+        if (!response.ok || !isReport(body))
+          throw new Error("This suggestion has no saved research.");
+        return body;
+      });
+      pending.catch(() => suggestionThreads.current.delete(id));
+      suggestionThreads.current.set(id, pending);
+    }
+    return pending;
   }, []);
   const enter = useCallback(() => {
     const maximum =
@@ -419,7 +463,9 @@ export default function Explorer() {
     if (selection) setSearchScope("selected");
     dialogRef.current?.showModal();
     searchInputRef.current?.focus();
-  }, [selection]);
+    // The first suggestion is highlighted, so Enter opens it.
+    void loadSuggestion(SUGGESTIONS[0].id);
+  }, [selection, loadSuggestion]);
   const keyboard = useEffectEvent((event: KeyboardEvent) => {
     if (event.isComposing) return;
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
@@ -559,6 +605,66 @@ export default function Explorer() {
       });
     }
   }
+  // Opens a suggestion's saved thread: the place's analysis with the question already answered, so
+  // nothing calls /api/analyze or /api/ask. Follow-ups in it are asked live, as in any thread.
+  async function openSuggestion(suggestion: Suggestion) {
+    cancelResearch();
+    dialogRef.current?.close();
+    setNotice("");
+    closeRegion();
+    const point = {
+      lat: suggestion.place.center.lat,
+      lon: suggestion.place.center.lng,
+      name: suggestion.place.name,
+    };
+    enter();
+    globeRef.current?.focus(point, { radiusKm: RADIUS_KM, selectPoint: false });
+    const opened = reportsRef.current.find(
+      (item) => item.id === threadId(suggestion.id),
+    );
+    if (opened) {
+      openReport(opened);
+      return;
+    }
+    const controller = new AbortController();
+    researchRequest.current = controller;
+    // The thread is usually loaded already; show progress only if it isn't there quickly.
+    const slow = setTimeout(
+      () =>
+        setRun({
+          name: suggestion.place.name,
+          question: suggestion.question,
+          step: "Opening saved research…",
+          collapsed: false,
+        }),
+      400,
+    );
+    try {
+      const saved = await loadSuggestion(suggestion.id);
+      if (controller.signal.aborted) return;
+      globeRef.current?.setRecords([
+        ...new Map(
+          [...recordsRef.current, ...mapRecords(saved.analysis.docs)].map(
+            (record) => [record.id, record],
+          ),
+        ).values(),
+      ]);
+      persist(
+        [saved, ...reportsRef.current.filter((item) => item.id !== saved.id)].slice(0, 6),
+      );
+      openReport(saved);
+    } catch {
+      // No saved thread (for example, a suggestion added since the last save): research it live.
+      if (!controller.signal.aborted)
+        void startResearch(point, suggestion.question);
+    } finally {
+      clearTimeout(slow);
+      if (researchRequest.current === controller) {
+        researchRequest.current = null;
+        setRun(null);
+      }
+    }
+  }
   async function askFollowup(question: string): Promise<boolean> {
     const current = report;
     if (!current || asking) return false;
@@ -601,7 +707,8 @@ export default function Explorer() {
     collapseReport();
     void selectRegion({ lat: doc.lat!, lon: doc.lng!, name: doc.title }, true);
   }
-  const searchItems = query.trim()
+  const typed = query.trim().toLowerCase();
+  const searchItems: SearchItem[] = typed
     ? [
         {
           kind: "question",
@@ -609,41 +716,27 @@ export default function Explorer() {
           description: "Ask using neighborhood sources",
           point: null,
         },
+        ...SUGGESTIONS.filter((suggestion) =>
+          `${suggestion.question} ${suggestion.place.name}`
+            .toLowerCase()
+            .includes(typed),
+        ).map(suggestionItem),
         ...DEMO_AREAS.filter((area) =>
-          area.name.toLowerCase().includes(query.trim().toLowerCase()),
-        ).map((area) => ({
-          kind: "place",
-          title: area.name,
-          description: "Explore collected neighborhood sources",
-          point: {
-            lat: area.center.lat,
-            lon: area.center.lng,
-            name: area.name,
-          },
-        })),
+          area.name.toLowerCase().includes(typed),
+        ).map(placeItem),
       ]
-    : [
-        ...SUGGESTIONS.map((title) => ({
-          kind: "question",
-          title,
-          description: "Research a business opportunity",
-          point: null,
-        })),
-        ...DEMO_AREAS.map((area) => ({
-          kind: "place",
-          title: area.name,
-          description: "Explore collected neighborhood sources",
-          point: {
-            lat: area.center.lat,
-            lon: area.center.lng,
-            name: area.name,
-          },
-        })),
-      ];
+    : [...SUGGESTIONS.map(suggestionItem), ...DEMO_AREAS.map(placeItem)];
+  const prefetch = (item: SearchItem | undefined) => {
+    if (item?.suggestion) void loadSuggestion(item.suggestion.id);
+  };
   function chooseResult(index: number) {
     const item = searchItems[index];
     if (!item) return;
     dialogRef.current?.close();
+    if (item.suggestion) {
+      void openSuggestion(item.suggestion);
+      return;
+    }
     if (item.point) {
       if (reportOpen) collapseReport();
       enter();
@@ -1263,6 +1356,7 @@ export default function Explorer() {
                     searchItems.length) %
                   searchItems.length;
                 setActiveResult(next);
+                prefetch(searchItems[next]);
                 document
                   .getElementById(`search-result-${next}`)
                   ?.scrollIntoView({ block: "nearest" });
@@ -1292,6 +1386,8 @@ export default function Explorer() {
               aria-selected={activeIndex === i}
               id={`search-result-${i}`}
               className={`spotlight-row ${activeIndex === i ? "is-active" : ""}`}
+              onPointerEnter={() => prefetch(item)}
+              onFocus={() => prefetch(item)}
               onClick={() => chooseResult(i)}
             >
               <span className="result-icon">

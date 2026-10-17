@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { DEMO_AREAS } from "../src/lib/ingest/demo-areas";
+import { SUGGESTIONS } from "../src/lib/suggestions";
 
 async function selectNeighborhood(page: Page) {
   await page.goto("/");
@@ -225,12 +227,73 @@ test("search and research remain usable if WebGL is unavailable", async ({
     .getByRole("button", { name: "Search questions and places", exact: true })
     .click();
   await page
-    .getByRole("option", {
-      name: "What businesses is this neighborhood missing?",
-      exact: false,
-    })
+    .getByRole("option", { name: SUGGESTIONS[0].question, exact: false })
     .click();
   await expect(
     page.getByRole("heading", { name: "Business opportunities", exact: true }),
   ).toBeVisible();
+});
+
+test("a suggestion opens its saved thread at once, without analyzing or asking", async ({
+  page,
+}) => {
+  const calls: string[] = [];
+  page.on("request", (request) => {
+    const { pathname } = new URL(request.url());
+    if (pathname === "/api/analyze" || pathname === "/api/ask")
+      calls.push(pathname);
+  });
+  const suggestion =
+    SUGGESTIONS.find(
+      (s) => !DEMO_AREAS.some((area) => area.slug === s.place.slug),
+    ) ?? SUGGESTIONS[0];
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Search questions and places", exact: true })
+    .click();
+  await expect(page.getByRole("option")).toHaveCount(
+    SUGGESTIONS.length + DEMO_AREAS.length,
+  );
+  await page
+    .getByRole("option", { name: suggestion.question, exact: false })
+    .click();
+  const report = page.getByRole("region", {
+    name: "Neighborhood research report",
+  });
+  await expect(
+    report.getByRole("heading", { name: suggestion.place.name, exact: true }),
+  ).toBeVisible();
+  await expect(report.locator(".chat-question")).toHaveText([
+    suggestion.question,
+  ]);
+  await expect(report.locator(".cited-answer a").first()).toHaveAttribute(
+    "href",
+    /^https:\/\//,
+  );
+  expect(calls).toEqual([]);
+
+  // Typing filters the suggestions, and opening one again reopens the same thread.
+  await page.getByRole("button", { name: "Back to globe", exact: false }).click();
+  await page
+    .getByRole("button", { name: "Search questions and places", exact: true })
+    .click();
+  await page
+    .getByRole("combobox", { name: "Search questions and places" })
+    .fill(suggestion.place.name);
+  await page
+    .getByRole("option", { name: suggestion.question, exact: false })
+    .click();
+  await expect(report.locator(".chat-question")).toHaveText([
+    suggestion.question,
+  ]);
+  await page
+    .getByRole("button", { name: "Back to globe", exact: false })
+    .click();
+  await page
+    .getByRole("button", { name: "Open query history", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: suggestion.question, exact: false }),
+  ).toHaveCount(1);
+  expect(calls).toEqual([]);
 });

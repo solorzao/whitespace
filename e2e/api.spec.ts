@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { AnalyzeResponse, AskResponse } from "../src/lib/types";
+import type { Report } from "../src/components/explorer/types";
+import { SUGGESTIONS } from "../src/lib/suggestions";
 
 const SANTA_MONICA = { lat: 34.0195, lng: -118.4912 };
 
@@ -59,4 +61,19 @@ test('area selection rejects invalid coordinates and labels explicitly enabled m
   const response = await request.post('/api/area', { data: SANTA_MONICA });
   expect(response.ok()).toBe(true);
   expect(await response.json()).toMatchObject({ radiusM: 800, from: 'mock', mock: true });
+});
+
+test("every search suggestion serves its saved thread, and an unknown one is not found", async ({ request }) => {
+  for (const suggestion of SUGGESTIONS) {
+    const response = await request.get(`/api/suggestions/${suggestion.id}`);
+    expect(response.ok(), suggestion.id).toBe(true);
+    const body = (await response.json()) as Report;
+    expect(body).toMatchObject({ name: suggestion.place.name, question: suggestion.question });
+    expect(body.analysis.concepts).toHaveLength(3);
+    const ids = new Set(body.analysis.docs.map((d) => d.id));
+    const [turn] = body.conversation;
+    expect(turn.question).toBe(suggestion.question);
+    for (const citation of turn.response.citations) expect(ids).toContain(citation.id);
+  }
+  expect((await request.get("/api/suggestions/no-such-suggestion")).status()).toBe(404);
 });
