@@ -137,11 +137,22 @@ Google's `priceLevel` and `priceRange` are the only business price data we colle
 
 Google prices only food and drink, and hair and beauty. Grocery, convenience, liquor, pharmacy, medical, laundry, fitness, childcare, pet, clothing, hardware, bank and books never have a price level. In the circle itself, 27 of the 38 rated businesses have one.
 
-**What this means for the analysis rules** in the [analysis plan](ANALYSIS_PLAN.md#gap-type-rules):
+**What this means for the analysis:**
+- **A missing price level means unknown, not "none".**
+- **Level 1 is only informative for restaurants and bars.**
 
-- **Missing means unknown, not "none".** The `mismatched` rule "none at price level 1" should only count competitors that have a price level, and should need at least 4 of them. Otherwise it fires for every category Google doesn't price.
-- **Level 1 is only informative for restaurants and bars.** Most bakeries, cafés, specialty food and fast food are already level 1, so the rule never fires for them. Hair and beauty is never level 1, so the rule always fires, which is a false gap. Limit the price rule to restaurant and bar, or compare against the category's own mix ("no competitor below the category's usual level").
-- **The success profile's "price level 1 or 2" attribute** has the same limits. Its counts should use priced competitors only, as in "2 of 9 priced competitors", not "2 of 20".
+The [analysis plan's `mismatched` checks](ANALYSIS_PLAN.md#gap-type-rules) and success profile apply both points, with a code sketch.
+
+**Using it** (all on `Business`, for the circle's businesses and `collectCompetitors` results alike):
+
+| Field | Type | Set for | Example |
+| --- | --- | --- | --- |
+| `priceLevel` | `0`–`4` | Priced Places businesses | `1` = inexpensive ($) |
+| `priceRange` | `{ min, max }` in USD per person, `max` `null` if open-ended | The same businesses as `priceLevel` | `{ min: 10, max: 20 }` |
+| `closesAt` | Hours after midnight, latest Monday–Friday close | 95% of competitors | `21.5` = 9:30 pm, `25` = 1 am, `24` = open all day |
+| `services` | `{ delivery?, dineIn?, takeout?, reservable? }` | About half of competitors, mostly food | `{ delivery: true, dineIn: true }` |
+
+Each place doc already states these in words, so Claude can cite them by `places:` id.
 
 **Filling the gaps:**
 
