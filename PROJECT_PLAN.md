@@ -109,7 +109,7 @@ Required keys: Google Places API key with billing, Census API key.
 | --- | --- | --- |
 | Kevin | Overpass adapter and category dictionary, Census adapter, Places adapter with reviews. | `SourceDoc` records, category counts and demographics for any US point. |
 | Hadi | Next.js app: globe, click-to-pin, circle, business dots, concept cards and chat panel. | The full user interface, built against the mocked API first. |
-| Oliver | Shared types and mocks, gap score and benchmark table, `/api/analyze` and `/api/ask`, Claude prompts and citations. | Analysis and answers based on the area's data. |
+| Oliver | Shared types and mocks, gap score and benchmark table, `/api/analyze` and `/api/ask`, Claude prompts and citations, Vercel deployment. | Analysis and answers based on the area's data, deployed. |
 
 ## Time plan
 
@@ -121,7 +121,7 @@ The front end never waits on data: mocked `/api/analyze` and `/api/ask` response
 | 0:15–0:45 | Overpass query and category dictionary. | Next.js scaffold, MapLibre globe (`projection: globe`), click-to-pin, 800 m circle. | Shared types. Mocked `/api/analyze` and `/api/ask` with fixture data. |
 | 0:45–2:00 | Finish Overpass. Census adapter. Check the counts by hand on two demo neighborhoods. | Business dots and their details. Concept cards from the mock. | Gap score and benchmark table. Analysis prompt with strict JSON, tested on fixture data. |
 | 2:00–2:45 | Places adapter and reviews. | Chat panel. Clicking a card highlights its competitors. | `/api/ask` context and citations. Wire the real adapters into `/api/analyze`. |
-| 2:45–3:15 | Everyone: replace the mocks with live data end to end, and deploy. | | |
+| 2:45–3:15 | Everyone: replace the mocks with live data end to end. Oliver deploys. | | |
 | 3:15–3:45 | Everyone: run the three demo neighborhoods, fix whatever looks wrong, and save their `/api/analyze` responses as JSON in the repo so the demo is instant even if a source is slow. | | |
 | 3:45–4:00 | Freeze. Don't touch the code. Rehearse. | | |
 
@@ -144,7 +144,7 @@ The front end never waits on data: mocked `/api/analyze` and `/api/ask` response
 
 ## Hosting
 
-Next.js on Vercel for both the front end and the API routes, as one deployment. Azure is not required; add it only if a need comes up.
+Next.js on Vercel for both the front end and the API routes, as one deployment. Azure is not required; add it only if a need comes up. Oliver owns deployment.
 
 ## Open decisions
 
@@ -153,7 +153,6 @@ Next.js on Vercel for both the front end and the API routes, as one deployment. 
 | Demo neighborhoods | Decided. See [Demonstration data](#demonstration-data). |
 | Claude model | `claude-opus-5-5`. Switch to `claude-sonnet-5-5` if the analysis is too slow for the demo. |
 | API keys | Who provides the Google Places key and the Anthropic key: TBD. |
-| Deployment owner | TBD. |
 
 ## If ahead of schedule
 
