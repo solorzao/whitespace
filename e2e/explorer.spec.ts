@@ -1,0 +1,236 @@
+import { test, expect, type Page } from "@playwright/test";
+
+async function selectNeighborhood(page: Page) {
+  await page.goto("/");
+  await page.getByRole("button", { name: "SCROLL TO DISCOVER" }).click();
+  await page
+    .getByRole("button", { name: "Santa Monica ↗", exact: true })
+    .click();
+  await expect(page.getByText("source documents shown")).toBeVisible();
+}
+async function research(page: Page) {
+  await selectNeighborhood(page);
+  await page
+    .getByRole("button", { name: "Find business opportunities ↗" })
+    .click();
+  await expect(
+    page.getByRole("region", { name: "Neighborhood research report" }),
+  ).toBeVisible();
+}
+
+test("neighborhood evidence, map filters, real API analysis and cited follow-up work together", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await selectNeighborhood(page);
+  await expect(page.getByText("800 m radius", { exact: true })).toBeVisible();
+  for (const name of ["Businesses", "Places", "Reviews", "Census", "Knowledge"])
+    await page.getByRole("button", { name, exact: true }).click();
+  await expect(
+    page.getByText("All map sources are off.", { exact: false }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Businesses", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Find business opportunities ↗" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Business opportunities", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Test mode is enabled.", { exact: false }),
+  ).toBeVisible();
+  await page
+    .getByRole("navigation", { name: "Report sections" })
+    .getByRole("button", { name: "Ask a question", exact: true })
+    .click();
+  await page
+    .getByLabel("Follow-up question", { exact: true })
+    .fill("Would a laundromat do well here?");
+  const request = page.waitForRequest((request) =>
+    request.url().endsWith("/api/ask"),
+  );
+  await page
+    .getByRole("button", { name: "Ask question ↗", exact: true })
+    .click();
+  expect((await request).postDataJSON().docs.length).toBeGreaterThan(0);
+  await expect(page.locator(".cited-answer")).toContainText(
+    "This is a sample answer",
+  );
+  await expect(page.locator(".cited-answer a").first()).toHaveAttribute(
+    "href",
+    /^https:\/\//,
+  );
+  expect(errors).toEqual([]);
+});
+
+test("reports and conversations survive refresh and can reopen from history", async ({
+  page,
+}) => {
+  await research(page);
+  const url = page.url();
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Business opportunities", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Back to globe", exact: false })
+    .click();
+  await expect(
+    page.getByRole("region", { name: "Neighborhood research report" }),
+  ).toBeHidden();
+  await page
+    .getByRole("button", { name: "Open query history", exact: true })
+    .click();
+  await page
+    .getByRole("button", {
+      name: "What businesses is this neighborhood missing?",
+      exact: false,
+    })
+    .click();
+  await expect(page).toHaveURL(url);
+});
+
+test("keyboard search submits a custom question in the chosen neighborhood", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Search questions and places", exact: true })
+    .click();
+  await page
+    .getByLabel("Location for your question")
+    .selectOption("lower-manhattan");
+  await page
+    .getByRole("combobox", { name: "Search questions and places" })
+    .fill("Which business should I open here?");
+  const request = page.waitForRequest((request) =>
+    request.url().endsWith("/api/analyze"),
+  );
+  await page
+    .getByRole("combobox", { name: "Search questions and places" })
+    .press("Enter");
+  expect((await request).postDataJSON()).toEqual({
+    lat: 40.7075,
+    lng: -74.0113,
+  });
+  await expect(
+    page.getByRole("heading", { name: "Lower Manhattan", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".cited-answer")).toContainText(
+    "Which business should I open here?",
+  );
+});
+
+test("cancellation discards a late analysis without saving a thread", async ({
+  page,
+}) => {
+  let release!: () => void;
+  const paused = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/analyze", async (route) => {
+    await paused;
+    await route
+      .fulfill({ status: 503, json: { error: "late response" } })
+      .catch(() => {});
+  });
+  await selectNeighborhood(page);
+  await page
+    .getByRole("button", { name: "Find business opportunities ↗" })
+    .click();
+  await page
+    .getByRole("button", { name: "Cancel research", exact: true })
+    .click();
+  release();
+  await expect(
+    page.getByRole("complementary", { name: "Research in progress" }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Open query history", exact: true })
+    .click();
+  await expect(
+    page.getByText("Your completed neighborhood research will appear here."),
+  ).toBeVisible();
+});
+
+test("API failures show an actionable retry and never substitute a report", async ({
+  page,
+}) => {
+  await page.route("**/api/analyze", (route) =>
+    route.fulfill({
+      status: 503,
+      json: { error: "Business sources are unavailable. Please try again." },
+    }),
+  );
+  await selectNeighborhood(page);
+  await page
+    .getByRole("button", { name: "Find business opportunities ↗" })
+    .click();
+  await expect(
+    page
+      .getByRole("alert")
+      .filter({ hasText: "Business sources are unavailable." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Find business opportunities ↗" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Neighborhood research report" }),
+  ).toHaveCount(0);
+});
+
+test("mobile region controls and report fit without horizontal overflow", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await selectNeighborhood(page);
+  const card = await page.locator("#region-card").boundingBox();
+  const dock = await page.locator(".source-dock").boundingBox();
+  expect(card).not.toBeNull();
+  expect(dock).not.toBeNull();
+  expect(card!.x).toBeGreaterThanOrEqual(0);
+  expect(card!.x + card!.width).toBeLessThanOrEqual(390);
+  expect(card!.y + card!.height).toBeLessThan(dock!.y);
+  await page
+    .getByRole("button", { name: "Find business opportunities ↗" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Business opportunities", exact: true }),
+  ).toBeVisible();
+  expect(
+    await page
+      .locator("#research-results")
+      .evaluate((element) => element.scrollWidth <= element.clientWidth),
+  ).toBe(true);
+  await page.screenshot({ path: "/tmp/whitespace-production-mobile.png" });
+});
+
+test("search and research remain usable if WebGL is unavailable", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      type: string,
+      ...args: unknown[]
+    ) {
+      if (type.startsWith("webgl")) return null;
+      return Reflect.apply(original, this, [type, ...args]);
+    } as typeof original;
+  });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Search questions and places", exact: true })
+    .click();
+  await page
+    .getByRole("option", {
+      name: "What businesses is this neighborhood missing?",
+      exact: false,
+    })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Business opportunities", exact: true }),
+  ).toBeVisible();
+});

@@ -41,3 +41,22 @@ test("ask rejects an empty question", async ({ request }) => {
   const response = await request.post("/api/ask", { data: { question: " ", docs: [] } });
   expect(response.status()).toBe(400);
 });
+
+test('area index contains collected geographic records, without generated global pins', async ({ request }) => {
+  const response = await request.get('/api/area');
+  expect(response.ok()).toBe(true);
+  const body = await response.json();
+  expect(body.areas.map((area: { slug: string }) => area.slug)).toEqual(['santa-monica', 'lower-manhattan']);
+  expect(body.records.length).toBeGreaterThan(0);
+  for (const record of body.records) {
+    expect(record.id).toMatch(/^(osm|places|review|census|wikipedia):/);
+    expect(Number.isFinite(record.lat) && Number.isFinite(record.lon)).toBe(true);
+  }
+});
+
+test('area selection rejects invalid coordinates and labels explicitly enabled mocks', async ({ request }) => {
+  expect((await request.post('/api/area', { data: { lat: 91, lng: 0 } })).status()).toBe(400);
+  const response = await request.post('/api/area', { data: SANTA_MONICA });
+  expect(response.ok()).toBe(true);
+  expect(await response.json()).toMatchObject({ radiusM: 800, from: 'mock', mock: true });
+});
