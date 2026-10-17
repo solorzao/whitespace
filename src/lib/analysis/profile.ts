@@ -3,7 +3,7 @@
 // Google returns at most 5 reviews per place, so samples are small: findings carry counts such as
 // "8 of 12 reviews", never claims of significance.
 
-import type { CategoryId, SourceDoc } from "../types";
+import type { Business, CategoryId, SourceDoc } from "../types";
 import type { ReviewTag, Sentiment } from "./tag-reviews";
 import { TOPICS, type Topic } from "./topics";
 
@@ -24,16 +24,9 @@ export type SuccessProfile = {
   findings: ProfileFinding[]; // up to 4, biggest difference first
 };
 
-// The competitor fields buildProfile reads. They match the Business fields the plan proposes,
-// which the competitor search fills from Google Places.
-export type ProfileCompetitor = {
-  id: string; // "places:<place id>"; its reviews are "review:<place id>:<n>"
-  rating?: number;
-  reviewCount?: number; // Google's total, not just the reviews fetched
-  priceLevel?: 0 | 1 | 2 | 3 | 4;
-  closesAt?: number; // latest weekday closing time in hours: 21.5 = 9:30 pm, 25 = 1 am
-  services?: { delivery?: boolean; dineIn?: boolean; takeout?: boolean; reservable?: boolean };
-};
+// The competitor fields buildProfile reads, so collectCompetitors' businesses can be passed as they are.
+// Ids are "places:<place id>", and their reviews are "review:<place id>:<n>".
+export type ProfileCompetitor = Pick<Business, "id" | "rating" | "reviewCount" | "priceLevel" | "closesAt" | "services">;
 
 export const PROFILE_RADIUS_M = 2000;
 
@@ -43,7 +36,9 @@ const MIN_TOPIC_MENTIONS = 3; // reviews in the group the finding is about
 // Below this, praise that is nearly as common among the low-rated isn't something the best ones do.
 const MIN_TOPIC_DIFFERENCE = 0.2;
 const MIN_ATTRIBUTE_DIFFERENCE = 0.5;
-const MIN_KNOWN_PER_GROUP = 2; // businesses with a known value for an attribute
+// Google leaves many of these fields out, so an attribute needs this many businesses with the field in each
+// group. That also skips price for the categories Google gives no price level.
+const MIN_KNOWN_PER_GROUP = 3;
 const MAX_FINDINGS = 4;
 const MAX_EVIDENCE = 3;
 const EPSILON = 1e-9;

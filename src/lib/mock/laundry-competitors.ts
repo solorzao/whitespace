@@ -25,7 +25,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4867,
     rating: 4.8,
     reviewCount: 212,
-    priceLevel: 2,
     closesAt: 23,
     services: { delivery: true },
     reviews: [
@@ -58,7 +57,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4825,
     rating: 4.7,
     reviewCount: 164,
-    priceLevel: 2,
     closesAt: 22,
     services: { delivery: false },
     reviews: [
@@ -87,7 +85,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4889,
     rating: 4.6,
     reviewCount: 98,
-    priceLevel: 1,
     closesAt: 24,
     services: { delivery: false },
     reviews: [
@@ -116,7 +113,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4778,
     rating: 4.2,
     reviewCount: 75,
-    priceLevel: 1,
     closesAt: 22,
     services: { delivery: false },
     reviews: [
@@ -139,7 +135,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4968,
     rating: 3.9,
     reviewCount: 51,
-    priceLevel: 1,
     closesAt: 21,
     services: { delivery: false },
     reviews: [
@@ -155,7 +150,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4853,
     rating: 3.7,
     reviewCount: 40,
-    priceLevel: 2,
     closesAt: 19,
     services: { delivery: true },
     reviews: [
@@ -175,7 +169,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.4951,
     rating: 3.4,
     reviewCount: 63,
-    priceLevel: 1,
     closesAt: 20,
     services: { delivery: false },
     reviews: [
@@ -201,7 +194,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.5008,
     rating: 3.0,
     reviewCount: 37,
-    priceLevel: 1,
     closesAt: 21,
     services: { delivery: false },
     reviews: [
@@ -231,7 +223,6 @@ const LAUNDROMATS: (Omit<FixtureCompetitor, "id" | "url"> & { place: string; rev
     lng: -118.5037,
     rating: 2.6,
     reviewCount: 29,
-    priceLevel: 1,
     closesAt: 20,
     services: { delivery: false },
     reviews: [
@@ -254,7 +245,6 @@ export const LAUNDRY_COMPETITORS: FixtureCompetitor[] = LAUNDROMATS.map((c) => (
   url: placeUrl(c.lat, c.lng),
   rating: c.rating,
   reviewCount: c.reviewCount,
-  priceLevel: c.priceLevel,
   closesAt: c.closesAt,
   services: c.services,
 }));
