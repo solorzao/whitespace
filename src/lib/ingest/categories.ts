@@ -180,10 +180,60 @@ export const GOOGLE_TYPES = {
 
 export const PLACES_INCLUDED_TYPES = Object.keys(GOOGLE_TYPES);
 
-// The primary type wins; otherwise the first mapped type in the list.
-export function categorizeGoogle(types: string[], primaryType?: string): CategoryId | null {
+// Big draws that list our types among theirs (a hotel with a gym and a restaurant, a mall with
+// clothing stores) but aren't the businesses we count. Excluding them leaves Nearby Search's
+// 20 slots for businesses we can use.
+export const PLACES_EXCLUDED_PRIMARY_TYPES = [
+  "hotel",
+  "lodging",
+  "department_store",
+  "shopping_mall",
+  "museum",
+  "movie_theater",
+  "tourist_attraction",
+  "observation_deck",
+  "event_venue",
+  "amusement_center",
+];
+
+// More specific types seen as primary types in results. Only used to categorize results.
+const GOOGLE_EXTRA_TYPES: Record<string, CategoryId> = {
+  donut_shop: "bakery",
+  bagel_shop: "bakery",
+  sandwich_shop: "fast_food",
+  ice_cream_shop: "fast_food",
+  juice_shop: "cafe",
+  steak_house: "restaurant",
+  diner: "restaurant",
+  brewpub: "bar",
+  cosmetics_store: "hair_beauty",
+  sportswear_store: "clothing",
+};
+
+// Specific Google types we don't list one by one, such as italian_restaurant or cocktail_bar.
+const GOOGLE_SUFFIXES: [string, CategoryId][] = [
+  ["_restaurant", "restaurant"],
+  ["_bar", "bar"],
+  ["_pub", "bar"],
+  ["_clothing_store", "clothing"],
+];
+
+function mapGoogleType(type: string): CategoryId | null {
   const map: Record<string, CategoryId> = GOOGLE_TYPES;
-  if (primaryType && map[primaryType]) return map[primaryType];
-  for (const t of types) if (map[t]) return map[t];
+  if (map[type]) return map[type];
+  if (GOOGLE_EXTRA_TYPES[type]) return GOOGLE_EXTRA_TYPES[type];
+  for (const [suffix, category] of GOOGLE_SUFFIXES) if (type.endsWith(suffix)) return category;
+  return null;
+}
+
+// The primary type decides. A place whose primary type is outside our categories is dropped,
+// so a hotel that lists "gym" and "restaurant" among its types doesn't count as either.
+// The type list is only used when there's no primary type.
+export function categorizeGoogle(types: string[], primaryType?: string): CategoryId | null {
+  if (primaryType) return mapGoogleType(primaryType);
+  for (const t of types) {
+    const category = mapGoogleType(t);
+    if (category) return category;
+  }
   return null;
 }

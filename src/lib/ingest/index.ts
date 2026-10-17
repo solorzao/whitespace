@@ -7,6 +7,7 @@ import { emptyCounts } from "./categories";
 import { fetchCensus } from "./census";
 import { AREA_RADIUS_M, findDemoArea, type DemoArea } from "./demo-areas";
 import { fetchOverpass } from "./overpass";
+import { fetchPlaces, mergeBusinesses } from "./places";
 import type { AdapterResult } from "./result";
 
 export { AREA_RADIUS_M, DEMO_AREAS, findDemoArea } from "./demo-areas";
@@ -60,9 +61,10 @@ function withTimeout<T>(source: SourceKind, p: Promise<AdapterResult<T>>): Promi
 
 export async function collectLive(center: LatLng, radiusM = AREA_RADIUS_M): Promise<AreaData> {
   const { lat, lng } = center;
-  const [osm, censusResult] = await Promise.all([
+  const [osm, censusResult, places] = await Promise.all([
     withTimeout("osm", fetchOverpass(lat, lng, radiusM)),
     withTimeout("census", fetchCensus(lat, lng, radiusM)),
+    withTimeout("places", fetchPlaces(lat, lng, radiusM)),
   ]);
 
   if (!osm.ok) throw new AreaUnavailableError(osm.error);
@@ -76,11 +78,18 @@ export async function collectLive(center: LatLng, radiusM = AREA_RADIUS_M): Prom
   } else {
     errors.push({ source: "census", message: censusResult.error });
   }
+  let businesses = osm.data.businesses;
+  if (places.ok) {
+    docs.push(...places.docs);
+    businesses = mergeBusinesses(businesses, places.data.businesses);
+  } else {
+    errors.push({ source: "places", message: places.error });
+  }
 
   return {
     center,
     radiusM,
-    businesses: osm.data.businesses,
+    businesses,
     demographics,
     categoryCounts: { ...emptyCounts(), ...osm.data.categoryCounts },
     docs,
