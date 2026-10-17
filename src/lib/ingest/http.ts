@@ -25,13 +25,17 @@ export async function fetchWithRetry(url: string, options: FetchOptions = {}): P
   for (let attempt = 0; attempt <= retries; attempt++) {
     if (attempt > 0) await new Promise((r) => setTimeout(r, 500 * attempt));
     try {
-      const res = await fetch(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+      // A caller's signal (to cancel a request that lost a race) works alongside the timeout.
+      const timeout = AbortSignal.timeout(timeoutMs);
+      const signal = init.signal ? AbortSignal.any([init.signal, timeout]) : timeout;
+      const res = await fetch(url, { ...init, signal });
       if (res.ok) return res;
       const err = new HttpError(url, res.status, (await res.text()).slice(0, 500));
       if (!isRetryable(res.status)) throw err;
       lastError = err;
     } catch (err) {
       if (err instanceof HttpError && !isRetryable(err.status)) throw err;
+      if (init.signal?.aborted) throw err; // cancelled by the caller: don't retry
       lastError = err;
     }
   }
